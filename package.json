@@ -1,0 +1,11 @@
+{
+  "name": "pop-demo-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test:portal": "node scripts/portal-qa.cjs && node scripts/portal-accessibility.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.64.1"
+  }
+}

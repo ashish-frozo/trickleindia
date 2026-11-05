@@ -22,7 +22,7 @@ The WhatsApp surface is a local labelled simulation creating actual support reco
 
 ## Tested environment
 
-macOS arm64; Node 24.11.1/npm 11.6.2, PostgreSQL 18.3, Flutter 3.47.9/Dart 3.13.7, Java 17.0.17. Android API 36 AOSP ARM64 emulator uses software graphics, 2 cores and approximately 2.5 GB guest RAM. The supplied local APK is an AOT profile build with loopback HTTP configured; hosted/release use requires HTTPS and distribution signing. Dependencies are pinned in lock files. No access code is embedded in the ordinary deliverable APK.
+macOS arm64; Node 24.11.1/npm 11.6.2, PostgreSQL 18.3, Flutter 3.47.9/Dart 3.13.7, Java 17.0.17, Google Chrome156.0.8078.80. Android API 36 AOSP ARM64 emulator uses software graphics, 2 cores and approximately 2.5 GB guest RAM. The supplied local APK is an AOT profile build with loopback HTTP configured; hosted/release use requires HTTPS and distribution signing. Dependencies are pinned in lock files. No access code is embedded in the ordinary deliverable APK.
 
 Docker Compose configuration was checked but container execution was unavailable because there is no running Docker daemon. Native PostgreSQL startup and an API/encrypted-client roundtrip were reproduced in an isolated clean source tree and separate cluster. Emulator timing samples describe this environment only, not a device performance guarantee.
 

@@ -19,3 +19,5 @@ delivery/*.apk
 delivery/*.zip
 delivery/SHA256SUMS
 delivery/BUILD_INFO.json
+
+delivery/

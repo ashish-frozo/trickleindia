@@ -68,3 +68,7 @@ The API tests reset their selected database. Never point them at demo or product
 ## Container alternative
 
 Docker Compose is supplied for PostgreSQL/API. Set the database password, build the API, run migration and seed explicitly using `docker compose run --rm api npm run migrate` and `... npm run seed`, then start the API. Compose configuration was validated; container execution could not be tested because this workstation has no running Docker daemon. The native PostgreSQL startup path was reproduced in a separate clean source tree and isolated cluster.
+
+## Browser verification
+
+The checked browser is Google Chrome156.0.8078.80. With Chrome installed and the local API/portal running, run `npm ci` and `npm run test:portal` from the project root. The pinned Playwright1.64.1 checks login, English/Hindi screenshots at768/1440, reduced motion, grayscale and keyboard activation of Support. It reads the ignored local code file, creates no support records, and writes evidence under output/docs. `POP_WEB_URL` and `POP_ACCESS_CODE_FILE` override their local defaults.
