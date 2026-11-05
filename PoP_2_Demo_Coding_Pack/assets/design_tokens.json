@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "identity": {
+    "title": "PoP 2.0",
+    "status": "Proposed demo identity; no supplied TUIF brand assets"
+  },
+  "colors": {
+    "canvas": "#F7F8F4",
+    "surface": "#FFFFFF",
+    "primary": "#175C53",
+    "primaryTint": "#E8F3EF",
+    "text": "#18332F",
+    "muted": "#52645E",
+    "border": "#D9E3DD",
+    "success": "#24613C",
+    "warning": "#83510A",
+    "error": "#A12B32",
+    "accent": "#C58B39",
+    "onPrimary": "#FFFFFF",
+    "successTint": "#EDF6EE",
+    "warningTint": "#FFF4DE",
+    "errorTint": "#FCEEF0"
+  },
+  "fonts": {
+    "en": "Noto Sans",
+    "hi": "Noto Sans Devanagari",
+    "delivery": "Bundle fonts and licence notices; do not depend on startup downloads"
+  },
+  "typography": {
+    "screenTitle": {
+      "size": 26,
+      "lineHeight": 34,
+      "weight": 600
+    },
+    "sectionTitle": {
+      "size": 20,
+      "lineHeight": 28,
+      "weight": 600
+    },
+    "body": {
+      "size": 17,
+      "lineHeight": 26,
+      "weight": 400
+    },
+    "button": {
+      "size": 17,
+      "lineHeight": 24,
+      "weight": 600
+    },
+    "label": {
+      "size": 14,
+      "lineHeight": 21,
+      "weight": 500
+    },
+    "amount": {
+      "size": 32,
+      "lineHeight": 40,
+      "weight": 600,
+      "tabularNumerals": true
+    }
+  },
+  "spacing": {
+    "unit": 4,
+    "page": 20,
+    "card": 20,
+    "rowGap": 12,
+    "sectionGap": 24
+  },
+  "radius": {
+    "card": 16,
+    "button": 14,
+    "sheet": 24
+  },
+  "layout": {
+    "minimumTouchTarget": 48,
+    "primaryButtonMinHeight": 56,
+    "portalSidebar": 240,
+    "portalContentMaxWidth": 1280
+  },
+  "motion": {
+    "shortMs": 150,
+    "normalMs": 220,
+    "respectReducedMotion": true
+  },
+  "viewports": [
+    {
+      "width": 360,
+      "height": 800
+    },
+    {
+      "width": 390,
+      "height": 844
+    },
+    {
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "width": 1440,
+      "height": 1000
+    }
+  ],
+  "contrastRules": {
+    "normalTextMinimum": 4.5,
+    "largeTextMinimum": 3.0,
+    "interactiveBoundaryMinimum": 3.0,
+    "decorativeOnly": [
+      "accent",
+      "border"
+    ]
+  },
+  "notes": [
+    "Use a darker border or primary focus indicator for an interactive boundary; the pale border token is for decoration/separation.",
+    "Always pair status colour with text and icon.",
+    "Heights grow for text scaling; button height is a minimum."
+  ]
+}

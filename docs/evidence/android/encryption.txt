@@ -1,0 +1,3 @@
+Actual Android app database copied through run-as after eight native phases.
+Unkeyed SQLite SELECT failed: file is not a database.
+Random per-actor/dataset key uses FlutterSecureStorage; no key is exported.

@@ -1,0 +1,2 @@
+Ordinary profile APK: API stopped, 20000 paise saved offline, confirmed120000/pending20000; force-stop and normal reopen retained same operation; server restarted, retry accepted once and confirmed140000/pending0.
+UI assertions passed. Recording edited across capture segments for pacing.

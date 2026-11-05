@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: postgres:18.3
+    environment:
+      POSTGRES_USER: pop
+      POSTGRES_DB: pop_demo
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:55432:5432"
+    volumes:
+      - pop_pg:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pop -d pop_demo"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  api:
+    build:
+      context: .
+      dockerfile: services/api/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://pop:${POSTGRES_PASSWORD}@postgres:5432/pop_demo
+      DEMO_MODE: ${DEMO_MODE:-false}
+      DEMO_ACCESS_CODE_HASH: ${DEMO_ACCESS_CODE_HASH}
+      ALLOW_DEMO_RESET: ${ALLOW_DEMO_RESET:-false}
+      ALLOW_DEMO_FAULTS: ${ALLOW_DEMO_FAULTS:-false}
+      HOST: 0.0.0.0
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8080}
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+volumes:
+  pop_pg:

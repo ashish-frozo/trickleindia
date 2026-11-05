@@ -1,0 +1,7 @@
+Starting: Intent { cmp=com.frozo.pop_mobile/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: com.frozo.pop_mobile/.MainActivity
+TotalTime: 2456
+WaitTime: 2460
+Complete

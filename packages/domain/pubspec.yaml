@@ -1,0 +1,19 @@
+name: pop_domain
+description: PoP 2.0 proposal demonstration
+version: 1.0.0+1
+publish_to: none
+environment:
+  sdk: ">=3.13.0 <4.0.0"
+dependencies:
+  flutter:
+    sdk: flutter
+  crypto: 3.0.8
+  http: 1.6.0
+  http_parser: 4.1.2
+  uuid: 4.6.0
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+flutter:
+  uses-material-design: true

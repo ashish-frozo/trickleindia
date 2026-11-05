@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": "demo-2026-11-05-v1",
+  "label": "Demo app instructions",
+  "reviewStatus": "draft-not-tuif-approved",
+  "audioAssetsIncluded": false,
+  "cards": [
+    {
+      "id": "save-contribution",
+      "version": 1,
+      "reviewStatus": "draft-not-tuif-approved",
+      "keywords": [
+        "savings",
+        "contribution",
+        "save",
+        "बचत",
+        "जमा"
+      ],
+      "locales": {
+        "en": {
+          "title": "Save a contribution",
+          "steps": [
+            "Open the meeting and choose the member.",
+            "Enter the amount and review the member, date and type.",
+            "Confirm. If offline, the entry stays on this phone until it syncs."
+          ],
+          "audioScript": "Open the meeting and choose the member. Enter the amount and review the member, date and type. Confirm. If offline, the entry stays on this phone until it syncs.",
+          "audioAsset": null,
+          "audioReviewStatus": "not-produced"
+        },
+        "hi": {
+          "title": "बचत जमा सेव करें",
+          "steps": [
+            "बैठक खोलें और सदस्य चुनें।",
+            "राशि दर्ज करें और सदस्य, तारीख व प्रकार जाँचें।",
+            "पुष्टि करें। ऑफ़लाइन होने पर एंट्री सिंक होने तक इस फ़ोन पर रहती है।"
+          ],
+          "audioScript": "बैठक खोलें और सदस्य चुनें। राशि दर्ज करें और सदस्य, तारीख व प्रकार जाँचें। पुष्टि करें। ऑफ़लाइन होने पर एंट्री सिंक होने तक इस फ़ोन पर रहती है।",
+          "audioAsset": null,
+          "audioReviewStatus": "not-produced"
+        }
+      }
+    },
+    {
+      "id": "understand-sync",
+      "version": 1,
+      "reviewStatus": "draft-not-tuif-approved",
+      "keywords": [
+        "sync",
+        "offline",
+        "pending",
+        "सिंक",
+        "ऑफ़लाइन",
+        "लंबित"
+      ],
+      "locales": {
+        "en": {
+          "title": "Understand sync status",
+          "steps": [
+            "Saved on this phone means the entry is stored locally.",
+            "Waiting to sync means it has not yet been confirmed by the server.",
+            "After confirmation, the passbook shows the updated confirmed balance."
+          ],
+          "audioScript": "Saved on this phone means the entry is stored locally. Waiting to sync means it has not yet been confirmed by the server. After confirmation, the passbook shows the updated confirmed balance.",
+          "audioAsset": null,
+          "audioReviewStatus": "not-produced"
+        },
+        "hi": {
+          "title": "सिंक की स्थिति समझें",
+          "steps": [
+            "इस फ़ोन पर सेव हुआ का मतलब है कि एंट्री फ़ोन में सुरक्षित है।",
+            "सिंक होने की प्रतीक्षा का मतलब है कि सर्वर ने अभी पुष्टि नहीं की है।",
+            "पुष्टि के बाद पासबुक में पुष्टि किया गया नया बैलेंस दिखता है।"
+          ],
+          "audioScript": "इस फ़ोन पर सेव हुआ का मतलब है कि एंट्री फ़ोन में सुरक्षित है। सिंक होने की प्रतीक्षा का मतलब है कि सर्वर ने अभी पुष्टि नहीं की है। पुष्टि के बाद पासबुक में पुष्टि किया गया नया बैलेंस दिखता है।",
+          "audioAsset": null,
+          "audioReviewStatus": "not-produced"
+        }
+      }
+    },
+    {
+      "id": "record-expense",
+      "version": 1,
+      "reviewStatus": "draft-not-tuif-approved",
+      "keywords": [
+        "expense",
+        "enterprise",
+        "seeds",
+        "खर्च",
+        "उद्यम",
+        "बीज"
+      ],
+      "locales": {
+        "en": {
+          "title": "Record an expense",
+          "steps": [
+            "Open Enterprise and choose Record expense.",
+            "Choose a category, enter the amount and review the details.",
+            "Confirm the expense. Cash surplus updates after the entry is accepted."
+          ],
+          "audioScript": "Open Enterprise and choose Record expense. Choose a category, enter the amount and review the details. Confirm the expense. Cash surplus updates after the entry is accepted.",
+          "audioAsset": null,
+          "audioReviewStatus": "not-produced"
+        },
+        "hi": {
+          "title": "खर्च दर्ज करें",
+          "steps": [
+            "उद्यम खोलें और खर्च दर्ज करें चुनें।",
+            "श्रेणी चुनें, राशि दर्ज करें और विवरण जाँचें।",
+            "खर्च की पुष्टि करें। एंट्री स्वीकार होने पर नकद की बची राशि अपडेट होती है।"
+          ],
+          "audioScript": "उद्यम खोलें और खर्च दर्ज करें चुनें। श्रेणी चुनें, राशि दर्ज करें और विवरण जाँचें। खर्च की पुष्टि करें। एंट्री स्वीकार होने पर नकद की बची राशि अपडेट होती है।",
+          "audioAsset": null,
+          "audioReviewStatus": "not-produced"
+        }
+      }
+    },
+    {
+      "id": "ask-sakhi",
+      "version": 1,
+      "reviewStatus": "draft-not-tuif-approved",
+      "keywords": [
+        "help",
+        "sakhi",
+        "request",
+        "सहायता",
+        "सखी",
+        "अनुरोध"
+      ],
+      "locales": {
+        "en": {
+          "title": "Ask your Smart Sakhi",
+          "steps": [
+            "Choose Request help and describe the issue briefly.",
+            "Save the request. It becomes visible to staff after it syncs.",
+            "Use the request reference to follow its status in the app."
+          ],
+          "audioScript": "Choose Request help and describe the issue briefly. Save the request. It becomes visible to staff after it syncs. Use the request reference to follow its status in the app.",
+          "audioAsset": null,
+          "audioReviewStatus": "not-produced"
+        },
+        "hi": {
+          "title": "अपनी स्मार्ट सखी से पूछें",
+          "steps": [
+            "सहायता माँगें चुनें और समस्या का छोटा विवरण लिखें।",
+            "अनुरोध सेव करें। सिंक होने के बाद यह कर्मचारियों को दिखाई देगा।",
+            "ऐप में स्थिति देखने के लिए अनुरोध का संदर्भ नंबर इस्तेमाल करें।"
+          ],
+          "audioScript": "सहायता माँगें चुनें और समस्या का छोटा विवरण लिखें। अनुरोध सेव करें। सिंक होने के बाद यह कर्मचारियों को दिखाई देगा। ऐप में स्थिति देखने के लिए अनुरोध का संदर्भ नंबर इस्तेमाल करें।",
+          "audioAsset": null,
+          "audioReviewStatus": "not-produced"
+        }
+      }
+    }
+  ]
+}

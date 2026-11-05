@@ -1,0 +1,56 @@
+[1/1] Android SDK
+  ├─ [1/6] android-arm-profile/darwin-x64                          18.7s
+  ├─ [2/6] android-arm-release/darwin-x64                           5.3s
+  ├─ [3/6] android-arm64-profile/darwin-x64                         9.0s
+  ├─ [4/6] android-arm64-release/darwin-x64                         8.0s
+  ├─ [5/6] android-x64-profile/darwin-x64                           6.5s
+  └─ [6/6] android-x64-release/darwin-x64                           4.1s
+Running Gradle task 'assembleDebug'...                          
+
+Checking the license for package Android SDK Build-Tools 36 in /Users/ashishdhiman/Library/Android/sdk/licenses
+License for package Android SDK Build-Tools 36 accepted.
+Preparing "Install Android SDK Build-Tools 36 v.36.0.0".
+"Install Android SDK Build-Tools 36 v.36.0.0" ready.
+Installing Android SDK Build-Tools 36 in /Users/ashishdhiman/Library/Android/sdk/build-tools/36.0.0
+"Install Android SDK Build-Tools 36 v.36.0.0" complete.
+"Install Android SDK Build-Tools 36 v.36.0.0" finished.
+Checking the license for package Android SDK Platform 36 in /Users/ashishdhiman/Library/Android/sdk/licenses
+License for package Android SDK Platform 36 accepted.
+Preparing "Install Android SDK Platform 36 (revision 2)".
+"Install Android SDK Platform 36 (revision 2)" ready.
+Installing Android SDK Platform 36 in /Users/ashishdhiman/Library/Android/sdk/platforms/android-36
+"Install Android SDK Platform 36 (revision 2)" complete.
+"Install Android SDK Platform 36 (revision 2)" finished.
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugKotlin'.
+> Error while evaluating property 'friendPathsSet$kotlin_gradle_plugin_common' of task ':app:compileDebugKotlin'.
+   > Could not resolve all files for configuration ':app:debugCompileClasspath'.
+      > Failed to transform arm64_v8a_debug-1.0.0-89c39edfdfae2949f6806e4a315c0c08522238b7.jar (io.flutter:arm64_v8a_debug:1.0.0-89c39edfdfae2949f6806e4a315c0c08522238b7) to match attributes {artifactType=android-classes-jar, org.gradle.category=library, org.gradle.libraryelements=jar, org.gradle.status=release, org.gradle.usage=java-api}.
+         > Could not download arm64_v8a_debug-1.0.0-89c39edfdfae2949f6806e4a315c0c08522238b7.jar (io.flutter:arm64_v8a_debug:1.0.0-89c39edfdfae2949f6806e4a315c0c08522238b7)
+            > Could not get resource 'https://storage.googleapis.com/download.flutter.io/io/flutter/arm64_v8a_debug/1.0.0-89c39edfdfae2949f6806e4a315c0c08522238b7/arm64_v8a_debug-1.0.0-89c39edfdfae2949f6806e4a315c0c08522238b7.jar'.
+               > No space left on device
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 40m 33s
+Running Gradle task 'assembleDebug'...                           2434.9s
+[!] Gradle threw an error while downloading artifacts from the network.
+Retrying Gradle Build: #1, wait time: 100ms
+Running Gradle task 'assembleDebug'...                          
+
+Checking the license for package CMake 3.22.1 in /Users/ashishdhiman/Library/Android/sdk/licenses
+License for package CMake 3.22.1 accepted.
+Preparing "Install CMake 3.22.1 v.3.22.1".
+"Install CMake 3.22.1 v.3.22.1" ready.
+Installing CMake 3.22.1 in /Users/ashishdhiman/Library/Android/sdk/cmake/3.22.1
+"Install CMake 3.22.1 v.3.22.1" complete.
+"Install CMake 3.22.1 v.3.22.1" finished.
+Running Gradle task 'assembleDebug'...                            400.1s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk

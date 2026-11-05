@@ -1,0 +1,162 @@
+[
+  {
+    "text": "",
+    "content-desc": "PoP 2.0",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[48,147][413,294]"
+  },
+  {
+    "text": "",
+    "content-desc": "English",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[757,148][1080,292]"
+  },
+  {
+    "text": "",
+    "content-desc": "प्रस्ताव का डेमो • काल्पनिक डेटा",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,328][1020,457]"
+  },
+  {
+    "text": "",
+    "content-desc": "ऑफ़लाइन · 0 सिंक होने की प्रतीक्षा में",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[0,481][1080,763]"
+  },
+  {
+    "text": "",
+    "content-desc": "सिंक केंद्र",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[864,550][1008,694]"
+  },
+  {
+    "text": "",
+    "content-desc": "पुष्टि के बाद पासबुक में पुष्टि किया गया नया बैलेंस दिखता है।",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[156,823][924,998]"
+  },
+  {
+    "text": "",
+    "content-desc": "डेमो ऐप के निर्देश",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[268,1034][812,1163]"
+  },
+  {
+    "text": "",
+    "content-desc": "ऑडियो प्रीव्यू उपलब्ध नहीं है",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[138,1163][942,1280]"
+  },
+  {
+    "text": "",
+    "content-desc": "छोटा किया गया",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1391][1020,1742]"
+  },
+  {
+    "text": "",
+    "content-desc": "खर्च दर्ज करें, छोटा किया गया",
+    "class": "android.view.View",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[120,1454][960,1631]"
+  },
+  {
+    "text": "",
+    "content-desc": "छोटा किया गया",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1742][1020,1956]"
+  },
+  {
+    "text": "",
+    "content-desc": "अपनी स्मार्ट सखी से पूछें, छोटा किया गया",
+    "class": "android.view.View",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[120,1805][960,1956]"
+  },
+  {
+    "text": "",
+    "content-desc": "होम\n4 का टैब 1",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[0,2016][270,2256]"
+  },
+  {
+    "text": "",
+    "content-desc": "समूह\n4 का टैब 2",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[270,2016][540,2256]"
+  },
+  {
+    "text": "",
+    "content-desc": "काम\n4 का टैब 3",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[540,2016][810,2256]"
+  },
+  {
+    "text": "",
+    "content-desc": "सहायता\n4 का टैब 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "true",
+    "bounds": "[810,2016][1080,2256]"
+  }
+]

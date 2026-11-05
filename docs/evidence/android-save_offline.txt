@@ -1,0 +1,25 @@
+Resolving dependencies...
+Downloading packages...
+  code_assets 1.2.1 (2.1.0 available)
+  hooks 2.0.2 (2.2.0 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  native_toolchain_c 0.19.2 (0.19.5 available)
+  objective_c 9.5.0 (9.6.3 available)
+  record_use 0.6.0 (1.1.1 available)
+  sqlite3 3.5.2 (3.9.0 available)
+  test_api 0.7.12 (0.7.15 available)
+  vector_math 2.4.0 (2.4.4 available)
+Got dependencies!
+10 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/ashishdhiman/WORK/trickleup/apps/mobile/integration_test/core_test.dart
+Running Gradle task 'assembleDebug'...                             45.2s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,658ms
+00:00 +0: Android durable contribution: save_offline
+CACHE_START_MS=1363
+LOCAL_SAVE_MS=65
+DURABLE_ENVELOPE={"datasetId":"76479937-4185-4327-9670-d354d5a72ea7","operationId":"ef96912c-f11d-41bb-84c2-e9c240c22a35","kind":"transaction.post","clientCreatedAt":"2026-11-05T16:29:49.655029Z","payload":{"transactionId":"2ce40860-3d3f-4b5d-bf80-da97c292b1ca","memberId":"5cc5cc24-7b28-522e-b444-a3be6b12c679","meetingId":"fe6d2444-df7f-533a-9368-ef502abfd2ef","type":"savings_deposit","amountPaise":20000,"businessDate":"2026-11-05"},"actorId":"669ee9cc-5fe6-574f-b6f1-0c77d7902061","subjectId":"5cc5cc24-7b28-522e-b444-a3be6b12c679","localSequence":1,"state":"retry_wait","hasEverDispatched":true,"attempts":1,"payloadHash":"2dfd9dca2fa98b554cbace20f9bd069bb005460876822ae6a6a94719c8668e3d","error":"TEMPORARILY_UNAVAILABLE","details":{},"nextAttemptAt":"2026-11-05T21:59:51.773082"}
+00:04 +1: (tearDownAll)
+00:04 +1: All tests passed!

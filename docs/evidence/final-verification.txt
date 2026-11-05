@@ -1,0 +1,137 @@
+
+added 76 packages, and audited 77 packages in 3s
+
+23 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+> pop-demo-api@1.0.0 build
+> tsc
+
+
+> pop-demo-api@1.0.0 test
+> tsx --test --test-concurrency=1 test/*.test.ts
+
+✔ A01 server seed arithmetic and real readiness (120.050625ms)
+✔ A02/A23 scoped snapshots and guessed IDs (45.160208ms)
+✔ A05/A06/A07/A08 concurrent identical retries have one financial effect (56.807917ms)
+✔ A09 invisible pages advance the raw cursor (24.033125ms)
+✔ A11 stale attendance returns canonical record (26.592583ms)
+✔ A12 concurrent repayments cannot exceed principal (21.685375ms)
+✔ A13 submitted meeting blocks subsequent posting (30.046333ms)
+✔ A14 expense reversal restores opening cash once (28.012667ms)
+✔ A15 registration has zero balances and duplicate review (22.030875ms)
+✔ A17 expired sessions reject reads and writes (15.21225ms)
+✔ A18 reset changes dataset and revokes old sessions (30.1365ms)
+✔ A25 money boundaries and unknown authority fields rejected (23.716542ms)
+✔ support state transitions and mandatory resolution (24.959916ms)
+✔ A10 controlled writer barrier preserves bootstrap and commit cursor order (28.88375ms)
+✔ A06 actual HTTP response loss after commit reconciles by receipt (57.568584ms)
+✔ A16 simulated message deduplicates and support lifecycle returns to one open request (35.209084ms)
+✔ A21 retryable fault leaves no receipt and same ID subsequently succeeds (29.013375ms)
+✔ A23 wrong loan/member and enterprise/member relationships fail without ledger effects (16.039875ms)
+✔ demo endpoints are absent when demo mode is disabled (14.849458ms)
+✔ malformed JSON and unknown routes retain the structured error contract (16.921584ms)
+✔ all sequential financial checkpoints match the canonical fixture (30.840542ms)
+✔ A13 controlled close/post race rejects the posting that follows submission (28.621792ms)
+✔ A11 stale member profile retains winning record and rejects original intent (31.639584ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1200.688417
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.15 available)
+  vector_math 2.4.0 (2.4.4 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.15 available)
+  vector_math 2.4.0 (2.4.4 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/ashishdhiman/WORK/trickleup/packages/domain/test/domain_test.dart
+00:00 +0: decimal string parser preserves paise and rejects invalid boundaries
+00:00 +1: offline entry survives controller restart with same IDs and pending overlay
+00:00 +2: lost acknowledgment reconciles canonical origin and clears pending atomically
+00:00 +3: never-dispatched attendance edits supersede; uncertain edits require reconciliation
+00:00 +4: ambiguous discard reconciles accepted receipt and preserves financial effect
+00:00 +5: failed local commit never becomes a successful duplicate-tap result
+00:00 +6: retry backoff honors server Retry-After while unrelated entries continue
+00:00 +7: missing receipt does not discard an ambiguously dispatched financial intent
+00:00 +8: lease expiry, server revocation and actor or dataset switch retain private pending intent
+00:00 +9: reentrant sync triggers share one upload and preserve the frozen intent
+00:00 +10: All tests passed!
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.15 available)
+  vector_math 2.4.0 (2.4.4 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.15 available)
+  vector_math 2.4.0 (2.4.4 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/ashishdhiman/WORK/trickleup/packages/ui/test/ui_test.dart
+00:00 +0: English/Hindi login at 360px and 200% text has no layout exceptions
+00:01 +1: authenticated mobile and manager layouts remain usable with large text
+00:03 +2: Hindi amount review with keyboard and repeated confirmation saves one pending entry
+00:03 +3: conflict review links replacement and preserves original intent
+00:04 +4: expired session retains a reachable counted local reset confirmation
+00:04 +5: profile conflict compares every proposed field with current server values
+00:04 +6: All tests passed!
+Resolving dependencies...
+Downloading packages...
+  code_assets 1.2.1 (2.1.0 available)
+  hooks 2.0.2 (2.2.0 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  native_toolchain_c 0.19.2 (0.19.5 available)
+  objective_c 9.5.0 (9.6.3 available)
+  record_use 0.6.0 (1.1.1 available)
+  sqlite3 3.5.2 (3.9.0 available)
+  test_api 0.7.12 (0.7.15 available)
+  vector_math 2.4.0 (2.4.4 available)
+Got dependencies!
+10 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Resolving dependencies...
+Downloading packages...
+  code_assets 1.2.1 (2.1.0 available)
+  hooks 2.0.2 (2.2.0 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  native_toolchain_c 0.19.2 (0.19.5 available)
+  objective_c 9.5.0 (9.6.3 available)
+  record_use 0.6.0 (1.1.1 available)
+  sqlite3 3.5.2 (3.9.0 available)
+  test_api 0.7.12 (0.7.15 available)
+  vector_math 2.4.0 (2.4.4 available)
+Got dependencies!
+10 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/ashishdhiman/WORK/trickleup/apps/mobile/test/encryption_test.dart
+00:00 +0: native encrypted Drift database survives reopen and rejects unkeyed readers
+00:00 +1: All tests passed!
+Analyzing 4 items...                                            
+No issues found! (ran in 13.8s)

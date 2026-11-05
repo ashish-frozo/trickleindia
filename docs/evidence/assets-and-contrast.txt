@@ -1,0 +1,12 @@
+Bilingual message keys match: 170
+All static UI message references resolve.
+#FFFFFF/primary: 7.80:1
+text/canvas: 12.67:1
+text/surface: 13.52:1
+muted/canvas: 5.89:1
+muted/surface: 6.28:1
+primary/primaryTint: 6.87:1
+success/successTint: 6.67:1
+warning/warningTint: 6.12:1
+error/errorTint: 6.41:1
+Four bilingual draft help cards bundled; no unavailable audio path exposed.

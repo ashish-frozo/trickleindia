@@ -1,0 +1,5 @@
+Failed
+3000
+adb: error: listener 'tcp:3000' not found
+3000
+Identical operation, transaction, payload and hash recovered after force-stop

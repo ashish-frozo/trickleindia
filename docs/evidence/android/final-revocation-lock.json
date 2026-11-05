@@ -1,0 +1,112 @@
+[
+  {
+    "text": "",
+    "content-desc": "PoP 2.0",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[48,178][320,277]"
+  },
+  {
+    "text": "",
+    "content-desc": "हिन्दी",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[978,155][1170,299]"
+  },
+  {
+    "text": "",
+    "content-desc": "Proposal demo • Fictional data",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,335][1110,398]"
+  },
+  {
+    "text": "",
+    "content-desc": "Choose a demo role",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[72,638][1098,809]"
+  },
+  {
+    "text": "",
+    "content-desc": "Trickle Up India Foundation · Programme demo",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[72,809][1098,965]"
+  },
+  {
+    "text": "",
+    "content-desc": "Smart Sakhi\nKavita Rao",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "true",
+    "bounds": "[72,1037][1098,1325]"
+  },
+  {
+    "text": "",
+    "content-desc": "Participant\nRani Mahto",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[72,1325][1098,1613]"
+  },
+  {
+    "text": "",
+    "content-desc": "Programme manager\nArun Sen",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[72,1613][1098,1901]"
+  },
+  {
+    "text": "",
+    "content-desc": "Connect to download your records first.",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[72,1901][1098,1979]"
+  },
+  {
+    "text": "[password hidden]",
+    "content-desc": "",
+    "class": "android.widget.EditText",
+    "clickable": "true",
+    "password": "true",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[72,2015][1098,2189]"
+  },
+  {
+    "text": "",
+    "content-desc": "Open demo",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[72,2249][1098,2388]"
+  }
+]

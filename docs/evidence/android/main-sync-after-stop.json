@@ -1,0 +1,162 @@
+[
+  {
+    "text": "",
+    "content-desc": "PoP 2.0",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[48,178][320,277]"
+  },
+  {
+    "text": "",
+    "content-desc": "हिन्दी",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[978,155][1170,299]"
+  },
+  {
+    "text": "",
+    "content-desc": "Proposal demo • Fictional data",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,335][1110,398]"
+  },
+  {
+    "text": "",
+    "content-desc": "Offline · 1 Waiting to sync",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[0,422][1170,566]"
+  },
+  {
+    "text": "",
+    "content-desc": "Sync centre",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[954,422][1098,566]"
+  },
+  {
+    "text": "",
+    "content-desc": "Cannot reach the server. Your saved entries are on this phone.\nData may be out of date",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,626][1110,1069]"
+  },
+  {
+    "text": "",
+    "content-desc": "Retry",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[120,817][312,961]"
+  },
+  {
+    "text": "",
+    "content-desc": "Sync centre",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1069][1110,1240]"
+  },
+  {
+    "text": "",
+    "content-desc": "Last server contact: Nov 5, 2026 22:25 IST",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1240][1110,1318]"
+  },
+  {
+    "text": "",
+    "content-desc": "Last accepted record: Nov 5, 2026 05:30 IST",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1318][1110,1474]"
+  },
+  {
+    "text": "",
+    "content-desc": "Retry",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1522][1110,1690]"
+  },
+  {
+    "text": "",
+    "content-desc": "Savings contribution\nWaiting to sync\n₹200\nCannot reach the server. Your saved entries are on this phone.\n4c7524c8-5d27-4273-a7af-7cad45327e35",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1750][1110,2088]"
+  },
+  {
+    "text": "",
+    "content-desc": "Home\nTab 1 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "true",
+    "bounds": "[0,2148][293,2388]"
+  },
+  {
+    "text": "",
+    "content-desc": "Groups\nTab 2 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[293,2148][585,2388]"
+  },
+  {
+    "text": "",
+    "content-desc": "Work\nTab 3 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[585,2148][878,2388]"
+  },
+  {
+    "text": "",
+    "content-desc": "Help\nTab 4 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[878,2148][1170,2388]"
+  }
+]

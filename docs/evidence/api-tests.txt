@@ -1,0 +1,35 @@
+
+> pop-demo-api@1.0.0 test
+> tsx --test --test-concurrency=1 test/*.test.ts
+
+✔ A01 server seed arithmetic and real readiness (232.902417ms)
+✔ A02/A23 scoped snapshots and guessed IDs (101.41ms)
+✔ A05/A06/A07/A08 concurrent identical retries have one financial effect (89.767083ms)
+✔ A09 invisible pages advance the raw cursor (55.334208ms)
+✔ A11 stale attendance returns canonical record (38.227791ms)
+✔ A12 concurrent repayments cannot exceed principal (48.423ms)
+✔ A13 submitted meeting blocks subsequent posting (68.453542ms)
+✔ A14 expense reversal restores opening cash once (38.459667ms)
+✔ A15 registration has zero balances and duplicate review (41.201917ms)
+✔ A17 expired sessions reject reads and writes (23.891792ms)
+✔ A18 reset changes dataset and revokes old sessions (49.72225ms)
+✔ A25 money boundaries and unknown authority fields rejected (31.985209ms)
+✔ support state transitions and mandatory resolution (59.949625ms)
+✔ A10 controlled writer barrier preserves bootstrap and commit cursor order (90.178625ms)
+✔ A06 actual HTTP response loss after commit reconciles by receipt (196.203541ms)
+✔ A16 simulated message deduplicates and support lifecycle returns to one open request (50.133875ms)
+✔ A21 retryable fault leaves no receipt and same ID subsequently succeeds (30.995875ms)
+✔ A23 wrong loan/member and enterprise/member relationships fail without ledger effects (35.748167ms)
+✔ demo endpoints are absent when demo mode is disabled (30.529625ms)
+✔ malformed JSON and unknown routes retain the structured error contract (37.562875ms)
+✔ all sequential financial checkpoints match the canonical fixture (60.147833ms)
+✔ A13 controlled close/post race rejects the posting that follows submission (41.300458ms)
+✔ A11 stale member profile retains winning record and rejects original intent (30.472708ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3415.970583

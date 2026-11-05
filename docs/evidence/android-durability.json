@@ -1,0 +1,21 @@
+{
+  "identicalAcrossForceStop": true,
+  "operation": {
+    "datasetId": "76479937-4185-4327-9670-d354d5a72ea7",
+    "operationId": "ef96912c-f11d-41bb-84c2-e9c240c22a35",
+    "kind": "transaction.post",
+    "clientCreatedAt": "2026-11-05T16:29:49.655029Z",
+    "payload": {
+      "transactionId": "2ce40860-3d3f-4b5d-bf80-da97c292b1ca",
+      "memberId": "5cc5cc24-7b28-522e-b444-a3be6b12c679",
+      "meetingId": "fe6d2444-df7f-533a-9368-ef502abfd2ef",
+      "type": "savings_deposit",
+      "amountPaise": 20000,
+      "businessDate": "2026-11-05"
+    },
+    "payloadHash": "2dfd9dca2fa98b554cbace20f9bd069bb005460876822ae6a6a94719c8668e3d",
+    "actorId": "669ee9cc-5fe6-574f-b6f1-0c77d7902061",
+    "subjectId": "5cc5cc24-7b28-522e-b444-a3be6b12c679",
+    "localSequence": 1
+  }
+}

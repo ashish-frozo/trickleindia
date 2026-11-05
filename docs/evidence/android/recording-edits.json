@@ -1,0 +1,23 @@
+{
+  "method": "Actual Android screen recordings, trimmed and joined for pacing; no fabricated UI or financial states. No audio narration.",
+  "segments": [
+    {
+      "stage": "Offline save, force-stop and normal reopen",
+      "source": "pop-core-proof.mp4",
+      "startSeconds": 0,
+      "durationSeconds": 44
+    },
+    {
+      "stage": "Recovered pending amount and same operation in sync centre",
+      "source": "pop-core-recovery.mp4",
+      "startSeconds": 70,
+      "durationSeconds": 18
+    },
+    {
+      "stage": "Reconnected accepted entry and confirmed passbook",
+      "source": "pop-core-sync.mp4",
+      "startSeconds": 0,
+      "durationSeconds": 32
+    }
+  ]
+}

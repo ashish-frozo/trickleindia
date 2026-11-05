@@ -1,0 +1,52 @@
+[
+  {
+    "text": "",
+    "content-desc": "Dismiss",
+    "class": "android.view.View",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[0,0][1170,2532]"
+  },
+  {
+    "text": "",
+    "content-desc": "Review",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[223,918][947,1014]"
+  },
+  {
+    "text": "",
+    "content-desc": "Member: Rani Mahto\nType: Savings contribution\nAmount: ₹200\nDate: 05 Nov 2026",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[223,1062][947,1374]"
+  },
+  {
+    "text": "",
+    "content-desc": "Cancel",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[223,1458][427,1602]"
+  },
+  {
+    "text": "",
+    "content-desc": "Save contribution",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[451,1446][947,1614]"
+  }
+]

@@ -1,0 +1,406 @@
+{
+  "schemaVersion": 1,
+  "synthetic": true,
+  "businessDate": "2026-11-05",
+  "displayTimezone": "Asia/Kolkata",
+  "resetPolicy": "The dataset ID below is an import template. Every reset generates a fresh UUID and rewrites datasetId on all imported rows. Revoke sessions. Record IDs remain stable only within their dataset namespace.",
+  "dataset": {
+    "id": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+    "businessDate": "2026-11-05",
+    "schemaVersion": 1,
+    "createdAt": "2026-11-05T00:00:00Z"
+  },
+  "actors": [
+    {
+      "id": "669ee9cc-5fe6-574f-b6f1-0c77d7902061",
+      "code": "kavita",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "displayName": "Kavita Rao",
+      "role": "sakhi",
+      "memberId": null
+    },
+    {
+      "id": "e5b4ff77-9637-5171-b572-39ba3b1f508f",
+      "code": "rani-user",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "displayName": "Rani Mahto",
+      "role": "participant",
+      "memberId": "5cc5cc24-7b28-522e-b444-a3be6b12c679"
+    },
+    {
+      "id": "853340be-14d2-5aee-961e-f0275f7402e3",
+      "code": "arun",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "displayName": "Arun Sen",
+      "role": "manager",
+      "memberId": null
+    }
+  ],
+  "actorGroups": [
+    {
+      "actorId": "669ee9cc-5fe6-574f-b6f1-0c77d7902061",
+      "groupId": "5f7b8422-1ff1-5111-8b7e-f4a8e09d3490"
+    }
+  ],
+  "groups": [
+    {
+      "id": "5f7b8422-1ff1-5111-8b7e-f4a8e09d3490",
+      "code": "udaan",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "displayName": "Udaan SHG",
+      "villageLabel": "Sample village A"
+    },
+    {
+      "id": "5cec1f4b-aea3-5e17-b254-7f972eca1918",
+      "code": "pragati",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "displayName": "Pragati SHG",
+      "villageLabel": "Sample village B"
+    }
+  ],
+  "members": [
+    {
+      "id": "5cc5cc24-7b28-522e-b444-a3be6b12c679",
+      "code": "rani",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "displayName": "Rani Mahto",
+      "groupId": "5f7b8422-1ff1-5111-8b7e-f4a8e09d3490",
+      "preferredLanguage": "hi",
+      "livelihoodCategory": "vegetable_sales",
+      "contact": null,
+      "openingSavingsPaise": 120000,
+      "status": "active"
+    },
+    {
+      "id": "31b37558-d6cd-53c6-b72e-5decef223619",
+      "code": "meena",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "displayName": "Meena Devi",
+      "groupId": "5f7b8422-1ff1-5111-8b7e-f4a8e09d3490",
+      "preferredLanguage": "hi",
+      "livelihoodCategory": "tailoring",
+      "contact": null,
+      "openingSavingsPaise": 80000,
+      "status": "active"
+    },
+    {
+      "id": "4ee05647-2354-560d-94a1-193d28b02643",
+      "code": "sunita",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "displayName": "Sunita Das",
+      "groupId": "5f7b8422-1ff1-5111-8b7e-f4a8e09d3490",
+      "preferredLanguage": "hi",
+      "livelihoodCategory": "poultry",
+      "contact": null,
+      "openingSavingsPaise": 100000,
+      "status": "active"
+    },
+    {
+      "id": "0d70ff00-aaef-5dc7-9478-9d564ba28567",
+      "code": "asha",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "displayName": "Asha Kumari",
+      "groupId": "5f7b8422-1ff1-5111-8b7e-f4a8e09d3490",
+      "preferredLanguage": "hi",
+      "livelihoodCategory": "vegetable_sales",
+      "contact": null,
+      "openingSavingsPaise": 60000,
+      "status": "active"
+    },
+    {
+      "id": "fc1d4eed-108e-5fb0-9f33-23d5773e53fd",
+      "code": "sita",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "displayName": "Sita Devi",
+      "groupId": "5cec1f4b-aea3-5e17-b254-7f972eca1918",
+      "preferredLanguage": "hi",
+      "livelihoodCategory": "tailoring",
+      "contact": null,
+      "openingSavingsPaise": 50000,
+      "status": "active"
+    },
+    {
+      "id": "a1311049-e55a-5e23-8f5b-e536d162e0a2",
+      "code": "gita",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "displayName": "Gita Das",
+      "groupId": "5cec1f4b-aea3-5e17-b254-7f972eca1918",
+      "preferredLanguage": "hi",
+      "livelihoodCategory": "poultry",
+      "contact": null,
+      "openingSavingsPaise": 70000,
+      "status": "active"
+    }
+  ],
+  "loans": [
+    {
+      "id": "db2be0eb-0371-5937-9269-ce0ef49124d4",
+      "code": "loan-rani",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "memberId": "5cc5cc24-7b28-522e-b444-a3be6b12c679",
+      "openingPrincipalPaise": 200000
+    },
+    {
+      "id": "ab607027-e0db-585a-8542-c7808d1269a8",
+      "code": "loan-meena",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "memberId": "31b37558-d6cd-53c6-b72e-5decef223619",
+      "openingPrincipalPaise": 150000
+    },
+    {
+      "id": "8b4115c0-e6a6-5aac-877c-f9b437f5ae5b",
+      "code": "loan-asha",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "memberId": "0d70ff00-aaef-5dc7-9478-9d564ba28567",
+      "openingPrincipalPaise": 50000
+    },
+    {
+      "id": "4a298dc8-fadd-5dcf-a08b-1eb18d23c056",
+      "code": "loan-sita",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "memberId": "fc1d4eed-108e-5fb0-9f33-23d5773e53fd",
+      "openingPrincipalPaise": 100000
+    }
+  ],
+  "enterprises": [
+    {
+      "id": "2f1bff84-4e55-5b44-9bfa-84fc631f0da4",
+      "code": "rani-enterprise",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "memberId": "5cc5cc24-7b28-522e-b444-a3be6b12c679",
+      "name": "Rani vegetable enterprise",
+      "openingCashSalesPaise": 300000,
+      "openingCashExpensesPaise": 180000
+    }
+  ],
+  "meetings": [
+    {
+      "id": "fe6d2444-df7f-533a-9368-ef502abfd2ef",
+      "code": "udaan-meeting",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "groupId": "5f7b8422-1ff1-5111-8b7e-f4a8e09d3490",
+      "businessDate": "2026-11-05",
+      "status": "open",
+      "submittedAt": null,
+      "submittedBy": null
+    }
+  ],
+  "attendance": [
+    {
+      "id": "ffc0e32f-6186-5047-9955-44ea7e00a407",
+      "code": "attendance-rani",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "meetingId": "fe6d2444-df7f-533a-9368-ef502abfd2ef",
+      "memberId": "5cc5cc24-7b28-522e-b444-a3be6b12c679",
+      "status": "unmarked"
+    },
+    {
+      "id": "1a8ea68a-a57a-5769-acd2-7c59051fd0d4",
+      "code": "attendance-meena",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "meetingId": "fe6d2444-df7f-533a-9368-ef502abfd2ef",
+      "memberId": "31b37558-d6cd-53c6-b72e-5decef223619",
+      "status": "unmarked"
+    },
+    {
+      "id": "3acaa37f-0db4-5cee-a4d3-d3ae3dee2e47",
+      "code": "attendance-sunita",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "meetingId": "fe6d2444-df7f-533a-9368-ef502abfd2ef",
+      "memberId": "4ee05647-2354-560d-94a1-193d28b02643",
+      "status": "unmarked"
+    },
+    {
+      "id": "2c6f8b60-2957-5504-b11f-375265403afa",
+      "code": "attendance-asha",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "meetingId": "fe6d2444-df7f-533a-9368-ef502abfd2ef",
+      "memberId": "0d70ff00-aaef-5dc7-9478-9d564ba28567",
+      "status": "unmarked"
+    }
+  ],
+  "transactions": [],
+  "supportRequests": [
+    {
+      "id": "e1c21b68-ade0-5029-97e1-6b5b872e9275",
+      "code": "seed-support",
+      "datasetId": "1f493ac7-d2c4-5aa0-b9b2-33fc0ac7b77f",
+      "version": 1,
+      "createdAt": "2026-11-05T00:00:00Z",
+      "updatedAt": "2026-11-05T00:00:00Z",
+      "reference": "DEMO-0001",
+      "memberId": "31b37558-d6cd-53c6-b72e-5decef223619",
+      "groupId": "5f7b8422-1ff1-5111-8b7e-f4a8e09d3490",
+      "category": "app_help",
+      "description": "Fictional request: help finding the meeting screen.",
+      "source": "app",
+      "status": "open",
+      "assignedActorId": "669ee9cc-5fe6-574f-b6f1-0c77d7902061",
+      "resolutionNote": null,
+      "resolvedAt": null
+    }
+  ],
+  "demoContactMappings": [
+    {
+      "code": "demo-contact-rani",
+      "memberId": "5cc5cc24-7b28-522e-b444-a3be6b12c679"
+    }
+  ],
+  "newMemberDraft": {
+    "displayName": "Lata Kumari",
+    "groupId": "5f7b8422-1ff1-5111-8b7e-f4a8e09d3490",
+    "preferredLanguage": "hi",
+    "livelihoodCategory": "tailoring",
+    "contact": null
+  },
+  "demoActions": [
+    {
+      "code": "savings200",
+      "memberId": "5cc5cc24-7b28-522e-b444-a3be6b12c679",
+      "meetingId": "fe6d2444-df7f-533a-9368-ef502abfd2ef",
+      "type": "savings_deposit",
+      "amountPaise": 20000
+    },
+    {
+      "code": "repayment100",
+      "memberId": "5cc5cc24-7b28-522e-b444-a3be6b12c679",
+      "meetingId": "fe6d2444-df7f-533a-9368-ef502abfd2ef",
+      "loanId": "db2be0eb-0371-5937-9269-ce0ef49124d4",
+      "type": "loan_principal_repayment",
+      "amountPaise": 10000
+    },
+    {
+      "code": "expense350",
+      "memberId": "5cc5cc24-7b28-522e-b444-a3be6b12c679",
+      "enterpriseId": "2f1bff84-4e55-5b44-9bfa-84fc631f0da4",
+      "type": "enterprise_expense",
+      "category": "seeds",
+      "amountPaise": 35000
+    }
+  ],
+  "expectedCheckpoints": {
+    "reset": {
+      "members": 6,
+      "groups": 2,
+      "openSupportRequests": 1,
+      "raniSavingsPaise": 120000,
+      "udaanSavingsPaise": 360000,
+      "allSavingsPaise": 480000,
+      "raniPrincipalPaise": 200000,
+      "allPrincipalPaise": 500000,
+      "enterpriseSalesPaise": 300000,
+      "enterpriseExpensesPaise": 180000,
+      "enterpriseCashSurplusPaise": 120000,
+      "meetingCashReceivedPaise": 0
+    },
+    "afterSavings200": {
+      "raniSavingsPaise": 140000,
+      "udaanSavingsPaise": 380000,
+      "allSavingsPaise": 500000,
+      "meetingCashReceivedPaise": 20000
+    },
+    "afterRepayment100": {
+      "raniPrincipalPaise": 190000,
+      "allPrincipalPaise": 490000,
+      "meetingCashReceivedPaise": 30000
+    },
+    "afterExpense350": {
+      "enterpriseExpensesPaise": 215000,
+      "enterpriseCashSurplusPaise": 85000
+    },
+    "afterExpenseReversal": {
+      "enterpriseExpensesPaise": 180000,
+      "enterpriseCashSurplusPaise": 120000
+    },
+    "afterWhatsAppRequest": {
+      "openSupportRequests": 2
+    },
+    "afterWhatsAppResolution": {
+      "openSupportRequests": 1
+    },
+    "afterRegistration": {
+      "members": 7,
+      "allSavingsPaise": 500000,
+      "allPrincipalPaise": 490000
+    }
+  },
+  "checkpointSemantics": "Sequential core demo, followed by expense reversal and support lifecycle. Registration checkpoint assumes savings and repayment have already been accepted. Independent tests start with reset.",
+  "capabilities": {
+    "uiLanguages": [
+      "en",
+      "hi"
+    ],
+    "plannedUiLanguages": [
+      "or",
+      "hoc",
+      "sat"
+    ],
+    "audioAssetsIncluded": false,
+    "liveAI": false,
+    "whatsappTransport": "simulation",
+    "productionAuthentication": false
+  }
+}

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+project_dir="$(cd "$(dirname "$0")/.." && pwd)"
+flutter_bin="${FLUTTER_BIN:-$project_dir/.local/flutter/bin/flutter}"
+if [[ ! -x "$flutter_bin" ]]; then flutter_bin="$(command -v flutter)"; fi
+exec "$flutter_bin" --no-version-check "$@"

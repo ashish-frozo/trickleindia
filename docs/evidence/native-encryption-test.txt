@@ -1,0 +1,3 @@
+00:00 +0: loading /Users/ashishdhiman/WORK/trickleup/apps/mobile/test/encryption_test.dart
+00:00 +0: native encrypted Drift database survives reopen and rejects unkeyed readers
+00:00 +1: All tests passed!

@@ -1,0 +1,72 @@
+{
+  "device": "Android API 36 AOSP ARM64 emulator, software graphics, two cores, 2.5 GB RAM",
+  "scope": "Cache init timing excludes OS/engine startup. Save timing measures durable enqueue, not network acceptance. Observations are not performance guarantees.",
+  "results": [
+    {
+      "phase": "bootstrap",
+      "passed": true,
+      "encryptedCacheInitMs": [
+        1203
+      ],
+      "localSaveMs": []
+    },
+    {
+      "phase": "save_offline",
+      "passed": true,
+      "encryptedCacheInitMs": [
+        1363
+      ],
+      "localSaveMs": [
+        65
+      ]
+    },
+    {
+      "phase": "recover_offline",
+      "passed": true,
+      "encryptedCacheInitMs": [
+        1914
+      ],
+      "localSaveMs": []
+    },
+    {
+      "phase": "sync",
+      "passed": true,
+      "encryptedCacheInitMs": [
+        964
+      ],
+      "localSaveMs": []
+    },
+    {
+      "phase": "second_device",
+      "passed": true,
+      "encryptedCacheInitMs": [
+        705
+      ],
+      "localSaveMs": []
+    },
+    {
+      "phase": "registration_save",
+      "passed": true,
+      "encryptedCacheInitMs": [
+        1503
+      ],
+      "localSaveMs": []
+    },
+    {
+      "phase": "registration_recover_sync",
+      "passed": true,
+      "encryptedCacheInitMs": [
+        658
+      ],
+      "localSaveMs": []
+    },
+    {
+      "phase": "lost_ack",
+      "passed": true,
+      "encryptedCacheInitMs": [
+        762
+      ],
+      "localSaveMs": []
+    }
+  ]
+}

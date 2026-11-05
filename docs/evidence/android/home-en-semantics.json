@@ -1,0 +1,172 @@
+[
+  {
+    "text": "",
+    "content-desc": "PoP 2.0",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[48,171][320,270]"
+  },
+  {
+    "text": "",
+    "content-desc": "हिन्दी",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[888,148][1080,292]"
+  },
+  {
+    "text": "",
+    "content-desc": "Proposal demo • Fictional data",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,328][1020,391]"
+  },
+  {
+    "text": "",
+    "content-desc": "Hello, Kavita",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,475][1020,646]"
+  },
+  {
+    "text": "",
+    "content-desc": "05 Nov 2026",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,646][1020,724]"
+  },
+  {
+    "text": "",
+    "content-desc": "Today’s meeting\nUdaan SHG\nSample village A",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,796][1020,1552]"
+  },
+  {
+    "text": "",
+    "content-desc": "Open meeting",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[120,1276][960,1444]"
+  },
+  {
+    "text": "",
+    "content-desc": "Connected · 0 Waiting to sync",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1552][1020,1762]"
+  },
+  {
+    "text": "",
+    "content-desc": "Sync centre",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[804,1561][948,1705]"
+  },
+  {
+    "text": "",
+    "content-desc": "",
+    "class": "android.view.View",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1762][522,1956]"
+  },
+  {
+    "text": "",
+    "content-desc": "Pending requests\n1",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1762][522,1956]"
+  },
+  {
+    "text": "",
+    "content-desc": "",
+    "class": "android.view.View",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[558,1762][1020,1956]"
+  },
+  {
+    "text": "",
+    "content-desc": "Recent activity\n0",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[558,1762][1020,1956]"
+  },
+  {
+    "text": "",
+    "content-desc": "Home\nTab 1 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "true",
+    "bounds": "[0,2016][270,2256]"
+  },
+  {
+    "text": "",
+    "content-desc": "Groups\nTab 2 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[270,2016][540,2256]"
+  },
+  {
+    "text": "",
+    "content-desc": "Work\nTab 3 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[540,2016][810,2256]"
+  },
+  {
+    "text": "",
+    "content-desc": "Help\nTab 4 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[810,2016][1080,2256]"
+  }
+]

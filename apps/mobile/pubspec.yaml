@@ -1,0 +1,30 @@
+name: pop_mobile
+description: PoP 2.0 proposal demonstration
+version: 1.0.0+1
+publish_to: none
+environment:
+  sdk: ">=3.13.0 <4.0.0"
+dependencies:
+  flutter:
+    sdk: flutter
+  pop_domain:
+    path: ../../packages/domain
+  pop_ui:
+    path: ../../packages/ui
+  drift: 2.35.3
+  sqlite3: 3.5.2
+  flutter_secure_storage: 11.2.0
+  path_provider: 2.1.6
+dev_dependencies:
+  http: 1.6.0
+  integration_test:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+flutter:
+  uses-material-design: true
+hooks:
+  user_defines:
+    sqlite3:
+      source: sqlite3mc

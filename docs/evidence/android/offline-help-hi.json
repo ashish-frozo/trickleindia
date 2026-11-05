@@ -1,0 +1,132 @@
+[
+  {
+    "text": "",
+    "content-desc": "PoP 2.0",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[48,147][413,294]"
+  },
+  {
+    "text": "",
+    "content-desc": "English",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[757,148][1080,292]"
+  },
+  {
+    "text": "",
+    "content-desc": "प्रस्ताव का डेमो • काल्पनिक डेटा",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,328][1020,457]"
+  },
+  {
+    "text": "",
+    "content-desc": "ऑफ़लाइन · 0 सिंक होने की प्रतीक्षा में",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[0,481][1080,763]"
+  },
+  {
+    "text": "",
+    "content-desc": "सिंक केंद्र",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[864,550][1008,694]"
+  },
+  {
+    "text": "",
+    "content-desc": "सर्वर से संपर्क नहीं हो रहा। आपकी सेव की गई एंट्रियाँ इस फ़ोन पर हैं।\nडेटा पुराना हो सकता है",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,823][1020,1651]"
+  },
+  {
+    "text": "",
+    "content-desc": "फिर कोशिश करें",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[120,1399][625,1543]"
+  },
+  {
+    "text": "",
+    "content-desc": "डेमो सहायता",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1651][1020,1864]"
+  },
+  {
+    "text": "",
+    "content-desc": "",
+    "class": "android.widget.EditText",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1864][1020,1956]"
+  },
+  {
+    "text": "",
+    "content-desc": "होम\n4 का टैब 1",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[0,2016][270,2256]"
+  },
+  {
+    "text": "",
+    "content-desc": "समूह\n4 का टैब 2",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[270,2016][540,2256]"
+  },
+  {
+    "text": "",
+    "content-desc": "काम\n4 का टैब 3",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[540,2016][810,2256]"
+  },
+  {
+    "text": "",
+    "content-desc": "सहायता\n4 का टैब 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "true",
+    "bounds": "[810,2016][1080,2256]"
+  }
+]

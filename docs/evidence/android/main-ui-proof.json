@@ -1,0 +1,11 @@
+{
+  "operationIdsBefore": [
+    "4c7524c8-5d27-4273-a7af-7cad45327e35"
+  ],
+  "operationIdsAfter": [
+    "4c7524c8-5d27-4273-a7af-7cad45327e35"
+  ],
+  "confirmedPaiseAfterReopen": 120000,
+  "pendingPaiseAfterReopen": 20000,
+  "confirmedPaiseAfterSync": 140000
+}

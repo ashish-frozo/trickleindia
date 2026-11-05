@@ -1,0 +1,172 @@
+[
+  {
+    "text": "",
+    "content-desc": "PoP 2.0",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[48,172][321,283]"
+  },
+  {
+    "text": "",
+    "content-desc": "English",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[951,155][1170,299]"
+  },
+  {
+    "text": "",
+    "content-desc": "प्रस्ताव का डेमो • काल्पनिक डेटा",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,335][1110,404]"
+  },
+  {
+    "text": "",
+    "content-desc": "नमस्ते, Kavita",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,488][1110,671]"
+  },
+  {
+    "text": "",
+    "content-desc": "05 नव॰ 2026",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,671][1110,749]"
+  },
+  {
+    "text": "",
+    "content-desc": "आज की बैठक\nUdaan SHG\nSample village A",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,821][1110,1595]"
+  },
+  {
+    "text": "",
+    "content-desc": "बैठक खोलें",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[120,1319][1050,1487]"
+  },
+  {
+    "text": "",
+    "content-desc": "कनेक्ट है · 0 सिंक होने की प्रतीक्षा में",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1595][1110,1787]"
+  },
+  {
+    "text": "",
+    "content-desc": "सिंक केंद्र",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[894,1595][1038,1739]"
+  },
+  {
+    "text": "",
+    "content-desc": "",
+    "class": "android.view.View",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1787][567,2088]"
+  },
+  {
+    "text": "",
+    "content-desc": "लंबित अनुरोध\n1",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1787][567,2088]"
+  },
+  {
+    "text": "",
+    "content-desc": "",
+    "class": "android.view.View",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[603,1787][1110,2088]"
+  },
+  {
+    "text": "",
+    "content-desc": "हाल की गतिविधि\n0",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[603,1787][1110,2088]"
+  },
+  {
+    "text": "",
+    "content-desc": "होम\n4 का टैब 1",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "true",
+    "bounds": "[0,2148][293,2388]"
+  },
+  {
+    "text": "",
+    "content-desc": "समूह\n4 का टैब 2",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[293,2148][585,2388]"
+  },
+  {
+    "text": "",
+    "content-desc": "काम\n4 का टैब 3",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[585,2148][878,2388]"
+  },
+  {
+    "text": "",
+    "content-desc": "सहायता\n4 का टैब 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[878,2148][1170,2388]"
+  }
+]

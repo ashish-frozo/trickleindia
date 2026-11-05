@@ -1,0 +1,26 @@
+- heading "PoP 2.0" [level=2]
+- button "हिन्दी"
+- button "Refresh"
+- button "Sign out"
+- text: Proposal demo • Fictional data
+- group "Connected · 0 Waiting to sync":
+  - button "Sync centre"
+- button "Overview Tab 1 of 6"
+- button "Groups Tab 2 of 6"
+- button "Meetings Tab 3 of 6"
+- button "Support Tab 4 of 6"
+- button "Activity Tab 5 of 6"
+- button "Demo capabilities Tab 6 of 6"
+- group:
+  - text: Overview Arun Sen
+  - button "Group All groups"
+  - text: "Members 6 Confirmed savings ₹5,000 Loan principal outstanding ₹5,000 Open support requests 1 Last refreshed: Nov 5, 2026 22:32 IST"
+  - group "Groups":
+    - 'button "Pragati SHG 2 Members · Last accepted record: Nov 5, 2026 05:30 IST ₹1,200"'
+    - 'button "Udaan SHG 4 Members · Last accepted record: Nov 5, 2026 22:29 IST ₹3,800"'
+  - 'button "Pending requests DEMO-0001 Fictional request: help finding the meeting screen."':
+    - button "Support"
+  - text: Recent activity
+  - group "Savings contribution ₹200 2026-11-05 Confirmed":
+    - button "Reverse entry"
+  - button "WhatsApp simulation • No messages sent"
