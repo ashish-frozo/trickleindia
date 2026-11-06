@@ -20,7 +20,7 @@ fields=['key','source','translation','reviewer','status']
 if a.action=='export':
  a.file.parent.mkdir(parents=True,exist_ok=True)
  with a.file.open('w',newline='') as f:
-  w=csv.DictWriter(f,fieldnames=fields);w.writeheader()
+  w=csv.DictWriter(f,fieldnames=fields,lineterminator='\n');w.writeheader()
   w.writerows(dict(key=k,source=v,translation='',reviewer='',status='needs-translation') for k,v in source.items())
  print(f'Exported {len(source)} entries for {a.language}: {a.file}')
 else:
