@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'components.dart';
 import 'tokens.dart';
+import 'vengeance.dart';
 
 class ProgrammeWorkspace extends StatelessWidget {
   final Widget body;
@@ -41,264 +42,159 @@ class ProgrammeWorkspace extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final expanded = MediaQuery.sizeOf(context).width >= 1100;
-    final sidebar = expanded ? 232.0 : 88.0;
     return Scaffold(
       body: SafeArea(
         child: Row(
           children: [
-            SizedBox(
-              width: sidebar,
-              child: Material(
-                color: PopColors.forest,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(
-                        expanded ? 24 : 8,
-                        28,
-                        expanded ? 24 : 8,
-                        24,
-                      ),
-                      child: expanded
-                          ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const PopWordmark(inverse: true, size: 26),
-                                const SizedBox(height: 6),
-                                Text(
-                                  programmeLabel,
-                                  style: Theme.of(context).textTheme.bodySmall
-                                      ?.copyWith(color: PopColors.forestMuted),
-                                ),
-                              ],
-                            )
-                          : const Text(
-                              'PoP',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 23,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+            Container(
+              width: expanded ? 244 : 100,
+              margin: const EdgeInsets.fromLTRB(12, 12, 0, 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(color: PopColors.border),
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: expanded ? 24 : 8,
+                      vertical: 28,
                     ),
-                    const Divider(
-                      color: Color(0xff386459),
-                      indent: 18,
-                      endIndent: 18,
-                    ),
-                    const SizedBox(height: 18),
-                    Expanded(
-                      child: ListView(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        children: [
-                          for (var i = 0; i < destinations.length; i++)
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 6),
-                              child: TextButton(
-                                onPressed: () => onNavigate(i),
-                                style: TextButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  backgroundColor: selected == i
-                                      ? PopColors.primaryTint
-                                      : Colors.transparent,
-                                  foregroundColor: selected == i
-                                      ? teal
-                                      : Colors.white,
-                                  overlayColor: selected == i
-                                      ? teal
-                                      : Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                child: Semantics(
-                                  selected: selected == i,
-                                  label:
-                                      '${destinations[i]} Tab ${i + 1} of ${destinations.length}',
-                                  excludeSemantics: true,
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: expanded ? 16 : 3,
-                                      vertical: expanded ? 15 : 12,
-                                    ),
-                                    child: expanded
-                                        ? Row(
-                                            children: [
-                                              Icon(
-                                                icons[i],
-                                                size: 21,
-                                                color: selected == i
-                                                    ? teal
-                                                    : PopColors.forestMuted,
-                                              ),
-                                              const SizedBox(width: 13),
-                                              Expanded(
-                                                child: Text(
-                                                  destinations[i],
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyMedium
-                                                      ?.copyWith(
-                                                        color: selected == i
-                                                            ? ink
-                                                            : Colors.white,
-                                                        fontWeight:
-                                                            selected == i
-                                                            ? FontWeight.w600
-                                                            : FontWeight.w400,
-                                                      ),
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        : Column(
-                                            children: [
-                                              Icon(
-                                                icons[i],
-                                                size: 23,
-                                                color: selected == i
-                                                    ? teal
-                                                    : PopColors.forestMuted,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              Text(
-                                                destinations[i],
-                                                textAlign: TextAlign.center,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .labelSmall
-                                                    ?.copyWith(
-                                                      color: selected == i
-                                                          ? ink
-                                                          : Colors.white,
-                                                      fontSize: 11,
-                                                    ),
-                                              ),
-                                            ],
-                                          ),
-                                  ),
-                                ),
-                              ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (expanded)
+                          const PopWordmark(size: 28)
+                        else
+                          const Text(
+                            'PoP',
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w600,
                             ),
+                          ),
+                        if (expanded) ...[
+                          const SizedBox(height: 8),
+                          Text(
+                            programmeLabel,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
                         ],
+                      ],
+                    ),
+                  ),
+                  const Divider(indent: 20, endIndent: 20),
+                  const SizedBox(height: 18),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(8),
+                      child: VengeanceNavigation(
+                        labels: destinations,
+                        icons: icons,
+                        selected: selected,
+                        onSelected: onNavigate,
+                        vertical: true,
+                        compact: !expanded,
                       ),
                     ),
-                    const Divider(
-                      color: Color(0xff386459),
-                      indent: 18,
-                      endIndent: 18,
+                  ),
+                  const Divider(indent: 20, endIndent: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 18,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 20,
-                      ),
-                      child: expanded
-                          ? Row(
-                              children: [
-                                IdentityAvatar(name, size: 36, inverse: true),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        name,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleSmall
-                                            ?.copyWith(color: Colors.white),
-                                      ),
-                                      const SizedBox(height: 3),
-                                      Text(
-                                        role,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall
-                                            ?.copyWith(
-                                              color: PopColors.forestMuted,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
+                    child: expanded
+                        ? Row(
+                            children: [
+                              IdentityAvatar(name, size: 34),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      name,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall,
+                                    ),
+                                    Text(
+                                      role,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall,
+                                    ),
+                                  ],
                                 ),
-                                IconButton(
-                                  tooltip: signOutLabel,
-                                  onPressed: signOut,
-                                  style: IconButton.styleFrom(
-                                    foregroundColor: PopColors.forestMuted,
-                                    minimumSize: const Size(32, 48),
-                                    padding: EdgeInsets.zero,
-                                  ),
-                                  icon: const Icon(
-                                    Icons.logout_rounded,
-                                    size: 18,
-                                  ),
-                                ),
-                              ],
-                            )
-                          : IconButton(
-                              tooltip: '$name · $signOutLabel',
-                              onPressed: signOut,
-                              icon: const Icon(
-                                Icons.logout_rounded,
-                                color: PopColors.forestMuted,
                               ),
-                            ),
-                    ),
-                  ],
-                ),
+                              IconButton(
+                                tooltip: signOutLabel,
+                                onPressed: signOut,
+                                icon: const Icon(
+                                  Icons.logout_rounded,
+                                  size: 18,
+                                ),
+                              ),
+                            ],
+                          )
+                        : IconButton(
+                            tooltip: '$name · $signOutLabel',
+                            onPressed: signOut,
+                            icon: const Icon(Icons.logout_rounded),
+                          ),
+                  ),
+                ],
               ),
             ),
             Expanded(
               child: Column(
                 children: [
-                  Material(
-                    color: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(24, 14, 20, 14),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.space_dashboard_outlined,
-                            size: 18,
-                            color: muted,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(28, 18, 24, 16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                programmeLabel,
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                pageTitle,
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                            ],
                           ),
-                          const SizedBox(width: 10),
-                          const Icon(
-                            Icons.chevron_right_rounded,
-                            size: 17,
-                            color: muted,
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              pageTitle,
-                              style: Theme.of(context).textTheme.titleSmall,
-                            ),
-                          ),
-                          languageControl,
-                          const SizedBox(width: 8),
-                          IconButton(
-                            tooltip: refreshLabel,
-                            onPressed: refreshing ? null : refresh,
-                            icon: refreshing
-                                ? const SizedBox.square(
-                                    dimension: 19,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                    ),
-                                  )
-                                : const Icon(Icons.refresh_rounded, size: 22),
-                          ),
-                        ],
-                      ),
+                        ),
+                        languageControl,
+                        const SizedBox(width: 8),
+                        IconButton(
+                          tooltip: refreshLabel,
+                          onPressed: refreshing ? null : refresh,
+                          icon: refreshing
+                              ? const SizedBox.square(
+                                  dimension: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Icon(Icons.refresh_rounded),
+                        ),
+                      ],
                     ),
                   ),
-                  DemoBanner(demoLabel),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: DemoBanner(demoLabel),
+                    ),
+                  ),
                   Expanded(child: body),
                 ],
               ),
@@ -322,64 +218,75 @@ class WelcomePanel extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) => Container(
-    color: PopColors.forest,
-    padding: const EdgeInsets.all(48),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const PopWordmark(inverse: true, size: 28),
-        const Spacer(),
-        Text(
-          title,
-          style: Theme.of(context).textTheme.headlineLarge
-              ?.copyWith(color: Colors.white, fontSize: 40, height: 1.2),
-        ),
-        const SizedBox(height: 24),
-        Text(
-          description,
-          style: Theme.of(context).textTheme.bodyLarge
-              ?.copyWith(color: PopColors.forestMuted),
-        ),
-        const SizedBox(height: 40),
-        for (final item in [
-          (Icons.phone_android_outlined, offline),
-          (Icons.sync_rounded, sync),
-          (Icons.groups_outlined, review),
-        ])
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(11),
-                  decoration: BoxDecoration(
-                    color: const Color(0xff2d5b4f),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(
-                    item.$1,
-                    color: const Color(0xffd5e6da),
-                    size: 24,
+    margin: const EdgeInsets.all(20),
+    child: VengeanceSurface(
+      dark: true,
+      radius: 32,
+      padding: EdgeInsets.zero,
+      child: SizedBox.expand(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(40),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const PopWordmark(inverse: true, size: 28),
+              const SizedBox(height: 36),
+              const CommunityOrbit(),
+              const SizedBox(height: 28),
+              Text(
+                title,
+                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                  color: Colors.white,
+                  fontSize: 42,
+                  height: 1.15,
+                  letterSpacing: -1.6,
+                ),
+              ),
+              const SizedBox(height: 22),
+              Text(
+                description,
+                style: Theme.of(context).textTheme.bodyLarge
+                    ?.copyWith(color: PopColors.forestMuted),
+              ),
+              const SizedBox(height: 32),
+              for (final item in [
+                (Icons.cloud_done_outlined, offline),
+                (Icons.sync_rounded, sync),
+                (Icons.verified_outlined, review),
+              ])
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: const Color(0xff36412a),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(item.$1, color: vengeanceLime, size: 21),
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Text(
+                          item.$2,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: Colors.white),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Text(
-                    item.$2,
-                    style: Theme.of(context).textTheme.bodyLarge
-                        ?.copyWith(color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
+              const SizedBox(height: 40),
+              Text(
+                'Trickle Up India Foundation',
+                style: Theme.of(context).textTheme.bodySmall
+                    ?.copyWith(color: PopColors.forestMuted),
+              ),
+            ],
           ),
-        const Spacer(),
-        Text(
-          'Trickle Up India Foundation',
-          style: Theme.of(context).textTheme.bodyMedium
-              ?.copyWith(color: PopColors.forestMuted),
         ),
-      ],
+      ),
     ),
   );
 }

@@ -50,3 +50,8 @@ Use clear icons with text, large touch targets, high contrast, simple language, 
 ## Remaining-gap follow-up (6 November 2026)
 
 See [GAP_CLOSURE.md](docs/GAP_CLOSURE.md) for current status. English/Hindi draft help now supports device-generated speech, with installed offline voices required on Android and explicit missing-voice errors. Reviewed audio recordings and five-language acceptance remain outstanding. Narrow/large-text page titles now wrap in scrollable content. Prior screenshot and finish-review evidence describes the earlier build.
+
+
+## VengeanceUI adaptation — 6 November 2026
+
+The current UI uses Flutter adaptations of VengeanceUI SpotlightNavbar, GlowBorderCard and ResearchBentoGrid.Panel, with MIT attribution. It replaces the prior forest visual direction while retaining the existing Flutter apps, data and workflows. See [VENGEANCE_UI.md](docs/design/VENGEANCE_UI.md). Current screenshots and verification use the `vengeance` prefix. Earlier finish reviews and screenshots are historical. External acceptance gaps are unchanged.

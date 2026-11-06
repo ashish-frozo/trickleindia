@@ -1,12 +1,8 @@
 /*
-THESIS: Field tasks stay simple; programme finance becomes a precise workspace.
-OWN-WORLD: Forest Material surfaces, warm daylight canvas, bundled Noto weights,
-quiet sage states, amber pending money and aligned operational records.
-STORY: Choose a role, record safely, distinguish pending from confirmed, follow up.
-FIRST VIEWPORT: Phone meeting/passbook focus; desktop navigation, connected
-summary band, real group comparison and current support/activity.
-FORM: Programme-report workspace, grounded direction7, seed28d8fe24.
-FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+VengeanceUI Flutter adaptation: ink/ivory panels, lime focus, SpotlightNavbar
+navigation and GlowBorderCard/ResearchBentoGrid surface treatments.
+Provenance and MIT notice: docs/design/VENGEANCE_UI.md.
+Keep financial truth, offline workflow and accessible native interactions.
 */
 import 'dart:async';
 import 'dart:convert';
@@ -26,6 +22,7 @@ import 'src/components.dart';
 import 'src/theme.dart';
 import 'src/workspace.dart';
 import 'src/speech.dart';
+import 'src/vengeance.dart';
 export 'src/components.dart';
 
 final appControllerProvider = Provider<AppController>(
@@ -52,6 +49,14 @@ class _PopAppState extends State<PopApp> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     if (kIsWeb) semanticsHandle = SemanticsBinding.instance.ensureSemantics();
+    LicenseRegistry.addLicense(() async* {
+      yield LicenseEntryWithLineBreaks(
+        ['VengeanceUI (Flutter adaptations)'],
+        await rootBundle.loadString(
+          'packages/pop_ui/assets/licenses/VengeanceUI-MIT.txt',
+        ),
+      );
+    });
     LicenseRegistry.addLicense(() async* {
       yield LicenseEntryWithLineBreaks([
         'Noto Sans',
@@ -374,6 +379,12 @@ class _DemoShellState extends State<DemoShell> {
             child: ListView(
               padding: EdgeInsets.all(desktop ? 32 : 20),
               children: [
+                if (!desktop) ...[
+                  DemoBanner(t('demoBanner')),
+                  if (!(widget.page == 'home' && !participant && !manager))
+                    syncIndicator(),
+                  const SizedBox(height: 16),
+                ],
                 if (expandedTitle)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 12),
@@ -527,16 +538,16 @@ class _DemoShellState extends State<DemoShell> {
             const SizedBox(width: 8),
           ],
         ),
-        body: Column(
-          children: [
-            DemoBanner(t('demoBanner')),
-            if (authenticated &&
-                !(widget.page == 'home' && !participant && !manager))
-              syncIndicator(),
-            Expanded(child: pageBody),
-          ],
-        ),
-        bottomNavigationBar: authenticated
+        body: authenticated
+            ? pageBody
+            : Column(
+                children: [
+                  DemoBanner(t('demoBanner')),
+                  Expanded(child: pageBody),
+                ],
+              ),
+        bottomNavigationBar:
+            authenticated && MediaQuery.viewInsetsOf(context).bottom == 0
             ? Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -557,15 +568,13 @@ class _DemoShellState extends State<DemoShell> {
                         ),
                       ),
                     ),
-                  NavigationBar(
-                    selectedIndex: selected.clamp(0, 3),
-                    onDestinationSelected: (i) => context.go('/${pages[i]}'),
-                    destinations: List.generate(
-                      4,
-                      (i) => NavigationDestination(
-                        icon: Icon(icons[i]),
-                        label: t(labels[i]),
-                      ),
+                  SafeArea(
+                    top: false,
+                    child: VengeanceNavigation(
+                      selected: selected.clamp(0, 3),
+                      onSelected: (i) => context.go('/${pages[i]}'),
+                      labels: labels.take(4).map(t).toList(),
+                      icons: icons.take(4).toList(),
                     ),
                   ),
                 ],
@@ -818,7 +827,7 @@ class _DemoShellState extends State<DemoShell> {
                 children: [
                   const Icon(
                     Icons.event_note_rounded,
-                    color: Color(0xffe6bc72),
+                    color: vengeanceLime,
                     size: 24,
                   ),
                   const SizedBox(width: 10),
@@ -867,8 +876,8 @@ class _DemoShellState extends State<DemoShell> {
                 child: FilledButton(
                   onPressed: () => context.go('/meetings'),
                   style: FilledButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: teal,
+                    backgroundColor: vengeanceLime,
+                    foregroundColor: ink,
                   ),
                   child: Row(
                     children: [
@@ -1349,49 +1358,79 @@ class _DemoShellState extends State<DemoShell> {
         },
       ),
       const SizedBox(height: 24),
-      SurfaceCard(
-        padding: EdgeInsets.zero,
-        child: LayoutBuilder(
-          builder: (context, box) {
-            final columns = box.maxWidth >= 900
-                ? 4
-                : box.maxWidth >= 480
-                ? 2
-                : 1;
-            return Wrap(
+      LayoutBuilder(
+        builder: (context, box) {
+          final columns = box.maxWidth >= 900
+              ? 4
+              : box.maxWidth >= 480
+              ? 2
+              : 1;
+          final width = (box.maxWidth - (columns - 1) * 14) / columns;
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: Wrap(
+              spacing: 14,
+              runSpacing: 14,
               children: [
                 for (var i = 0; i < stats.length; i++)
                   SizedBox(
-                    width: box.maxWidth / columns,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          right: i % columns != columns - 1
-                              ? const BorderSide(color: PopColors.border)
-                              : BorderSide.none,
-                          bottom: i + columns < stats.length
-                              ? const BorderSide(color: PopColors.border)
-                              : BorderSide.none,
-                        ),
-                      ),
+                    width: width,
+                    child: VengeanceSurface(
+                      dark: i == 1,
+                      padding: EdgeInsets.zero,
                       child: InkWell(
                         onTap: () {
                           if (i == 3) setState(() => supportStatus = 'active');
                           context.go(i == 3 ? '/work' : '/groups');
                         },
-                        child: MetricCard(
-                          label: stats[i].$1,
-                          value: stats[i].$2,
-                          icon: stats[i].$3,
-                          enclosed: false,
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    stats[i].$3,
+                                    size: 22,
+                                    color: i == 1 ? vengeanceLime : muted,
+                                  ),
+                                  const Spacer(),
+                                  Icon(
+                                    Icons.north_east_rounded,
+                                    size: 16,
+                                    color: i == 1
+                                        ? PopColors.forestMuted
+                                        : muted,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 22),
+                              MoneyAmount(
+                                stats[i].$2,
+                                size: 34,
+                                color: i == 1 ? Colors.white : ink,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                stats[i].$1,
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
+                                      color: i == 1
+                                          ? PopColors.forestMuted
+                                          : muted,
+                                    ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
               ],
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
       Padding(
         padding: const EdgeInsets.only(bottom: 24),
@@ -1709,7 +1748,7 @@ class _DemoShellState extends State<DemoShell> {
             ),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 18),
-              child: Divider(color: Color(0xff38685a)),
+              child: Divider(color: Color(0xff525a43)),
             ),
             Row(
               children: [

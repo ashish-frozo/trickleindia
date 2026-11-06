@@ -25,6 +25,7 @@ flutter:
   assets:
     - assets/
     - assets/fonts/OFL.txt
+    - assets/licenses/VengeanceUI-MIT.txt
   fonts:
     - family: NotoSans
       fonts:

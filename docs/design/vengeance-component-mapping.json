@@ -1,0 +1,11 @@
+{
+  "upstream": "https://github.com/Ashutoshx7/VengeanceUI",
+  "revision": "298075bd1b883fbcc7b25d8c9894b76a8d683161",
+  "integration": "Flutter source adaptation, not a React runtime dependency",
+  "components": {
+    "SpotlightNavbar": "VengeanceNavigation",
+    "GlowBorderCard": "VengeanceSurface",
+    "ResearchBentoGrid.Panel": "VengeanceSurface and programme metric tiles"
+  },
+  "license": "packages/ui/assets/licenses/VengeanceUI-MIT.txt"
+}

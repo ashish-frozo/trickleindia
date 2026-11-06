@@ -2,28 +2,28 @@
   "schemaVersion": 2,
   "identity": {
     "title": "PoP 2.0",
-    "status": "RFP-led proposal redesign; selected by delegated design direction on6 November2026"
+    "status": "VengeanceUI Flutter adaptation, 6 November 2026"
   },
   "colors": {
-    "canvas": "#F5F7F2",
+    "canvas": "#F4F4EF",
     "surface": "#FFFFFF",
-    "primary": "#175C48",
-    "primaryTint": "#E8F0E7",
-    "text": "#18392F",
-    "muted": "#5A6D62",
-    "border": "#DCE5DC",
+    "primary": "#343F28",
+    "primaryTint": "#EAF0DA",
+    "text": "#20241D",
+    "muted": "#60665A",
+    "border": "#DDE0D5",
     "success": "#24613C",
     "warning": "#80500D",
     "error": "#A12B32",
-    "accent": "#B47C25",
+    "accent": "#D7F56B",
     "onPrimary": "#FFFFFF",
     "successTint": "#EDF6EE",
     "warningTint": "#FFF2D9",
     "errorTint": "#FCEEF0",
-    "forest": "#123F36",
-    "forestMuted": "#C1D5C9",
-    "outline": "#74877A",
-    "surfaceSoft": "#EFF3EC"
+    "forest": "#20251D",
+    "forestMuted": "#CBD2BC",
+    "outline": "#7A826F",
+    "surfaceSoft": "#EEF0E7"
   },
   "fonts": {
     "en": "Noto Sans",

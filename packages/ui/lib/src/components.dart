@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'tokens.dart';
+import 'vengeance.dart';
 
 class AppScaffold extends StatelessWidget {
   final PreferredSizeWidget? appBar;
@@ -281,17 +282,10 @@ class SurfaceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.only(bottom: 16),
-    child: Material(
-      color: color ?? Colors.white,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: color == PopColors.forest
-            ? BorderSide.none
-            : const BorderSide(color: PopColors.border),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Padding(padding: padding, child: child),
+    child: VengeanceSurface(
+      dark: color == PopColors.forest,
+      padding: padding,
+      child: child,
     ),
   );
 }
