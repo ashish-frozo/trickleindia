@@ -25,3 +25,32 @@ test('concurrent import retries commit once, preserve receipts and prohibit over
 test('unchanged import rolls back atomically and forces fresh bootstrap',async()=>{const op=await importIt();const r=await rollbackImport(manager,{datasetId,operationId:randomUUID(),importOperationId:op.operationId,reviewedHash:op.reviewedHash});assert.equal(r.rolledBack,true);assert.equal((await transaction(c=>snapshot(c,datasetId))).groups.length,0);await assert.rejects(transaction(c=>authenticate(c,manager.tokenHash)),/SESSION_EXPIRED/);manager=await login('manager');assert.equal((await commitImport(manager,op)).rolledBack,true);});
 test('rollback refuses imported rows that changed or have subsequent use',async()=>{const op=await importIt();await mutate(manager,{datasetId,operationId:randomUUID(),kind:'group.update',clientCreatedAt:new Date().toISOString(),payload:{groupId:op.payload.groups[0].id,expectedVersion:1,displayName:'Changed',villageLabel:'Village'}});await assert.rejects(rollbackImport(manager,{datasetId,operationId:randomUUID(),importOperationId:op.operationId,reviewedHash:op.reviewedHash}),/IMPORT_IN_USE/);assert.equal((await transaction(c=>snapshot(c,datasetId))).groups.length,1);});
 test('assignment changes revoke prior sessions and new scope reflects assignments',async()=>{const op=staff({mapping:{issuer,subject:'assigned'}});await saveStaff(manager,op);await importIt();const old=await login('assigned');const groupId=(await transaction(c=>snapshot(c,datasetId))).groups[0].id;await saveStaff(manager,{...op,operationId:randomUUID(),expectedVersion:1,groupIds:[groupId]});await assert.rejects(transaction(c=>authenticate(c,old.tokenHash)),/SESSION_EXPIRED/);const fresh=await login('assigned');assert.equal((await pool.query('SELECT 1 FROM actor_groups WHERE dataset_id=$1 AND actor_id=$2 AND group_id=$3',[datasetId,fresh.actor.id,groupId])).rowCount,1);});
+test('participant identity requires a unique member binding, versions and revokes sessions',async()=>{
+ const imported=await importIt(),memberId=imported.payload.members[0].id;
+ await assert.rejects(saveStaff(manager,staff({role:'participant'})),/MEMBER_NOT_FOUND/);
+ await assert.rejects(saveStaff(manager,staff({role:'participant',memberId:randomUUID()})),/MEMBER_NOT_FOUND/);
+ await assert.rejects(saveStaff(manager,staff({role:'participant',memberId,groupIds:[imported.payload.groups[0].id]})),/INVALID_PAYLOAD/);
+ await assert.rejects(saveStaff(manager,staff({memberId})),/INVALID_PAYLOAD/);
+ const op=staff({role:'participant',memberId,mapping:{issuer,subject:'participant'}});
+ const saved=await saveStaff(manager,op);assert.equal(saved.actor.memberId,memberId);
+ assert.equal((await saveStaff(manager,op)).replayed,true);
+ assert.ok((await listStaff(manager)).staff.some(r=>r.actor.id===op.actorId));
+ await assert.rejects(saveStaff(manager,staff({role:'participant',memberId})),/MEMBER_IDENTITY_EXISTS/);
+ const participant=await login('participant');await assert.rejects(listStaff(participant),/FORBIDDEN/);
+ await saveStaff(manager,{...op,operationId:randomUUID(),expectedVersion:1,enabled:false});
+ await assert.rejects(transaction(c=>authenticate(c,participant.tokenHash)),/SESSION_EXPIRED/);
+ await assert.rejects(login('participant'),/FORBIDDEN/);
+ await saveStaff(manager,{...op,operationId:randomUUID(),expectedVersion:2});
+ const fresh=await login('participant');assert.equal(fresh.actor.memberId,memberId);
+ await saveStaff(manager,{...op,memberId:undefined,role:'sakhi',operationId:randomUUID(),expectedVersion:3});
+ await assert.rejects(transaction(c=>authenticate(c,fresh.tokenHash)),/SESSION_EXPIRED/);
+ assert.equal((await login('participant')).actor.memberId,undefined);
+});
+test('administrative audit subjects conform to the shared UI contract',async()=>{
+ const op=await importIt();await rollbackImport(manager,{datasetId,operationId:randomUUID(),importOperationId:op.operationId,reviewedHash:op.reviewedHash});
+ const events=(await pool.query('SELECT body FROM audit_events WHERE dataset_id=$1',[datasetId])).rows.map(r=>r.body);
+ assert.ok(events.some(e=>e.action==='organisation.bootstrap'));
+ assert.ok(events.some(e=>e.action==='import.commit'));
+ assert.ok(events.some(e=>e.action==='import.rollback'));
+ for(const e of events){assert.equal(typeof e.entityId,'string');assert.ok(Array.isArray(e.changedFields));assert.ok(e.changedFields.length>0);assert.equal(e.entityType,e.action==='staff.save'?'actors':'datasets');assert.equal(e.entityId,e.action==='staff.save'?e.detail.actorId:datasetId);}
+});

@@ -26,7 +26,7 @@ Use the operator's explicitly configured `DATABASE_URL`; the command does not di
 
 ## Staff administration
 
-Manager session required. `GET /v1/staff` returns `{staff:[{actor,issuer,subject,enabled,groupIds}]}`. Staff comprises managers and Sakhis; participant identity administration is outside this endpoint.
+Manager session required. `GET /v1/staff` returns `{staff:[{actor,issuer,subject,enabled,groupIds}]}`. The identity list includes managers, Sakhis and participants. The existing `/v1/staff` route name is retained for compatibility.
 
 `POST /v1/staff` creates or replaces a staff definition:
 
@@ -47,7 +47,7 @@ Manager session required. `GET /v1/staff` returns `{staff:[{actor,issuer,subject
 
 UUID placeholders must be replaced by actual UUIDs. `expectedVersion:0` creates; updates require the actor's exact current version. Use `enabled:false` to disable and `true` to re-enable. Use the same endpoint with the current definition and version to revoke sessions. Every successful write increments the version and revokes all that actor's sessions, even if only the display name changes. `revokeSessions` can only be true (defaults true). Changing group scope therefore requires signing in and a fresh bootstrap, preventing continued use of old scope through existing sessions. Offline devices cannot learn revocation until reconnecting; existing offline expiry remains in effect.
 
-Manager assignments must be empty; Sakhi group IDs must be unique and exist. Identity mappings are unique per dataset. Last enabled manager removal/demotion is rejected. A manager cannot disable/demote themselves or replace their own mapped subject. Display-name edits and explicit session revocation for self are allowed and require reauthentication afterward. Unknown fields, unsupported roles and invalid payloads are rejected. Transactions serialize against normal mutations and identity-session issuance. Staff changes create audit and sync events. Staff response: `{actor,records,groupIds,changeCursor,replayed}`. A replay with identical operation ID and payload returns its receipt; changed content gives `OPERATION_ID_REUSED`. If the actor editing themselves revoked their own session, obtain a new session before retrying.
+Manager and participant assignments must be empty; Sakhi group IDs must be unique and exist. Identity mappings are unique per dataset. For role `participant`, supply `memberId` bound to an existing member in this dataset; it is required and unique across participant actors, including disabled actors. Other roles must omit `memberId`. Changing a participant binding revokes existing sessions; switching away from participant removes the binding. Participant provisioning therefore follows opening-data import or ordinary member creation. Last enabled manager removal/demotion is rejected. A manager cannot disable/demote themselves or replace their own mapped subject. Display-name edits and explicit session revocation for self are allowed and require reauthentication afterward. Unknown fields, unsupported roles and invalid payloads are rejected. Transactions serialize against normal mutations and identity-session issuance. Staff changes create audit and sync events. Staff response: `{actor,records,groupIds,changeCursor,replayed}`. A replay with identical operation ID and payload returns its receipt; changed content gives `OPERATION_ID_REUSED`. If the actor editing themselves revoked their own session, obtain a new session before retrying.
 
 Operator wrapper uses the same authorization and auditing, replacing the former direct SQL provisioning path:
 
@@ -84,7 +84,7 @@ DEMO_MODE=false POP_SESSION_TOKEN=... npm --prefix services/api run data:import 
 DEMO_MODE=false POP_SESSION_TOKEN=... npm --prefix services/api run data:import -- rollback /private/rollback.json
 ```
 
-The OpenAPI document contains exact request schemas. All changes use existing structured error envelopes. Key conflict codes: `DATASET_EXISTS`, `DATASET_MISMATCH`, `VERSION_CONFLICT`, `IDENTITY_EXISTS`, `LAST_MANAGER`, `SELF_LOCKOUT`, `OPERATION_ID_REUSED`, `REVIEW_HASH_MISMATCH`, `IMPORT_INVALID`, `IMPORT_IN_USE`.
+The OpenAPI document contains exact request schemas. All changes use existing structured error envelopes. Key conflict codes: `DATASET_EXISTS`, `DATASET_MISMATCH`, `VERSION_CONFLICT`, `IDENTITY_EXISTS`, `MEMBER_NOT_FOUND`, `MEMBER_IDENTITY_EXISTS`, `LAST_MANAGER`, `SELF_LOCKOUT`, `OPERATION_ID_REUSED`, `REVIEW_HASH_MISMATCH`, `IMPORT_INVALID`, `IMPORT_IN_USE`.
 
 ## Validation
 
