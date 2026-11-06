@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "recordedAt": "2026-11-06T06:55:41.326Z",
+  "database": "127.0.0.1:55432/pop_nonaws_load",
+  "workload": {
+    "syntheticMembers": 1000,
+    "totalMembers": 1006,
+    "concurrency": 8,
+    "reads": 100,
+    "retries": 20,
+    "distinctFinancialEffects": 1
+  },
+  "elapsedMs": 4012.5871249999996,
+  "reads": {
+    "requests": 100,
+    "p50Ms": 228.83129199999985,
+    "p95Ms": 478.47183399999994,
+    "requestBodyBytes": 0,
+    "responseBodyBytes": 43223119
+  },
+  "financialRetries": {
+    "requests": 20,
+    "p50Ms": 166.98833399999967,
+    "p95Ms": 397.54391600000054,
+    "requestBodyBytes": 8340,
+    "responseBodyBytes": 23841
+  },
+  "memory": {
+    "peakSampledNodeRssBytes": 295272448,
+    "final": {
+      "rss": 284229632,
+      "heapTotal": 175865856,
+      "heapUsed": 64269880,
+      "external": 24284937,
+      "arrayBuffers": 20685458
+    }
+  },
+  "machine": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M4",
+    "logicalCpus": 10,
+    "totalMemoryBytes": 17179869184
+  },
+  "caveat": "Local Fastify injection plus PostgreSQL; excludes network/TLS/browser and database-process memory. Shared-machine timing, bounded regression only, not production capacity. Bytes are JSON bodies, not wire bytes."
+}
