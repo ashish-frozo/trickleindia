@@ -1,0 +1,27 @@
+00:00 +0: loading /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/assistance_widget_test.dart
+00:00 +0: /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/assistance_widget_test.dart: voice listeners survive repeat sessions and page reentry
+00:05 +1: /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/assistance_widget_test.dart: help is offline, command review cannot post money and large text fits
+00:07 +2: /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/assistance_widget_test.dart: language switch discards outstanding help response
+00:08 +3: loading /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/speech_test.dart
+00:10 +3: /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/speech_test.dart: missing or network-only Android voice never speaks
+00:10 +4: /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/speech_test.dart: uses matching installed offline voice and handles completion
+00:10 +5: /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/speech_test.dart: stop invalidates pending completion
+00:10 +6: loading /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/ui_test.dart
+00:13 +6: /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/ui_test.dart: English/Hindi login at 360px and 200% text has no layout exceptions
+00:20 +7: /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/ui_test.dart: authenticated mobile and manager layouts remain usable with large text
+00:25 +8: /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/ui_test.dart: Hindi amount review with keyboard and repeated confirmation saves one pending entry
+00:27 +9: /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/ui_test.dart: conflict review links replacement and preserves original intent
+00:28 +10: /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/ui_test.dart: expired session retains a reachable counted local reset confirmation
+00:29 +11: /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/ui_test.dart: profile conflict compares every proposed field with current server values
+00:30 +12: /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/ui_test.dart: programme group drill-down keeps the selected group scope
+00:32 +13: /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/ui_test.dart: offline passbook exposes confirmed and pending amounts in the first phone viewport
+00:33 +14: loading /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/programme_reports_test.dart
+00:35 +14: /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/programme_reports_test.dart: snapshot exports preserve confirmed totals, scope and reversals
+00:35 +15: loading /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/reports_test.dart
+00:37 +15: /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/reports_test.dart: CSV escapes quoted multiline names and prevents spreadsheet formulas
+00:37 +16: loading /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/assistance_test.dart
+00:40 +16: /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/assistance_test.dart: voice commands only navigate to exact role-allowed screens
+00:40 +17: /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/assistance_test.dart: offline help uses original source text and does not guess answers
+00:40 +18: loading /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/visual_preview_test.dart
+00:43 +18: /Users/ashishdhiman/.config/superpowers/worktrees/trickleup/nonaws/packages/ui/test/visual_preview_test.dart: render app previews with bundled fonts and synthetic fixture
+00:43 +18 ~1: All tests passed!

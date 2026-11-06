@@ -1,5 +1,7 @@
 # PoP 2.0 implementation notes
 
+**Current non-AWS implementation and verification:** [NON_AWS_COMPLETION.md](NON_AWS_COMPLETION.md). Earlier dated results below are historical and do not certify newer binaries.
+
 The preserved specification is `PoP_2_Demo_Coding_Pack`. This is a synthetic proposal demonstration for local development and recording. Completion evidence and remaining acceptance limits are listed individually in `TEST_RESULTS.md`; compilation alone is not acceptance.
 
 ## Architecture and decisions

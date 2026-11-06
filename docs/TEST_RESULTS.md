@@ -1,5 +1,7 @@
 # Verification report
 
+**Current non-AWS implementation and verification:** [NON_AWS_COMPLETION.md](NON_AWS_COMPLETION.md). Earlier dated results below are historical and do not certify newer binaries.
+
 Current UI: blue/white structural redesign. See [BLUEPRINT_UI.md](design/BLUEPRINT_UI.md). `output/blueprint` contains the latest previews; the earlier olive/lime `vengeance` direction was rejected.
 
 Verification dates: original implementation 5 November 2026; UI redesign 6 November 2026. This report distinguishes executed checks from manual acceptance still requiring equipment. Synthetic data only. No production-readiness claim.

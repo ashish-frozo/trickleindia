@@ -94,6 +94,7 @@ class _AssistancePanelState extends State<AssistancePanel>
   final question = TextEditingController(), command = TextEditingController();
   final recognition = SpeechToText(), speech = InstructionSpeech();
   int voiceGeneration = 0;
+  int answerGeneration = 0;
   bool busy = false, listening = false, remoteConsent = false;
   String? error, mode;
   List<Json> citations = [];
@@ -110,6 +111,9 @@ class _AssistancePanelState extends State<AssistancePanel>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.language != widget.language) {
       unawaited(stop());
+      answerGeneration++;
+      busy = false;
+      error = null;
       citations = [];
       mode = null;
     }
@@ -133,6 +137,7 @@ class _AssistancePanelState extends State<AssistancePanel>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     voiceGeneration++;
+    answerGeneration++;
     unawaited(recognition.cancel().catchError((Object _) {}));
     speech.dispose();
     question.dispose();
@@ -229,6 +234,9 @@ class _AssistancePanelState extends State<AssistancePanel>
 
   Future<void> ask() async {
     if (busy || question.text.trim().isEmpty) return;
+    final generation = ++answerGeneration;
+    final language = widget.language;
+    bool current() => mounted && generation == answerGeneration;
     setState(() {
       busy = true;
       error = null;
@@ -249,7 +257,7 @@ class _AssistancePanelState extends State<AssistancePanel>
         answer = Map<String, dynamic>.from(
           await c.request('POST', '/v1/assistant', {
             'question': question.text.trim(),
-            'language': widget.language,
+            'language': language,
             'remoteConsent': remoteConsent,
           }),
         );
@@ -259,10 +267,10 @@ class _AssistancePanelState extends State<AssistancePanel>
         }
         answer = {
           'mode': 'fallback',
-          'citations': localHelp(pack, question.text.trim(), widget.language),
+          'citations': localHelp(pack, question.text.trim(), language),
         };
       }
-      if (mounted && c.valid) {
+      if (current() && c.valid) {
         setState(() {
           mode = answer['mode'];
           citations = (answer['citations'] as List)
@@ -271,9 +279,9 @@ class _AssistancePanelState extends State<AssistancePanel>
         });
       }
     } catch (_) {
-      if (mounted) setState(() => error = 'contentLoadFailed');
+      if (current()) setState(() => error = 'contentLoadFailed');
     } finally {
-      if (mounted) setState(() => busy = false);
+      if (current()) setState(() => busy = false);
     }
   }
 

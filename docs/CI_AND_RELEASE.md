@@ -1,0 +1,13 @@
+# Reproducible verification and release
+
+The repository includes `.github/workflows/verify.yml`. It has read-only repository permissions, cancels superseded runs, uses a disposable PostgreSQL service, and pins actions by full commit SHA. It runs resource/credential checks, reviewed-locale tests, API/domain/UI/encryption tests, analysis, OpenAPI drift checks, production npm advisory checks and web/Android builds. Artifacts are retained for 14 days. The Android artifact is a **development profile APK**, never a production-signed release. The workflow has not been run in an approved remote repository because none is available.
+
+Action sources: [checkout](https://github.com/actions/checkout), [setup-node](https://github.com/actions/setup-node), [setup-java](https://github.com/actions/setup-java), [Flutter action](https://github.com/subosito/flutter-action), [upload-artifact](https://github.com/actions/upload-artifact). Pinned commits were resolved from their release tags on 6 November 2026. Updating a pin requires review and rerunning verification.
+
+For local reproduction, set `TEST_DATABASE_URL` to a disposable loopback PostgreSQL database ending in `_test`, set `FLUTTER_BIN` if needed, and run `scripts/verify.sh`. Tests intentionally reset synthetic datasets; the API pretest guard rejects non-test database names and non-loopback hosts. Run the independent load probe described in LOCAL_VERIFICATION.md only against its fixed disposable target.
+
+Production npm advisories are checked with `npm --prefix services/api audit --omit=dev`. A clean advisory result is a point-in-time registry check, not proof of a penetration test. The source checker rejects tracked private configuration/key/dump paths and recognised credentials without printing matched values. It is a bounded detector, not a guarantee that no secret format exists anywhere.
+
+For builds, use the commands in RUNBOOK.md. Keep development and production build definitions separate. Cognito mode requires `AUTH_MODE=cognito`, an HTTPS API URL, the approved public PKCE client and registered callbacks. Production Android release requires private signing properties and keystore. Do not ship `.env`, identity JSON, database dumps or signing material.
+
+Before a production cutover: obtain acceptance of the Phase 1 baseline, close critical/high assessment findings, run the actual identity/voice/device checks, take and restore a database backup, rehearse migrations and rollback, and match artifact hashes to the reviewed source revision. These gates are not removed by the absence of AWS access. Scripts and documentation prepare the handover; they do not assert customer sign-off or deployment.

@@ -189,6 +189,24 @@ class _ProgrammeReportsState extends State<ProgrammeReports> {
   int page = 0;
   late String group = widget.initialGroup;
   String t(String k) => widget.t(k);
+  String displayCell(Object? column, Object? value) {
+    if (value == null) return '—';
+    if (column == 'topic') return t(value.toString());
+    if (column == 'status') {
+      const keys = {
+        'open': 'openStatus',
+        'submitted': 'meetingSubmitted',
+        'in_progress': 'inProgress',
+        'resolved': 'resolved',
+        'follow_up': 'followUpPending',
+        'completed': 'completed',
+        'recorded': 'recordedVisits',
+      };
+      return t(keys[value] ?? value.toString());
+    }
+    return value.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     final c = widget.controller;
@@ -320,8 +338,8 @@ class _ProgrammeReportsState extends State<ProgrammeReports> {
                   for (final row in rows.skip(1 + page * 50).take(50))
                     DataRow(
                       cells: [
-                        for (final cell in row)
-                          DataCell(Text(cell?.toString() ?? '—')),
+                        for (var i = 0; i < row.length; i++)
+                          DataCell(Text(displayCell(rows.first[i], row[i]))),
                       ],
                     ),
                 ],

@@ -1,4 +1,4 @@
-Bilingual message keys match: 260
+Bilingual message keys match: 348
 All static UI message references resolve.
 #FFFFFF/primary: 6.22:1
 text/canvas: 13.16:1

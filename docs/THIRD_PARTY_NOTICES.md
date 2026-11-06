@@ -13,3 +13,5 @@ The generated Unicode full case-fold mapping uses the Unicode 17 CaseFolding dat
 ## Requirements follow-up dependencies
 
 Added `aws-jwt-verify` 5.2.1 for Cognito access-token verification and `flutter_appauth` 13.0.0 for native PKCE sign-in. `web` 1.1.2, `http` 1.6.0 and `crypto` 3.0.8 support browser authentication/export. Exact dependencies and transitive licences are represented in their pinned lockfiles and package notices. PowerPoint generation uses development-only PptxGenJS, Playwright, Sharp and the html2pptx skill; these are not bundled in the app runtime. No paid identity, AI, speech or messaging service has been activated.
+
+Voice navigation adds pinned `speech_to_text` 7.5.0 and its platform packages. Generated runtime notices retain their licences. Device speech services are optional dependencies; no recognition or recording provider account was activated.

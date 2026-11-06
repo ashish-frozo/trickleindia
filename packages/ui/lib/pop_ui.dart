@@ -2990,7 +2990,11 @@ class _DemoShellState extends State<DemoShell> {
                       if (name.text.trim().isEmpty) return;
                       if (!await confirm(
                         t('review'),
-                        '${t('name')}: ${name.text}\n${t('group')}: ${c.rows('groups').firstWhere((g) => g['id'] == groupId)['displayName']}\n${t('preferredLanguage')}: $language\n${t('livelihood')}: ${t(livelihood)}\n${t('contactOptional')}: ${contact.text}',
+                        '${t('name')}: ${name.text}\n${t('group')}: ${c.rows('groups').firstWhere((g) => g['id'] == groupId)['displayName']}\n${t('preferredLanguage')}: ${language == 'en'
+                            ? t('english')
+                            : language == 'hi'
+                            ? t('hindi')
+                            : '${{'or': 'Odia', 'hoc': 'Ho', 'sat': 'Santhali'}[language]} · ${t('planned')}'}\n${t('livelihood')}: ${t(livelihood)}\n${t('contactOptional')}: ${contact.text}',
                       )) {
                         return;
                       }
@@ -3561,6 +3565,37 @@ class _DemoShellState extends State<DemoShell> {
     }
   }
 
+  Future<Json> helpPack() async {
+    final value =
+        c.contentPack ??
+        jsonDecode(
+          await rootBundle.loadString(
+            'packages/pop_ui/assets/content_cards.json',
+          ),
+        ) as Json;
+    if (value['cards'] is! List) {
+      throw const FormatException('Invalid help pack');
+    }
+    for (final card in value['cards']) {
+      if (card is! Map ||
+          card['id'] is! String ||
+          card['keywords'] is! List ||
+          !(card['keywords'] as List).every((word) => word is String) ||
+          card['locales'] is! Map) {
+        throw const FormatException('Invalid help card');
+      }
+      final locale = card['locales']?[widget.lang];
+      if (locale is! Map ||
+          locale['title'] is! String ||
+          locale['steps'] is! List ||
+          !(locale['steps'] as List).every((step) => step is String) ||
+          locale['audioScript'] is! String) {
+        throw const FormatException('Invalid help locale');
+      }
+    }
+    return value;
+  }
+
   List<Widget> help() => [
     title(t('demoHelp')),
     OutlinedButton.icon(
@@ -3579,11 +3614,9 @@ class _DemoShellState extends State<DemoShell> {
     const SizedBox(height: 16),
     chip(t('draftContent'), warning: true),
     const SizedBox(height: 16),
-    FutureBuilder<String>(
+    FutureBuilder<Json>(
       key: ValueKey(helpRevision),
-      future: c.contentPack == null
-          ? rootBundle.loadString('packages/pop_ui/assets/content_cards.json')
-          : Future.value(jsonEncode(c.contentPack)),
+      future: helpPack(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Column(
@@ -3600,7 +3633,7 @@ class _DemoShellState extends State<DemoShell> {
           );
         }
         if (!snapshot.hasData) return Text(t('loading'));
-        final cards = (jsonDecode(snapshot.data!)['cards'] as List)
+        final cards = (snapshot.data!['cards'] as List)
             .where(
               (card) =>
                   helpQuery.trim().isEmpty ||

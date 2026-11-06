@@ -107,7 +107,7 @@ ui.lastRefreshed,Last refreshed,,,needs-translation
 ui.refresh,Refresh,,,needs-translation
 ui.staleData,Data may be out of date,,,needs-translation
 ui.lastReportedDevice,Last reported by device,,,needs-translation
-ui.noRecords,No records yet,,,needs-translation
+ui.noRecords,No records in this scope.,,,needs-translation
 ui.loading,Loading…,,,needs-translation
 ui.sessionExpired,Your session expired. Sign in again to continue.,,,needs-translation
 ui.invalidAmount,Enter a valid amount greater than zero.,,,needs-translation
@@ -249,17 +249,105 @@ ui.savings,Savings,,,needs-translation
 ui.digital_skills,Digital skills,,,needs-translation
 ui.action_visit_create,Visit recorded,,,needs-translation
 ui.action_visit_complete,Follow-up completed,,,needs-translation
-ui.reports,Reports & exports,,,needs-translation
+ui.reports,Programme reports,,,needs-translation
 ui.downloadCsv,Download CSV,,,needs-translation
 ui.copyCsv,Copy CSV,,,needs-translation
 ui.reportScope,Confirmed server balances only. Pending phone entries are excluded. CSV money columns use paise.,,,needs-translation
-ui.organisationSignIn,"Sign in with your organisation. After browser sign-in, select Sign in again if this page returns.",,,needs-translation
+ui.organisationSignIn,Sign in securely with your organisation. You will return here after sign-in.,,,needs-translation
 ui.manageContent,Manage help content,,,needs-translation
 ui.contentTitle,Title,,,needs-translation
 ui.contentSteps,Steps (one per line),,,needs-translation
 ui.contentScript,Speech text,,,needs-translation
 ui.publishDraft,Publish draft revision,,,needs-translation
 ui.action_content_publish,Help content published,,,needs-translation
+ui.assistantTitle,Help and voice navigation,,,needs-translation
+ui.assistantDisclosure,App instructions only. This assistant cannot record payments or change your records. Help text is a draft awaiting review.,,,needs-translation
+ui.voiceNavigation,Open a screen by voice,,,needs-translation
+ui.microphoneDisclosure,Use short screen names only. Your device or browser speech service may process audio; offline recognition is requested but availability varies. No payment is saved. You will review the recognised command before opening a screen.,,,needs-translation
+ui.startListening,Use microphone,,,needs-translation
+ui.voiceUnavailable,Voice recognition is unavailable or permission was denied. Type a command instead.,,,needs-translation
+ui.voiceCommands,"Try: home, help, sync. Staff can also open groups, meetings and work. Managers can open reports and activity.",,,needs-translation
+ui.command,Say or type a screen name,,,needs-translation
+ui.openCommand,Open selected screen,,,needs-translation
+ui.unsupportedCommand,Use one of the listed screen names. Commands cannot save or change data.,,,needs-translation
+ui.askHelp,Find instructions,,,needs-translation
+ui.helpQuestion,What do you need help with?,,,needs-translation
+ui.remoteHelpConsent,Allow an online model to match this question to help cards,,,needs-translation
+ui.remoteHelpPrivacy,"Optional. Sends this question and help text to the configured provider. Do not enter names, phone numbers or financial records. Local help works without it.",,,needs-translation
+ui.providerMatched,Help cards selected by the online model; instructions are quoted from the content pack.,,,needs-translation
+ui.localMatched,Matched from local help instructions.,,,needs-translation
+ui.localFallback,Using local instructions because online assistance is unavailable.,,,needs-translation
+ui.source,Source,,,needs-translation
+ui.administration,People and data setup,,,needs-translation
+ui.administrationFailed,The change could not be completed. Review the details and retry.,,,needs-translation
+ui.addIdentity,Add user access,,,needs-translation
+ui.editIdentity,Edit user access,,,needs-translation
+ui.identityDisclosure,Identity mappings link existing sign-in users to programme roles. Changes revoke that user’s sessions; they must sign in again.,,,needs-translation
+ui.role,Role,,,needs-translation
+ui.identityRole_manager,Programme manager,,,needs-translation
+ui.identityRole_sakhi,Smart Sakhi,,,needs-translation
+ui.identityRole_participant,Participant,,,needs-translation
+ui.identityIssuer,Cognito issuer URL,,,needs-translation
+ui.identitySubject,Verified sign-in subject,,,needs-translation
+ui.identityEnabled,Access enabled,,,needs-translation
+ui.disabledIdentity,Access disabled,,,needs-translation
+ui.assignedGroups,Assigned groups,,,needs-translation
+ui.requiredIdentity,"Enter a name, issuer and verified subject; select a member for participant access.",,,needs-translation
+ui.saveIdentity,Save access and revoke sessions,,,needs-translation
+ui.openingImport,Opening data import,,,needs-translation
+ui.importDisclosure,For a new empty organisation only. Paste the reviewed JSON format from the import guide. Validate counts and integer-paise totals against the source register before committing.,,,needs-translation
+ui.importPayload,Reviewed import JSON,,,needs-translation
+ui.validateImport,Validate without saving,,,needs-translation
+ui.commitImport,Commit reviewed import,,,needs-translation
+ui.importConfirmation,Confirm that you checked the record counts and all opening-balance totals against the original register. This creates the initial records.,,,needs-translation
+ui.importCompleted,Import completed. Retain these references for reconciliation and operator recovery.,,,needs-translation
+ui.reviewHash,Reviewed payload hash,,,needs-translation
+ui.operation,Operation,,,needs-translation
+ui.reportType,Report,,,needs-translation
+ui.report_balances,Member balances,,,needs-translation
+ui.report_meetings,Meeting attendance,,,needs-translation
+ui.report_enterprises,Enterprise cash,,,needs-translation
+ui.report_visits,Sakhi visits and follow-ups,,,needs-translation
+ui.report_support,Support progress,,,needs-translation
+ui.snapshotReportDisclosure,Confirmed snapshot reports. Amounts are integer paise; pending entries are excluded. Refresh before export. Cash surplus is not accounting profit. Scroll the table horizontally to see all columns.,,,needs-translation
+ui.reportRecords,Records,,,needs-translation
+ui.exportFailed,Export failed. Please retry.,,,needs-translation
+ui.refreshFailed,Refresh failed. Showing the last confirmed snapshot.,,,needs-translation
+ui.column_member_id,Member ID,,,needs-translation
+ui.column_member,Member,,,needs-translation
+ui.column_group,Group,,,needs-translation
+ui.column_confirmed_savings_paise,Savings (paise),,,needs-translation
+ui.column_outstanding_principal_paise,Principal (paise),,,needs-translation
+ui.column_last_refreshed_utc,Refreshed (UTC),,,needs-translation
+ui.column_meeting_id,Meeting ID,,,needs-translation
+ui.column_business_date,Date,,,needs-translation
+ui.column_status,Status,,,needs-translation
+ui.column_present,Present,,,needs-translation
+ui.column_absent,Absent,,,needs-translation
+ui.column_unmarked,Unmarked,,,needs-translation
+ui.column_visit_id,Visit ID,,,needs-translation
+ui.column_sakhi,Sakhi,,,needs-translation
+ui.column_topic,Topic,,,needs-translation
+ui.column_next_visit_date,Follow-up date,,,needs-translation
+ui.column_reference,Reference,,,needs-translation
+ui.column_assigned_sakhi,Assigned Sakhi,,,needs-translation
+ui.column_created_at_utc,Created (UTC),,,needs-translation
+ui.column_resolved_at_utc,Resolved (UTC),,,needs-translation
+ui.column_enterprise_id,Enterprise ID,,,needs-translation
+ui.column_enterprise,Enterprise,,,needs-translation
+ui.column_sales_paise,Sales (paise),,,needs-translation
+ui.column_expenses_paise,Expenses (paise),,,needs-translation
+ui.column_cash_surplus_paise,Cash surplus (paise),,,needs-translation
+ui.previousPage,Previous,,,needs-translation
+ui.nextPage,Next,,,needs-translation
+ui.createGroupFirst,Create or assign a group before adding members.,,,needs-translation
+ui.programmeRecord,Programme record,,,needs-translation
+ui.action_staff_save,User access updated,,,needs-translation
+ui.action_organisation_bootstrap,Organisation initialised,,,needs-translation
+ui.action_import_commit,Opening data imported,,,needs-translation
+ui.action_import_rollback,Opening import rolled back,,,needs-translation
+ui.action_import_assignments,Imported group assignments,,,needs-translation
+ui.confirm,Confirm,,,needs-translation
 help.save-contribution.title,Save a contribution,,,needs-translation
 help.save-contribution.audioScript,"Open the meeting and choose the member. Enter the amount and review the member, date and type. Confirm. If offline, the entry stays on this phone until it syncs.",,,needs-translation
 help.save-contribution.steps.0,Open the meeting and choose the member.,,,needs-translation

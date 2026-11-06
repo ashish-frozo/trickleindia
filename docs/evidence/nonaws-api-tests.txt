@@ -1,0 +1,87 @@
+
+> pop-demo-api@1.0.0 pretest
+> node --test scripts/guard-test-database.test.mjs && node scripts/guard-test-database.mjs
+
+✔ accepts explicit loopback disposable database URLs (270.864208ms)
+✔ rejects missing, malformed, nonlocal and nondisposable databases (525.225583ms)
+✔ rejects pg connection options that override the checked host (333.994ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1293.681083
+Disposable test database guard passed.
+
+> pop-demo-api@1.0.0 test
+> tsx --test --test-concurrency=1 test/*.test.ts
+
+✔ production bootstrap refuses demo, existing datasets, malformed mappings and seeds no domain records (194.164458ms)
+✔ staff strict schemas, authorization, versions, identity uniqueness and idempotency (95.488834ms)
+✔ last manager and self lockout protection; disable, re-enable, re-map and session revocation (119.083541ms)
+✔ migration validates duplicate/reference/paise data, reconciles totals and requires exact reviewed payload (83.021958ms)
+✔ concurrent import retries commit once, preserve receipts and prohibit overwrites (94.131416ms)
+✔ unchanged import rolls back atomically and forces fresh bootstrap (98.101791ms)
+✔ rollback refuses imported rows that changed or have subsequent use (74.266625ms)
+✔ assignment changes revoke prior sessions and new scope reflects assignments (107.219125ms)
+✔ participant identity requires a unique member binding, versions and revokes sessions (128.061666ms)
+✔ administrative audit subjects conform to the shared UI contract (89.244167ms)
+✔ imported active members join new meetings and cannot be registered again (104.2335ms)
+✔ migration rejects group codes and enterprise names that normal creation treats as duplicates (78.978208ms)
+✔ import assignments version actors, revoke sessions and rollback advances versions again (159.077583ms)
+✔ identity remap audit retains old and new mappings and distinguishes session revocation (100.304375ms)
+{"level":30,"time":1793948875355,"pid":10813,"hostname":"Ashishs-MacBook-Air.local","reqId":"req-1","req":{"id":"req-1","method":"POST","path":"/v1/mutations"},"msg":"incoming request"}
+{"level":30,"time":1793948875397,"pid":10813,"hostname":"Ashishs-MacBook-Air.local","reqId":"req-1","res":{"statusCode":200},"responseTime":31.12737500000003,"msg":"request completed"}
+{"level":30,"time":1793948875397,"pid":10813,"hostname":"Ashishs-MacBook-Air.local","reqId":"req-2","req":{"id":"req-2","method":"GET","path":"/v1/support-requests/7a120b92-deca-4e93-a29d-6d56044edcf8"},"msg":"incoming request"}
+{"level":30,"time":1793948875401,"pid":10813,"hostname":"Ashishs-MacBook-Air.local","reqId":"req-2","res":{"statusCode":200},"responseTime":4.187875000000076,"msg":"request completed"}
+{"level":30,"time":1793948875402,"pid":10813,"hostname":"Ashishs-MacBook-Air.local","reqId":"req-3","req":{"id":"req-3","method":"GET","path":"/v1/audit-events"},"msg":"incoming request"}
+{"level":30,"time":1793948875406,"pid":10813,"hostname":"Ashishs-MacBook-Air.local","reqId":"req-3","res":{"statusCode":403},"responseTime":3.9515000000001237,"msg":"request completed"}
+✔ participant support detail never returns administrative audit for a colliding entity UUID (439.50475ms)
+✔ A01 server seed arithmetic and real readiness (101.601875ms)
+✔ A02/A23 scoped snapshots and guessed IDs (56.26125ms)
+✔ A05/A06/A07/A08 concurrent identical retries have one financial effect (67.70325ms)
+✔ A09 invisible pages advance the raw cursor (34.056666ms)
+✔ A11 stale attendance returns canonical record (29.87775ms)
+✔ A12 concurrent repayments cannot exceed principal (28.947417ms)
+✔ A13 submitted meeting blocks subsequent posting (39.251ms)
+✔ A14 expense reversal restores opening cash once (28.90775ms)
+✔ A15 registration has zero balances and duplicate review (24.041875ms)
+✔ A17 expired sessions reject reads and writes (17.320167ms)
+✔ A18 reset changes dataset and revokes old sessions (26.988458ms)
+✔ A25 money boundaries and unknown authority fields rejected (27.242375ms)
+✔ support state transitions and mandatory resolution (30.115125ms)
+✔ A10 controlled writer barrier preserves bootstrap and commit cursor order (37.014958ms)
+✔ A06 actual HTTP response loss after commit reconciles by receipt (106.091ms)
+✔ A16 simulated message deduplicates and support lifecycle returns to one open request (61.857583ms)
+✔ A21 retryable fault leaves no receipt and same ID subsequently succeeds (46.285167ms)
+✔ A23 wrong loan/member and enterprise/member relationships fail without ledger effects (25.886833ms)
+{"level":30,"time":1793948876927,"pid":10889,"hostname":"Ashishs-MacBook-Air.local","reqId":"req-1","req":{"id":"req-1","method":"POST","path":"/v1/demo/session"},"msg":"incoming request"}
+✔ demo endpoints are absent when demo mode is disabled (40.061917ms)
+{"level":30,"time":1793948876929,"pid":10889,"hostname":"Ashishs-MacBook-Air.local","reqId":"req-1","res":{"statusCode":404},"responseTime":0.6862909999999829,"msg":"request completed"}
+✔ malformed JSON and unknown routes retain the structured error contract (18.540083ms)
+✔ all sequential financial checkpoints match the canonical fixture (34.80025ms)
+✔ A13 controlled close/post race rejects the posting that follows submission (40.288208ms)
+✔ A11 stale member profile retains winning record and rejects original intent (32.755959ms)
+✔ group lifecycle is manager-only and assigned empty groups are visible (38.5995ms)
+✔ scheduled meetings seed attendance and enforce assignment and duplicate date (27.29725ms)
+✔ enterprise onboarding starts at zero and update preserves ledger and owner (27.275583ms)
+✔ history endpoints bound pages without changing canonical financial totals (29.9645ms)
+✔ Sakhi visit intake is scoped, idempotent and follow-up requires current version (51.377ms)
+✔ content publishing is scoped, versioned, replay-safe and retains draft disclosure (42.413834ms)
+✔ identity mapping controls roles and session expiry independently of token claims (25.209042ms)
+✔ local help cites canonical instructions and unsupported questions stay unsupported (9.2065ms)
+✔ provider requires explicit per-request consent and never returns model prose (28.207833ms)
+✔ invalid citations, oversized output, HTTP failure and timeout fall back without mutation (2.32525ms)
+✔ unsafe endpoint is rejected before sending any request (0.2605ms)
+✔ Cognito verifier accepts a valid signed access token (5.596584ms)
+✔ Cognito verifier rejects wrong client, issuer, token type, expiry and altered signature (7.849917ms)
+ℹ tests 51
+ℹ suites 0
+ℹ pass 51
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5495.820875

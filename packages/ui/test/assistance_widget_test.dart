@@ -1,4 +1,9 @@
 import 'dart:convert';
+import 'dart:async';
+
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -146,4 +151,78 @@ void main() {
       c.dispose();
     },
   );
+  testWidgets('language switch discards outstanding help response', (
+    tester,
+  ) async {
+    final pending = Completer<http.Response>(), started = Completer<void>();
+    final c = AppController(
+      MemoryStore(),
+      'http://unused',
+      client: MockClient((request) {
+        started.complete();
+        return pending.future;
+      }),
+    );
+    c.identity = {
+      'token': 'test',
+      'actor': {'id': 'test', 'role': 'participant'},
+      'datasetId': 'test',
+      'offlineUntil': DateTime.now()
+          .add(const Duration(hours: 1))
+          .toIso8601String(),
+    };
+    c.contentPack = jsonDecode(
+      File('assets/content_cards.json').readAsStringSync(),
+    );
+    final en = jsonDecode(File('assets/ui_en.arb').readAsStringSync()) as Map;
+    final hi = jsonDecode(File('assets/ui_hi.arb').readAsStringSync()) as Map;
+    Widget page(String language, Map words) => MaterialApp(
+      home: Scaffold(
+        body: SingleChildScrollView(
+          child: AssistancePanel(
+            controller: c,
+            language: language,
+            t: (k) => words[k] ?? k,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpWidget(page('en', en));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField).last, 'save savings');
+    final ask = find.widgetWithText(FilledButton, 'Find instructions');
+    await tester.ensureVisible(ask);
+    await tester.tap(ask);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(
+      started.isCompleted,
+      isTrue,
+      reason: 'Request must be in flight before switching language',
+    );
+    await tester.pumpWidget(page('hi', hi));
+    await tester.pump();
+    pending.complete(
+      http.Response(
+        jsonEncode({
+          'mode': 'local',
+          'citations': [
+            {
+              'id': 'save-contribution',
+              'version': 1,
+              'title': 'Stale English response',
+              'steps': ['Old text'],
+            },
+          ],
+        }),
+        200,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Stale English response'), findsNothing);
+    expect(find.text('Old text'), findsNothing);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
 }

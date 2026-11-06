@@ -1,5 +1,7 @@
 # Capability and acceptance matrix
 
+**Current non-AWS implementation and verification:** [NON_AWS_COMPLETION.md](NON_AWS_COMPLETION.md). Earlier dated results below are historical and do not certify newer binaries.
+
 | Capability | Delivered state | Verification |
 |---|---|---|
 | Restricted demo identities | Working | Opaque leases, server scopes/roles, guessed-ID denial, immediate known-revocation lock |

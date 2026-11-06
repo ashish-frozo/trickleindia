@@ -1,4 +1,5 @@
 const fs=require('fs'),assert=require('assert'),{chromium}=require('playwright');
+const words=JSON.parse(fs.readFileSync('packages/ui/assets/ui_en.arb','utf8'));
 (async()=>{
  const browser=await chromium.launch({headless:true,channel:'chrome'});
  const page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
@@ -15,9 +16,9 @@ const fs=require('fs'),assert=require('assert'),{chromium}=require('playwright')
  await page.screenshot({path:'output/closure/web-content-editor.png'});
  await page.getByRole('button',{name:'Cancel',exact:true}).click();
  await page.getByRole('button',{name:'Reports & exports',exact:true}).click();
- await page.getByRole('button',{name:'Download CSV',exact:true}).waitFor();
+ await page.getByRole('button',{name:words.downloadCsv,exact:true}).waitFor();
  const download=page.waitForEvent('download');
- await page.getByRole('button',{name:'Download CSV',exact:true}).click();
+ await page.getByRole('button',{name:words.downloadCsv,exact:true}).click();
  const file=await download;await file.saveAs('.local/closure-report.csv');
  const csv=fs.readFileSync('.local/closure-report.csv','utf8');assert(csv.includes('confirmed_savings_paise'));assert(csv.includes('Rani'));
  await page.screenshot({path:'output/closure/web-reports.png'});

@@ -76,3 +76,7 @@ The checked browser is Google Chrome156.0.8078.80. With Chrome installed and the
 ## Added workflows
 
 Follow [USER_TRAINING.md](USER_TRAINING.md) for group/meeting/enterprise setup, visits, profile editing, reports and help-content editing. Apply all migrations before running this revision; do not reseed an existing dataset just to update the schema. See [OPERATIONS_PREPARATION.md](OPERATIONS_PREPARATION.md) for isolated backup restoration and production configuration limits.
+
+## Non-AWS setup and verification
+
+See [IDENTITY_AND_IMPORT.md](IDENTITY_AND_IMPORT.md) for empty organisation bootstrap, manager-controlled user mappings and reviewed opening import/rollback. See [ASSISTANCE.md](ASSISTANCE.md) for optional provider configuration and consent boundaries, [LOCAL_VERIFICATION.md](LOCAL_VERIFICATION.md) for language/audio validation and bounded load checks, and [CI_AND_RELEASE.md](CI_AND_RELEASE.md) for reproducible CI/release steps. The new reports and voice navigation are described in [USER_TRAINING.md](USER_TRAINING.md). Current status is [NON_AWS_COMPLETION.md](NON_AWS_COMPLETION.md).

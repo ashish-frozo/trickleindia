@@ -6,7 +6,7 @@ Flutter Android field app, Flutter programme portal, Node.js/TypeScript API and 
 
 The app and portal use a shared blue-and-white design system with distinct field-task and programme-monitoring layouts. RFP traceability is in [UI requirements](docs/design/RFP_UI_REQUIREMENTS.md); the built design system is in [DESIGN.md](DESIGN.md).
 
-The local review package is in `delivery/`. Implementation and automated/device evidence are available. The remaining acceptance gates are actual TalkBack spoken output and the full cached-start target; see `docs/TEST_RESULTS.md`.
+The local review package is in `delivery/`. Implementation and automated/device evidence are available. Current additions, verification and external acceptance boundaries are in [NON_AWS_COMPLETION.md](docs/NON_AWS_COMPLETION.md).
 
 ## Start locally
 

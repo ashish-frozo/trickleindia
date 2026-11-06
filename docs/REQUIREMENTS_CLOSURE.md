@@ -1,4 +1,6 @@
-# Requirements follow-up — 6 November 2026
+# Historical requirements follow-up — 6 November 2026
+
+**Superseded for current status by [NON_AWS_COMPLETION.md](NON_AWS_COMPLETION.md).** This preserves the earlier 155aca7 evidence and its then-open items; several items below have since been implemented.
 
 This is the implementation follow-up to REQUIREMENTS_AUDIT.md, whose baseline remains commit 5e70fd4. It does not replace or erase that line-by-line audit. The user confirmed that AWS, approved repository and acceptance contacts are unavailable and instructed us to proceed without them.
 

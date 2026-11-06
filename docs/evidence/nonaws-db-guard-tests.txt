@@ -1,0 +1,11 @@
+✔ accepts explicit loopback disposable database URLs (3257.043875ms)
+✔ rejects missing, malformed, nonlocal and nondisposable databases (1442.923333ms)
+✔ rejects pg connection options that override the checked host (607.359167ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8076.083916

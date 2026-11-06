@@ -2,6 +2,7 @@
 set -euo pipefail
 project_dir="$(cd "$(dirname "$0")/.." && pwd)"
 : "${TEST_DATABASE_URL:?Set TEST_DATABASE_URL to a dedicated PostgreSQL test database}"
+python3 "$project_dir/scripts/test-localization-review.py"
 cd "$project_dir/services/api"
 npm ci
 npm run build
