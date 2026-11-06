@@ -17,7 +17,7 @@
     "identity:provision": "tsx src/provision-identity.ts",
     "bootstrap:production": "tsx src/bootstrap-production.ts",
     "data:import": "tsx src/import-cli.ts",
-    "pretest": "node scripts/guard-test-database.mjs"
+    "pretest": "node --test scripts/guard-test-database.test.mjs && node scripts/guard-test-database.mjs"
   },
   "keywords": [],
   "author": "",

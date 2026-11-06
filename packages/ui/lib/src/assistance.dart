@@ -170,24 +170,29 @@ class _AssistancePanelState extends State<AssistancePanel>
     final generation = ++voiceGeneration;
     bool current() => mounted && generation == voiceGeneration;
     try {
+      // End the previous plugin session, including its pause/listen timers.
+      await recognition.cancel();
+      if (!current()) return;
       final available = await recognition.initialize(
-        onError: (_) {
-          if (current()) {
-            setState(() {
-              listening = false;
-              error = 'voiceUnavailable';
-            });
-          }
-        },
-        onStatus: (status) {
-          if (current() && ['done', 'notListening'].contains(status)) {
-            setState(() => listening = false);
-          }
-        },
         options: [SpeechToText.androidNoBluetooth],
       );
       if (!current()) return;
       if (!available) throw StateError('unavailable');
+      // initialize is cached by the plugin singleton. Replace listeners for
+      // every attempt, including when this panel is reopened.
+      recognition.errorListener = (_) {
+        if (current()) {
+          setState(() {
+            listening = false;
+            error = 'voiceUnavailable';
+          });
+        }
+      };
+      recognition.statusListener = (status) {
+        if (current() && ['done', 'notListening'].contains(status)) {
+          setState(() => listening = false);
+        }
+      };
       final locales = await recognition.locales();
       final locale = locales
           .where(

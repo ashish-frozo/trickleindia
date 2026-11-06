@@ -2,11 +2,86 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pop_domain/pop_domain.dart';
 import 'package:pop_ui/src/assistance.dart';
 
 void main() {
+  testWidgets('voice listeners survive repeat sessions and page reentry', (
+    tester,
+  ) async {
+    const channel = MethodChannel('plugin.csdcorp.com/speech_to_text');
+    final messenger = tester.binding.defaultBinaryMessenger;
+    int initializations = 0, listens = 0;
+    messenger.setMockMethodCallHandler(channel, (call) async {
+      if (call.method == 'initialize') initializations++;
+      if (call.method == 'listen') listens++;
+      if (call.method == 'locales') return ['en_US:English'];
+      return true;
+    });
+    addTearDown(() => messenger.setMockMethodCallHandler(channel, null));
+    Future<void> event(String method, String value) async {
+      await messenger.handlePlatformMessage(
+        channel.name,
+        const StandardMethodCodec().encodeMethodCall(MethodCall(method, value)),
+        (_) {},
+      );
+      await tester.pumpAndSettle();
+    }
+
+    final words =
+        jsonDecode(File('assets/ui_en.arb').readAsStringSync()) as Map;
+    final c = AppController(MemoryStore(), 'http://unused');
+    Widget page() => MaterialApp(
+      home: Scaffold(
+        body: SingleChildScrollView(
+          child: AssistancePanel(
+            controller: c,
+            language: 'en',
+            t: (k) => words[k] ?? k,
+          ),
+        ),
+      ),
+    );
+    Future<void> start() async {
+      await tester.ensureVisible(find.text(words['startListening']));
+      await tester.tap(find.text(words['startListening']));
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.widgetWithText(FilledButton, words['startListening']),
+      );
+      await tester.pumpAndSettle();
+      await event('notifyStatus', 'listening');
+      expect(find.text(words['stopReading']), findsOneWidget);
+    }
+
+    await tester.pumpWidget(page());
+    await tester.pumpAndSettle();
+    await start();
+    await event('notifyStatus', 'notListening');
+    expect(find.text(words['stopReading']), findsNothing);
+    await start();
+    await event('notifyError', '{"errorMsg":"network","permanent":true}');
+    expect(find.text(words['voiceUnavailable']), findsOneWidget);
+    expect(find.text(words['stopReading']), findsNothing);
+    // Disposal invalidates old callbacks; reopening uses the same singleton.
+    await tester.pumpWidget(const SizedBox());
+    await tester.pumpAndSettle();
+    await event('notifyStatus', 'notListening');
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(page());
+    await tester.pumpAndSettle();
+    await start();
+    await event('notifyStatus', 'notListening');
+    expect(find.text(words['stopReading']), findsNothing);
+    expect(initializations, 1);
+    expect(listens, 3);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox());
+    await tester.pumpAndSettle();
+    c.dispose();
+  });
   testWidgets(
     'help is offline, command review cannot post money and large text fits',
     (tester) async {
