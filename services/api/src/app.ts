@@ -119,7 +119,7 @@ export async function buildApp(config: Config) {
   }));
   app.get('/v1/support-requests/:id',async req=>read(req,async(c,i)=>{
     const request=(await scoped(c,i)).supportRequests.find(r=>r.id===idFrom(req));if(!request) fail('NOT_FOUND',404);
-    const audit=(await c.query("SELECT body FROM audit_events WHERE dataset_id=$1 AND body->>'entityId'=$2 ORDER BY body->>'timestamp' LIMIT 100",[i.datasetId,request.id])).rows.map(r=>r.body);
+    const audit=(await c.query("SELECT body FROM audit_events WHERE dataset_id=$1 AND body->>'entityType'='supportRequests' AND body->>'entityId'=$2 ORDER BY body->>'timestamp' LIMIT 100",[i.datasetId,request.id])).rows.map(r=>r.body);
     return {request,audit};
   }));
   app.get('/v1/audit-events',async req=>read(req,async(c,i)=>{

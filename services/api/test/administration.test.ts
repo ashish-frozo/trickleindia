@@ -1,3 +1,4 @@
+import {buildApp} from '../src/app.js';
 import {test,before,beforeEach,after} from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
@@ -101,4 +102,21 @@ test('identity remap audit retains old and new mappings and distinguishes sessio
  assert.deepEqual(revoked.previousMappings,[remap.mapping]);assert.equal(revoked.mappingChanged,false);assert.equal(revoked.sessionsRevoked,true);
  const snapshotText=JSON.stringify(await transaction(c=>snapshot(c,datasetId)));
  assert.equal(snapshotText.includes('audit-before'),false);assert.equal(snapshotText.includes('audit-after'),false);
+});
+test('participant support detail never returns administrative audit for a colliding entity UUID',async()=>{
+ const imported=await importIt(),memberId=imported.payload.members[0].id;
+ await saveStaff(manager,staff({role:'participant',memberId,mapping:{issuer,subject:'audit-reader'}}));
+ const session=await identitySession({iss:issuer,sub:'audit-reader',exp:Math.floor(Date.now()/1000)+3600});
+ const app=await buildApp({demoMode:false,accessCodeHash:'',allowReset:false,allowFaults:false,origins:[]});
+ try {
+  const headers={authorization:`Bearer ${session.token}`};
+  const created=await app.inject({method:'POST',url:'/v1/mutations',headers,payload:{datasetId,operationId:randomUUID(),kind:'support.create',clientCreatedAt:new Date().toISOString(),payload:{requestId:sakhiId,memberId,category:'Savings',description:'Help with savings'}}});
+  assert.equal(created.statusCode,200,created.body);
+  const detail=await app.inject({method:'GET',url:`/v1/support-requests/${sakhiId}`,headers});
+  assert.equal(detail.statusCode,200,detail.body);
+  const audit=detail.json().audit;assert.equal(audit.length,1);
+  assert.ok(audit.every((e:any)=>e.entityType==='supportRequests'&&e.action==='support.create'));
+  assert.equal(detail.body.includes('newMapping'),false);assert.equal(detail.body.includes('previousMappings'),false);
+  assert.equal((await app.inject({method:'GET',url:'/v1/audit-events',headers})).statusCode,403);
+ } finally {await app.close();}
 });
