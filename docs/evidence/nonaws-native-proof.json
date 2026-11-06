@@ -1,0 +1,11 @@
+{
+  "operationIds": [
+    "8119fccc-4673-4ce3-ad78-8bfa0c4ae23b"
+  ],
+  "sameOperationAcrossRestart": true,
+  "confirmedBeforePaise": 160000,
+  "pendingAfterRestartPaise": 20000,
+  "confirmedAfterSyncPaise": 180000,
+  "queueAfterSync": 0,
+  "scope": "Ordinary profile APK; synthetic retained demo; no device/data reset"
+}

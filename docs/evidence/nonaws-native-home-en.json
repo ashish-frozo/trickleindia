@@ -1,0 +1,142 @@
+[
+  {
+    "text": "",
+    "content-desc": "PoP 2.0",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,187][279,277]"
+  },
+  {
+    "text": "",
+    "content-desc": "हिन्दी",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[790,160][1044,304]"
+  },
+  {
+    "text": "",
+    "content-desc": "Proposal demo • Fictional data",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,388][1020,490]"
+  },
+  {
+    "text": "",
+    "content-desc": "Hello, Kavita\n05 Nov 2026",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,538][1020,724]"
+  },
+  {
+    "text": "",
+    "content-desc": "Today’s meeting\nUdaan SHG\nSample village A\n4 Members",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,796][1020,1501]"
+  },
+  {
+    "text": "",
+    "content-desc": "Open meeting",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[126,1219][954,1387]"
+  },
+  {
+    "text": "",
+    "content-desc": "Connected · 0 Waiting to sync",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1501][1020,1723]"
+  },
+  {
+    "text": "",
+    "content-desc": "Sync centre",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[846,1510][990,1654]"
+  },
+  {
+    "text": "",
+    "content-desc": "₹4,200\nConfirmed savings",
+    "class": "android.view.View",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[66,1729][516,1983]"
+  },
+  {
+    "text": "",
+    "content-desc": "1\nPending requests",
+    "class": "android.view.View",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[564,1729][1014,1983]"
+  },
+  {
+    "text": "",
+    "content-desc": "Home Tab 1 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "true",
+    "bounds": "[60,2019][287,2214]"
+  },
+  {
+    "text": "",
+    "content-desc": "Groups Tab 2 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[305,2019][531,2214]"
+  },
+  {
+    "text": "",
+    "content-desc": "Work Tab 3 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[549,2019][776,2214]"
+  },
+  {
+    "text": "",
+    "content-desc": "Help Tab 4 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[794,2019][1020,2214]"
+  }
+]

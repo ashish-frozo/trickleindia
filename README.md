@@ -1,6 +1,6 @@
 # PoP 2.0 proposal demo
 
-Current UI: blue/white structural redesign. See [BLUEPRINT_UI.md](docs/design/BLUEPRINT_UI.md). `output/blueprint` contains the latest previews; the earlier olive/lime `vengeance` direction was rejected.
+Current UI: blue/white structural redesign. See [BLUEPRINT_UI.md](docs/design/BLUEPRINT_UI.md). [output/nonaws/index.html](output/nonaws/index.html) contains current verified previews; `output/blueprint` preserves the initial redesign; the earlier olive/lime `vengeance` direction was rejected.
 
 Flutter Android field app, Flutter programme portal, Node.js/TypeScript API and PostgreSQL. All records are synthetic. The original requirements remain in `PoP_2_Demo_Coding_Pack`.
 

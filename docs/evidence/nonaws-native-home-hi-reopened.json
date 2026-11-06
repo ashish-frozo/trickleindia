@@ -1,0 +1,142 @@
+[
+  {
+    "text": "",
+    "content-desc": "PoP 2.0",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,183][276,282]"
+  },
+  {
+    "text": "",
+    "content-desc": "English",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[711,160][1044,304]"
+  },
+  {
+    "text": "",
+    "content-desc": "प्रस्ताव का डेमो • काल्पनिक डेटा",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,388][1020,496]"
+  },
+  {
+    "text": "",
+    "content-desc": "नमस्ते, Kavita\n05 नव॰ 2026",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,544][1020,742]"
+  },
+  {
+    "text": "",
+    "content-desc": "आज की बैठक\nUdaan SHG\nSample village A\n4 सदस्य",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,814][1020,1525]"
+  },
+  {
+    "text": "",
+    "content-desc": "बैठक खोलें",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[126,1243][954,1411]"
+  },
+  {
+    "text": "",
+    "content-desc": "कनेक्ट है · 0 सिंक होने की प्रतीक्षा में",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1525][1020,1747]"
+  },
+  {
+    "text": "",
+    "content-desc": "सिंक केंद्र",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[846,1534][990,1678]"
+  },
+  {
+    "text": "",
+    "content-desc": "₹4,200\nपुष्टि की गई बचत",
+    "class": "android.view.View",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[66,1753][516,1983]"
+  },
+  {
+    "text": "",
+    "content-desc": "1\nलंबित अनुरोध",
+    "class": "android.view.View",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[564,1753][1014,1983]"
+  },
+  {
+    "text": "",
+    "content-desc": "होम टैब 1, कुल 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "true",
+    "bounds": "[60,2019][287,2214]"
+  },
+  {
+    "text": "",
+    "content-desc": "समूह टैब 2, कुल 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[305,2019][531,2214]"
+  },
+  {
+    "text": "",
+    "content-desc": "काम टैब 3, कुल 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[549,2019][776,2214]"
+  },
+  {
+    "text": "",
+    "content-desc": "सहायता टैब 4, कुल 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[794,2019][1020,2214]"
+  }
+]

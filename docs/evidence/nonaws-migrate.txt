@@ -1,0 +1,5 @@
+
+> pop-demo-api@1.0.0 migrate
+> tsx src/cli.ts migrate
+
+Migrations applied

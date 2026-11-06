@@ -1,0 +1,52 @@
+[
+  {
+    "text": "",
+    "content-desc": "Dismiss",
+    "class": "android.view.View",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[0,0][1080,2400]"
+  },
+  {
+    "text": "",
+    "content-desc": "Open a screen by voice",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[192,556][888,730]"
+  },
+  {
+    "text": "",
+    "content-desc": "Use short screen names only. Your device or browser speech service may process audio; offline recognition is requested but availability varies. No payment is saved. You will review the recognised command before opening a screen.",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[192,778][888,1453]"
+  },
+  {
+    "text": "",
+    "content-desc": "Cancel",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[651,1525][888,1669]"
+  },
+  {
+    "text": "",
+    "content-desc": "Use microphone",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[362,1669][888,1837]"
+  }
+]

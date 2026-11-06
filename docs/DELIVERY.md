@@ -1,6 +1,6 @@
 # PoP 2.0 local review package
 
-Current UI: blue/white structural redesign. See [BLUEPRINT_UI.md](design/BLUEPRINT_UI.md). `output/blueprint` contains the latest previews; the earlier olive/lime `vengeance` direction was rejected.
+Current UI: blue/white structural redesign. See [BLUEPRINT_UI.md](design/BLUEPRINT_UI.md). [output/nonaws/index.html](../output/nonaws/index.html) contains current verified previews; `output/blueprint` preserves the initial redesign; the earlier olive/lime `vengeance` direction was rejected.
 
 The package contains the implemented Flutter Android app and web portal, Node/TypeScript API, PostgreSQL migrations, pinned source/dependencies, test evidence, screenshots and recordings. All records are fictional.
 
@@ -31,3 +31,7 @@ The preceding UI revision used Flutter adaptations of VengeanceUI SpotlightNavba
 ## Requirements follow-up
 
 Current scope and verification are in [NON_AWS_COMPLETION.md](NON_AWS_COMPLETION.md). The package includes the workflow training deck and user guide. AWS deployment, live identity callback verification, full RFP module scope, language/audio review and human acceptance remain open.
+
+## Current native verification
+
+The current ordinary APK was installed over retained emulator data and passed offline save, force-stop recovery, identical-operation reconciliation and independent one-receipt/one-transaction checks. Native help, microphone disclosure and persisted Hindi preference were checked. New evidence is prefixed `nonaws-`; current gallery is `output/nonaws/index.html`. Latest activity launch samples (2.766/2.309/2.632 seconds) still miss the two-second target. Actual spoken services, representative physical-device performance and human UAT are not accepted by these checks. See NON_AWS_COMPLETION.md for the exact current scope.

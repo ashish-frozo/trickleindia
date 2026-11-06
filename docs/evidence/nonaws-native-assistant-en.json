@@ -1,0 +1,102 @@
+[
+  {
+    "text": "",
+    "content-desc": "हिन्दी",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[790,160][1044,304]"
+  },
+  {
+    "text": "",
+    "content-desc": "Proposal demo • Fictional data",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,388][1020,490]"
+  },
+  {
+    "text": "",
+    "content-desc": "Connected · 0 Waiting to sync",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,490][1020,652]"
+  },
+  {
+    "text": "",
+    "content-desc": "Sync centre",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[846,499][990,643]"
+  },
+  {
+    "text": "",
+    "content-desc": "Home",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,700][1020,823]"
+  },
+  {
+    "text": "",
+    "content-desc": "Help and voice navigation\nApp instructions only. This assistant cannot record payments or change your records. Help text is a draft awaiting review.\nOpen a screen by voice\nTry: home, help, sync. Staff can also open groups, meetings and work. Managers can open reports and activity.\nFind instructions",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,823][1020,1983]"
+  },
+  {
+    "text": "",
+    "content-desc": "Home Tab 1 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,2019][287,2214]"
+  },
+  {
+    "text": "",
+    "content-desc": "Groups Tab 2 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[305,2019][531,2214]"
+  },
+  {
+    "text": "",
+    "content-desc": "Work Tab 3 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[549,2019][776,2214]"
+  },
+  {
+    "text": "",
+    "content-desc": "Help Tab 4 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "true",
+    "bounds": "[794,2019][1020,2214]"
+  }
+]

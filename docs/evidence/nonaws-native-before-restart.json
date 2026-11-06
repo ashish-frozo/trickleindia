@@ -1,0 +1,142 @@
+[
+  {
+    "text": "",
+    "content-desc": "हिन्दी",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[790,160][1044,304]"
+  },
+  {
+    "text": "",
+    "content-desc": "Proposal demo • Fictional data",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,388][1020,490]"
+  },
+  {
+    "text": "",
+    "content-desc": "Offline · 1 Waiting to sync",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,490][1020,652]"
+  },
+  {
+    "text": "",
+    "content-desc": "Sync centre",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[846,499][990,643]"
+  },
+  {
+    "text": "",
+    "content-desc": "Sync centre",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,700][1020,823]"
+  },
+  {
+    "text": "",
+    "content-desc": "Sync centre",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,823][1020,982]"
+  },
+  {
+    "text": "",
+    "content-desc": "Last server contact: Nov 6, 2026 13:06 IST",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,982][1020,1132]"
+  },
+  {
+    "text": "",
+    "content-desc": "Last accepted record: Nov 6, 2026 13:02 IST",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1132][1020,1282]"
+  },
+  {
+    "text": "",
+    "content-desc": "Retry",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1330][1020,1498]"
+  },
+  {
+    "text": "",
+    "content-desc": "Savings contribution\nWaiting to sync\n₹200\nCannot reach the server. Your saved entries are on this phone.\n8119fccc-4673-4ce3-ad78-8bfa0c4ae23b",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1558][1020,1983]"
+  },
+  {
+    "text": "",
+    "content-desc": "Home Tab 1 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "true",
+    "bounds": "[60,2019][287,2214]"
+  },
+  {
+    "text": "",
+    "content-desc": "Groups Tab 2 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[305,2019][531,2214]"
+  },
+  {
+    "text": "",
+    "content-desc": "Work Tab 3 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[549,2019][776,2214]"
+  },
+  {
+    "text": "",
+    "content-desc": "Help Tab 4 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[794,2019][1020,2214]"
+  }
+]

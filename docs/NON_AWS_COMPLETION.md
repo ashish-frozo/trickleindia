@@ -24,6 +24,12 @@ This supersedes the current-status section of REQUIREMENTS_CLOSURE.md. The origi
 - UI: 18 passed, one existing visual-preview skip. Static analysis: no issues across both apps and shared packages. Platform build and browser/device results are saved under `docs/evidence/nonaws-*` after final integration.
 - Local synthetic load: 1,006 members, 100 reads at concurrency eight; p50 228.83 ms, p95 478.47 ms. Twenty identical financial retries produced exactly one effect. This uses Fastify injection with PostgreSQL, not network/TLS capacity. Full result: `docs/evidence/nonaws-load.json`.
 - Production npm audit found zero advisories in the saved run. This is not a penetration-test certification.
+- Both platform builds succeeded. The 46.9 MB ARM64 profile APK verifies under Android development signing; it is not a production-signed release. Browser desktop/tablet EN/HI, keyboard activation, report download, invalid import, identity editor, cited help, money-command rejection and microphone disclosure passed with no page errors.
+- The ordinary APK upgraded without clearing device data. A fully disconnected ₹200 contribution survived process restart with the identical operation ID, then changed Rani’s confirmed savings from ₹1,600 to ₹1,800 and cleared the queue. PostgreSQL independently confirms exactly one transaction and one receipt: `nonaws-native-server-proof.json`.
+- An earlier ₹200 preflight remained connected through a surviving keep-alive socket and was correctly recorded online. It is preserved and explicitly excluded from offline acceptance in `nonaws-native-preflight.json`; the successful test force-stopped after disconnecting to close all sockets. The synthetic programme total is now ₹5,400. No demo reset was used.
+- Native help and microphone consent were exercised; Hindi preference survived process restart and English was restored. Captures use a 360dp emulator at normal text scale; 200% layout checks are widget evidence, not TalkBack acceptance. Actual recognition and spoken output were not certified.
+- Latest retained-data cold activity launches: 2.766 s, 2.309 s and 2.632 s. These exceed the 2-second target. They are emulator activity timings, not proof of full cached-content availability or physical-device acceptance. The startup requirement remains open.
+- Eight-slide training deck rendered and visually checked. Current image gallery: `output/nonaws/index.html`.
 
 ## Acceptance still requiring external evidence
 

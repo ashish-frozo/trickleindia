@@ -15,17 +15,17 @@
 - group:
   - heading "Programme overview SHG finance, meetings and follow-up" [level=2]
   - button "Group All groups"
-  - button "Confirmed savings ₹5,000 SHG finance, meetings and follow-up"
+  - button "Confirmed savings ₹5,400 SHG finance, meetings and follow-up"
   - button "Members 6"
   - button "Loan principal outstanding ₹5,000"
   - button "Open support requests 1"
-  - text: "Last refreshed: Nov 6, 2026 12:48 IST"
+  - text: "Last refreshed: Nov 6, 2026 13:09 IST"
   - 'group "Groups at a glance (2) Requests to follow up DEMO-0001 Open Fictional request: help finding the meeting screen."':
     - button "View all groups"
     - button "View requests"
     - 'button "Pragati SHG 2 Members · Sample village B Confirmed savings: ₹1,200 Loan principal outstanding: ₹1,000 Last accepted record: Nov 5, 2026 05:30 IST"'
     - button "WhatsApp simulation • No messages sent"
-    - 'button "Udaan SHG 4 Members · Sample village A Confirmed savings: ₹3,800 Loan principal outstanding: ₹4,000 Last accepted record: Nov 6, 2026 09:43 IST"'
-  - group "Recent financial activity Savings contribution Rani Mahto · 5 Nov 2026 Confirmed ₹200":
+    - 'button "Udaan SHG 4 Members · Sample village A Confirmed savings: ₹4,200 Loan principal outstanding: ₹4,000 Last accepted record: Nov 6, 2026 13:07 IST"'
+  - group "Recent financial activity Savings contribution Rani Mahto · 5 Nov 2026 Confirmed ₹200 Savings contribution Rani Mahto · 5 Nov 2026 Confirmed ₹200 Savings contribution Rani Mahto · 5 Nov 2026 Confirmed ₹200":
     - button "Activity"
     - button "Reverse entry"

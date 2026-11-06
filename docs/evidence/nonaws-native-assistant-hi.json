@@ -1,0 +1,132 @@
+[
+  {
+    "text": "",
+    "content-desc": "English",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[711,160][1044,304]"
+  },
+  {
+    "text": "",
+    "content-desc": "सहायता और आवाज़ से नेविगेशन\nकेवल ऐप के निर्देश। यह सहायक भुगतान दर्ज नहीं कर सकता और आपके रिकॉर्ड नहीं बदल सकता। सहायता पाठ समीक्षा के लिए मसौदा है।\nआवाज़ से स्क्रीन खोलें\nबोलें: होम, सहायता, सिंक। कर्मचारी समूह, बैठक और काम भी खोल सकते हैं। प्रबंधक रिपोर्ट और गतिविधि खोल सकते हैं।\nनिर्देश खोजें",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,328][1020,1983]"
+  },
+  {
+    "text": "",
+    "content-desc": "",
+    "class": "android.widget.EditText",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[126,500][954,746]"
+  },
+  {
+    "text": "",
+    "content-desc": "100 वर्ण आैर डाले जा सकते हैं",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[783,686][894,746]"
+  },
+  {
+    "text": "",
+    "content-desc": "माइक्रोफ़ोन इस्तेमाल करें",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[126,746][763,890]"
+  },
+  {
+    "text": "",
+    "content-desc": "चुनी गई स्क्रीन खोलें",
+    "class": "android.widget.Button",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[126,914][623,1082]"
+  },
+  {
+    "text": "",
+    "content-desc": "",
+    "class": "android.widget.EditText",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[126,1457][954,1781]"
+  },
+  {
+    "text": "",
+    "content-desc": "500 वर्ण आैर डाले जा सकते हैं",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[783,1721][894,1781]"
+  },
+  {
+    "text": "",
+    "content-desc": "इस प्रश्न को सहायता कार्ड से मिलाने के लिए ऑनलाइन मॉडल की अनुमति दें\nवैकल्पिक। यह प्रश्न और सहायता पाठ निर्धारित सेवा को भेजता है। नाम, फ़ोन नंबर या वित्तीय रिकॉर्ड न लिखें। स्थानीय सहायता इसके बिना भी काम करती है।",
+    "class": "android.widget.CheckBox",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[126,1781][954,1983]"
+  },
+  {
+    "text": "",
+    "content-desc": "होम टैब 1, कुल 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,2019][287,2214]"
+  },
+  {
+    "text": "",
+    "content-desc": "समूह टैब 2, कुल 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[305,2019][531,2214]"
+  },
+  {
+    "text": "",
+    "content-desc": "काम टैब 3, कुल 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[549,2019][776,2214]"
+  },
+  {
+    "text": "",
+    "content-desc": "सहायता टैब 4, कुल 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "true",
+    "bounds": "[794,2019][1020,2214]"
+  }
+]

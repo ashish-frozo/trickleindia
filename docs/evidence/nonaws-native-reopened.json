@@ -1,0 +1,152 @@
+[
+  {
+    "text": "",
+    "content-desc": "Back",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[12,160][156,304]"
+  },
+  {
+    "text": "",
+    "content-desc": "हिन्दी",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[646,160][900,304]"
+  },
+  {
+    "text": "",
+    "content-desc": "Help",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[912,160][1056,304]"
+  },
+  {
+    "text": "",
+    "content-desc": "Proposal demo • Fictional data",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,388][1020,490]"
+  },
+  {
+    "text": "",
+    "content-desc": "Offline · 1 Waiting to sync",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,490][1020,652]"
+  },
+  {
+    "text": "",
+    "content-desc": "Sync centre",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[846,499][990,643]"
+  },
+  {
+    "text": "",
+    "content-desc": "Passbook",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,700][1020,823]"
+  },
+  {
+    "text": "",
+    "content-desc": "Edit profile",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[599,823][1020,967]"
+  },
+  {
+    "text": "",
+    "content-desc": "Rani Mahto\nUdaan SHG\nConfirmed savings\n₹1,600",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,967][1020,1720]"
+  },
+  {
+    "text": "",
+    "content-desc": "₹200 · Waiting to sync",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1720][1020,1749]"
+  },
+  {
+    "text": "",
+    "content-desc": "Record entry",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,1785][1020,1953]"
+  },
+  {
+    "text": "",
+    "content-desc": "Home Tab 1 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[60,2019][287,2214]"
+  },
+  {
+    "text": "",
+    "content-desc": "Groups Tab 2 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "true",
+    "bounds": "[305,2019][531,2214]"
+  },
+  {
+    "text": "",
+    "content-desc": "Work Tab 3 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[549,2019][776,2214]"
+  },
+  {
+    "text": "",
+    "content-desc": "Help Tab 4 of 4",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[794,2019][1020,2214]"
+  }
+]

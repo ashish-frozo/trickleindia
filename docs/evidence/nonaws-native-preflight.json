@@ -1,0 +1,7 @@
+{
+  "description": "First attempt removed adb reverse but an established keep-alive connection survived; this was an online contribution, not offline acceptance. It is retained in the synthetic ledger. The successful offline test additionally force-stopped the process after disconnection.",
+  "operationId": "3606433d-abbe-4bca-9c40-9550217f785d",
+  "transactionId": "12414f77-e087-466f-98d1-be2c68affb2c",
+  "amountPaise": 20000,
+  "classification": "online preflight, excluded from offline acceptance"
+}

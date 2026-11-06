@@ -1,0 +1,142 @@
+[
+  {
+    "text": "",
+    "content-desc": "Dismiss",
+    "class": "android.view.View",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[0,0][1080,2400]"
+  },
+  {
+    "text": "",
+    "content-desc": "Review",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[192,544][888,676]"
+  },
+  {
+    "text": "",
+    "content-desc": "Member",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[192,757][456,817]"
+  },
+  {
+    "text": "",
+    "content-desc": "Rani Mahto",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[492,757][888,823]"
+  },
+  {
+    "text": "",
+    "content-desc": "Group",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[192,892][456,952]"
+  },
+  {
+    "text": "",
+    "content-desc": "Udaan SHG",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[492,892][888,958]"
+  },
+  {
+    "text": "",
+    "content-desc": "Type",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[192,1027][456,1087]"
+  },
+  {
+    "text": "",
+    "content-desc": "Savings contribution",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[492,1027][888,1159]"
+  },
+  {
+    "text": "",
+    "content-desc": "Amount",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[192,1228][456,1288]"
+  },
+  {
+    "text": "",
+    "content-desc": "₹200",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[492,1228][888,1294]"
+  },
+  {
+    "text": "",
+    "content-desc": "Date",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[192,1363][456,1423]"
+  },
+  {
+    "text": "",
+    "content-desc": "5 Nov 2026",
+    "class": "android.view.View",
+    "clickable": "false",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[492,1363][888,1429]"
+  },
+  {
+    "text": "",
+    "content-desc": "Cancel",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[651,1537][888,1681]"
+  },
+  {
+    "text": "",
+    "content-desc": "Save contribution",
+    "class": "android.widget.Button",
+    "clickable": "true",
+    "password": "false",
+    "focused": "false",
+    "selected": "false",
+    "bounds": "[328,1681][888,1849]"
+  }
+]
