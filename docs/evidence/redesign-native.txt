@@ -1,0 +1,2 @@
+Ordinary redesigned APK: ₹200 saved offline, same operation recovered after force-stop/reopen, then confirmed savings ₹1,400 and empty queue. PostgreSQL independently verified one transaction and one receipt.
+Automation note: the initial final-state wait used a cross-node regex; corrected to wait for the amount node and assert the connection state independently.

@@ -1,0 +1,60 @@
+const fs = require('fs');
+const assert = require('assert');
+const { chromium } = require('playwright');
+(async () => {
+  fs.mkdirSync('output/redesign', { recursive: true });
+  const browser = await chromium.launch({ headless: true, channel: 'chrome' });
+  const page = await browser.newPage({ viewport: {width:1440,height:1000}, reducedMotion:'reduce' });
+  const errors=[];
+  page.on('pageerror',e=>errors.push(String(e)));
+  await page.goto(process.env.POP_WEB_URL || 'http://localhost:8080');
+  await page.getByRole('textbox',{name:'Demo access code'}).waitFor();
+  await page.waitForTimeout(1000);
+  await page.screenshot({path:'output/redesign/web-login-en-1440.png'});
+  await page.getByRole('textbox',{name:'Demo access code'}).fill(fs.readFileSync(process.env.POP_ACCESS_CODE_FILE || '.local/demo-access-code','utf8').trim());
+  await page.getByRole('button',{name:'Open demo',exact:true}).click();
+  await page.getByRole('button',{name:'Overview Tab 1 of 6',exact:true}).waitFor().catch(async e=>{fs.writeFileSync('.local/redesign-browser-failure.txt',JSON.stringify({tree:await page.locator('body').ariaSnapshot(),errors},null,2));await browser.close();throw e});
+  await page.waitForTimeout(800);
+  await page.screenshot({path:'output/redesign/web-overview-en-1440.png'});
+  fs.writeFileSync('docs/evidence/redesign-web-semantics.txt', await page.locator('body').ariaSnapshot());
+  await page.getByRole('button',{name:'Groups Tab 2 of 6',exact:true}).click();
+  await page.waitForTimeout(400);
+  await page.screenshot({path:'output/redesign/web-groups-en-1440.png'});
+  await page.getByRole('button',{name:'Support Tab 4 of 6',exact:true}).click();
+  await page.waitForTimeout(500);
+  assert((await page.locator('body').ariaSnapshot()).includes('Request status'));
+  await page.screenshot({path:'output/redesign/web-support-en-1440.png'});
+  await page.getByRole('button',{name:'Overview Tab 1 of 6',exact:true}).click();
+  await page.getByRole('button',{name:'हिन्दी',exact:true}).click();
+  await page.waitForTimeout(400);
+  await page.screenshot({path:'output/redesign/web-overview-hi-1440.png'});
+  await page.setViewportSize({width:768,height:1024});
+  await page.waitForTimeout(400);
+  await page.screenshot({path:'output/redesign/web-overview-hi-768.png'});
+  const hindiPrincipal=JSON.parse(fs.readFileSync('packages/ui/assets/ui_hi.arb','utf8')).loanPrincipal;
+  let tabletTree=await page.locator('body').ariaSnapshot();
+  for(const amount of ['₹1,000','₹4,000']) assert(tabletTree.includes(hindiPrincipal+': '+amount),'Hindi tablet omits group principal '+amount);
+  await page.getByRole('button',{name:'English',exact:true}).click();
+  await page.waitForTimeout(400);
+  await page.screenshot({path:'output/redesign/web-overview-en-768.png'});
+  tabletTree=await page.locator('body').ariaSnapshot();
+  for(const amount of ['₹1,000','₹4,000']) assert(tabletTree.includes('Loan principal outstanding: '+amount),'English tablet omits group principal '+amount);
+  const focus=[]; let supportActivated=false;
+  for(let i=0;i<50;i++) {
+    await page.keyboard.press('Tab'); await page.waitForTimeout(40);
+    const label=await page.evaluate(()=>document.activeElement?.getAttribute('aria-label') || document.activeElement?.textContent?.slice(0,100) || '');
+    focus.push(label);
+    if(label.includes('Support') && label.includes('Tab 4')) {
+      await page.keyboard.press('Enter'); await page.waitForTimeout(300);
+      supportActivated=(await page.locator('body').ariaSnapshot()).includes('Request status');
+      if(supportActivated) break;
+    }
+  }
+  fs.writeFileSync('docs/evidence/redesign-browser.json',JSON.stringify({errors,supportActivated,focus},null,2));
+  await browser.close();
+  assert(supportActivated,'Support keyboard activation failed');
+  assert.equal(errors.length,0);
+  fs.writeFileSync('docs/evidence/redesign-browser.json',JSON.stringify({errors,supportActivated,focus},null,2));
+  await browser.close();
+  console.log('Portal desktop/tablet English/Hindi capture and keyboard navigation passed');
+})().catch(error=>{console.error(error);process.exit(1)});

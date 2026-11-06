@@ -1,30 +1,38 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "identity": {
     "title": "PoP 2.0",
-    "status": "Proposed demo identity; no supplied TUIF brand assets"
+    "status": "RFP-led proposal redesign; selected by delegated design direction on6 November2026"
   },
   "colors": {
-    "canvas": "#F7F8F4",
+    "canvas": "#F5F7F2",
     "surface": "#FFFFFF",
-    "primary": "#175C53",
-    "primaryTint": "#E8F3EF",
-    "text": "#18332F",
-    "muted": "#52645E",
-    "border": "#D9E3DD",
+    "primary": "#175C48",
+    "primaryTint": "#E8F0E7",
+    "text": "#18392F",
+    "muted": "#5A6D62",
+    "border": "#DCE5DC",
     "success": "#24613C",
-    "warning": "#83510A",
+    "warning": "#80500D",
     "error": "#A12B32",
-    "accent": "#C58B39",
+    "accent": "#B47C25",
     "onPrimary": "#FFFFFF",
     "successTint": "#EDF6EE",
-    "warningTint": "#FFF4DE",
-    "errorTint": "#FCEEF0"
+    "warningTint": "#FFF2D9",
+    "errorTint": "#FCEEF0",
+    "forest": "#123F36",
+    "forestMuted": "#C1D5C9",
+    "outline": "#74877A",
+    "surfaceSoft": "#EFF3EC"
   },
   "fonts": {
     "en": "Noto Sans",
     "hi": "Noto Sans Devanagari",
-    "delivery": "Bundle fonts and licence notices; do not depend on startup downloads"
+    "delivery": "Bundle fonts and licence notices; do not depend on startup downloads",
+    "weights": [
+      400,
+      600
+    ]
   },
   "typography": {
     "screenTitle": {
@@ -57,6 +65,11 @@
       "lineHeight": 40,
       "weight": 600,
       "tabularNumerals": true
+    },
+    "portalBody": {
+      "size": 14,
+      "lineHeight": 21,
+      "weight": 400
     }
   },
   "spacing": {
@@ -68,13 +81,13 @@
   },
   "radius": {
     "card": 16,
-    "button": 14,
+    "button": 12,
     "sheet": 24
   },
   "layout": {
     "minimumTouchTarget": 48,
     "primaryButtonMinHeight": 56,
-    "portalSidebar": 240,
+    "portalSidebar": 232,
     "portalContentMaxWidth": 1280
   },
   "motion": {

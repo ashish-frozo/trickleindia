@@ -1,12 +1,12 @@
 # Verification report
 
-Verification date: 5 November 2026. This report distinguishes executed checks from manual acceptance still requiring equipment. Synthetic data only. No production-readiness claim.
+Verification dates: original implementation 5 November 2026; UI redesign 6 November 2026. This report distinguishes executed checks from manual acceptance still requiring equipment. Synthetic data only. No production-readiness claim.
 
 ## Automated results
 
 - 23 API integration tests against real PostgreSQL 18.3: `evidence/api-tests.txt`.
 - 10 domain/controller tests: `evidence/domain-tests.txt`.
-- 6 Flutter widget tests: `evidence/ui-tests.txt`.
+- 8 Flutter widget tests on the redesign: `evidence/redesign-ui-tests.txt` (the original 6-test run is retained as `evidence/ui-tests.txt`).
 - Native macOS encrypted SQLite reopen/unkeyed-reader test: `evidence/native-encryption-test.txt` and the final verification log.
 - Real HTTP API + encrypted native-store restart/lost-acknowledgment roundtrip: `evidence/native-api-roundtrip.txt`.
 - 8 Android process/installation phases: `evidence/android-*.txt`, summarised in `evidence/android-summary.json`.
@@ -15,7 +15,17 @@ The profile comparison regression was confirmed failing when the proposed values
 
 The Android phases cover bootstrap, real route disconnection/durable savings save, force-stop recovery, sync, a second Android user installation with independent storage, offline registration, registration restart/sync and a real dropped HTTP response after financial commit. `android-durability.json` compares operation ID, transaction ID, full payload, payload hash and immutable metadata across force-stop. `android-server-checkpoints.json` independently verifies seven members, savings 500000 and principal 490000 paise after native registration/repayment.
 
-Flutter static analysis, API TypeScript compilation, ARM64 Android and release web builds were run. Asset verification checks all 170 bilingual keys, static message references, bundled help/audio states and nine text/background contrast pairs (minimum 5.89:1 among tested pairs). The portal uses a real browser and real API; keyboard Enter activates Support, reduced motion and grayscale vision emulation were verified; its support recording verifies a stable replay reference and open counts 1→2→1. The pinned, repeatable root `npm run test:portal` also passes against Chrome156 with Playwright1.64.1 (`evidence/portal-reproducible.txt`). Raw browser checks are in `evidence/portal-*.txt`; keyboard focus and page-error results are in `evidence/web-keyboard.json`.
+Flutter static analysis, API TypeScript compilation, ARM64 Android and release web builds were run. Asset verification checks all 191 bilingual keys, static message references, bundled help/audio states and nine text/background contrast pairs (minimum 5.13:1 among tested pairs). The portal uses a real browser and real API; keyboard Enter activates Support, reduced motion and grayscale vision emulation were verified; its support recording verifies a stable replay reference and open counts 1→2→1. The pinned, repeatable root `npm run test:portal` also passes against Chrome156 with Playwright1.64.1 (`evidence/portal-reproducible.txt`). Raw browser checks are in `evidence/portal-*.txt`; keyboard focus and page-error results are in `evidence/web-keyboard.json`.
+
+## RFP-led UI redesign
+
+The shared Flutter UI now uses bundled regular/semibold Noto fonts, a forest/sage theme, a task-led mobile home, a passbook with separate confirmed/pending money, and a dedicated responsive programme workspace. The portal adds aligned group/member tables, scoped group drill-down, compact filters and grouped support actions. `docs/design/RFP_UI_REQUIREMENTS.md` maps the supplied ten-page RFP to the implementation and full-production gaps.
+
+The 23 real PostgreSQL API tests were rerun (`redesign-api-tests.txt`). The eight widget tests cover English/Hindi at 200%, keyboard and modal behavior, repeated confirmation, conflict review, group drill-down and first-viewport pending balances. The programme group test also reaches and activates Support with Tab/Enter and asserts both groups retain principal outstanding in the 768px layout. The tablet regression was confirmed failing before the missing field was restored (`redesign-tablet-red.txt`). Token/message checks are in `redesign-assets-and-contrast.txt`; the once-only mechanical design scan returned no findings (`redesign-detector.json`).
+
+An ordinary redesigned ARM64 profile APK saved ₹200 offline, recovered the same operation after force-stop/reopen, and reconciled to Rani's ₹1,400 confirmed savings with an empty queue. PostgreSQL independently confirmed one transaction and one receipt: `redesign-native-proof.json`, `redesign-server-proof.json`. The initial final-state automation wait incorrectly expected the label and value in one semantics node; it was corrected to wait for the amount and assert the connection separately. No business assertion was weakened. Final portal/Android captures are in `output/redesign`; first-review captures are retained separately. The independent finish review disposition is **ship**, with its tablet-principal material finding resolved in both languages (`docs/design/FINISH_REVIEW.md`). A truncated Hindi toolbar title at 200% remains an optional refinement; the member, amount and action are legible. These captures include the accepted contribution (overall savings ₹5,000), whereas the fresh fixture starts at ₹4,800.
+
+The five-language and voice/audio expectations of the full RFP are not all implemented: the demo has English/Hindi and explicit unavailable/planned states for the remaining capabilities. The previously documented TalkBack speech and full cached-start acceptance gaps remain open.
 
 ## Acceptance mapping
 
@@ -53,7 +63,7 @@ Flutter static analysis, API TypeScript compilation, ARM64 Android and release w
 
 ## Timing and device limits
 
-Eight Android cache-initialization observations ranged from 658 to 1914 ms. One durable savings-save observation was 65 ms. The cache measurement excludes Android/Flutter engine startup; it must not be presented as full application launch latency. The initial debug cold activity launch was approximately 5 seconds. The AOT profile build reduced its initial launch to 4.14 seconds; observed cached activity launches included 2.80, 3.05 and 3.55 seconds; the final APK launch measured 2.46 seconds. The full cached-start target of ≤2 seconds was not met on this emulator. Actual profile launch measurements are retained separately. These samples describe an API36 ARM64 software-rendered emulator (two cores, about 2.5 GB RAM), not field-device guarantees.
+Eight Android cache-initialization observations ranged from 658 to 1914 ms. One durable savings-save observation was 65 ms. The cache measurement excludes Android/Flutter engine startup; it must not be presented as full application launch latency. The initial debug cold activity launch was approximately 5 seconds. The AOT profile build reduced its initial launch to 4.14 seconds; observed cached activity launches included 2.80, 3.05 and 3.55 seconds; the final APK launch measured 2.46 seconds. The full cached-start target of ≤2 seconds was not met on this emulator. Actual profile launch measurements are retained separately. Those original implementation samples are historical. The redesign captures encountered emulator System UI ANRs during cold boot; an uncontrolled cold activity launch was 6.12s and a later post-install launch timed out during the OS stall. They are not a controlled benchmark; see `evidence/redesign-device-notes.md`. The target remains unmet and requires representative-device measurement. These samples describe an API36 ARM64 software-rendered emulator (two cores, about 2.5 GB RAM), not field-device guarantees.
 
 ## Remaining acceptance and explicit exceptions
 

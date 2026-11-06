@@ -2,12 +2,12 @@
   "focus": [
     "हिन्दी",
     "Refresh",
-    "Sign out",
+    "Overview Tab 1 of 6",
     "Sync centre",
-    "Overview\nTab 1 of 6",
-    "Groups\nTab 2 of 6",
-    "Meetings\nTab 3 of 6",
-    "Support\nTab 4 of 6"
+    "Groups Tab 2 of 6",
+    "Meetings Tab 3 of 6",
+    "Group\nAll groups",
+    "Support Tab 4 of 6"
   ],
   "activatedSupport": true,
   "reducedMotion": true,

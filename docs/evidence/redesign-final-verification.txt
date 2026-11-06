@@ -1,0 +1,16 @@
+RFP-led UI redesign — 6 November 2026
+
+23 real PostgreSQL API regressions passed.
+8 Flutter UI tests passed, including Hindi/200%/keyboard/repeated commit/conflicts, tablet principal preservation, keyboard navigation and scoped drill-down.
+Static analysis: no issues across domain, UI, Android and portal.
+191 bilingual message keys and all static references resolve; tested contrast pairs meet AA (minimum 5.13:1).
+Ordinary native APK saved ₹200 offline, recovered the same operation after force-stop/reopen, then showed ₹1,400 confirmed and zero pending.
+PostgreSQL independently verified one accepted financial record and one receipt.
+Desktop/tablet English/Hindi browser capture, per-group principal assertions and keyboard Support activation passed with no page errors.
+Reduced motion and grayscale browser checks passed.
+ARM64 profile APK and self-contained release web builds succeeded; APK v2 signature verified.
+Mechanical design detector ran once, with no findings.
+Fresh independent finish review: disposition ship; tablet principal finding resolved in English/Hindi; no material finish findings remain.
+DESIGN.md and .impeccable/design.json document the built system; RFP traceability is recorded.
+
+Remaining: optional Hindi toolbar-title wrapping at 200%; full RFP Odia/Ho/Santhali and reviewed voice/audio; actual TalkBack speech and controlled <=2s full cached startup. Preserve device notes and proposal-review boundaries.

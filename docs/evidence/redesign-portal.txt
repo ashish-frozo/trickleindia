@@ -1,0 +1,5 @@
+
+> pop-demo-workspace@1.0.0 test:redesign
+> node scripts/redesign-portal-qa.cjs
+
+Portal desktop/tablet English/Hindi capture and keyboard navigation passed

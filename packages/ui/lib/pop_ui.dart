@@ -1,3 +1,13 @@
+/*
+THESIS: Field tasks stay simple; programme finance becomes a precise workspace.
+OWN-WORLD: Forest Material surfaces, warm daylight canvas, bundled Noto weights,
+quiet sage states, amber pending money and aligned operational records.
+STORY: Choose a role, record safely, distinguish pending from confirmed, follow up.
+FIRST VIEWPORT: Phone meeting/passbook focus; desktop navigation, connected
+summary band, real group comparison and current support/activity.
+FORM: Programme-report workspace, grounded direction7, seed28d8fe24.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+*/
 import 'dart:async';
 import 'dart:convert';
 
@@ -13,6 +23,8 @@ import 'package:pop_domain/pop_domain.dart';
 
 import 'src/tokens.dart';
 import 'src/components.dart';
+import 'src/theme.dart';
+import 'src/workspace.dart';
 export 'src/components.dart';
 
 final appControllerProvider = Provider<AppController>(
@@ -115,45 +127,7 @@ class _PopAppState extends State<PopApp> with WidgetsBindingObserver {
       locale: Locale(lang),
       supportedLocales: const [Locale('en'), Locale('hi')],
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      theme: ThemeData(
-        useMaterial3: true,
-        fontFamily: lang == 'hi'
-            ? 'packages/pop_ui/NotoSansDevanagari'
-            : 'packages/pop_ui/NotoSans',
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: teal,
-          primary: teal,
-          surface: Colors.white,
-        ),
-        scaffoldBackgroundColor: canvas,
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(fontSize: 17, height: 1.5, color: ink),
-          bodyMedium: TextStyle(fontSize: 17, height: 1.5, color: ink),
-          titleLarge: TextStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.w600,
-            color: ink,
-          ),
-          titleMedium: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: ink,
-          ),
-        ),
-        filledButtonTheme: FilledButtonThemeData(
-          style: FilledButton.styleFrom(
-            minimumSize: const Size(48, 56),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14),
-            ),
-          ),
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: Colors.white,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
-        ),
-      ),
+      theme: createPopTheme(language: lang, portal: c.portal),
       routerConfig: router,
       builder: (context, child) =>
           ready ? child! : const Center(child: CircularProgressIndicator()),
@@ -277,12 +251,45 @@ class _DemoShellState extends State<DemoShell> {
       MetricCard(label: label, value: currency ? money(amount) : '$amount');
   Widget chip(String label, {bool warning = false}) =>
       StatusChip(label, warning: warning);
+  String get pageTitle => t(
+    {
+          'home': c.actor['role'] == 'manager' ? 'overview' : 'home',
+          'groups': 'groups',
+          'member': 'passbook',
+          'meetings': 'meetings',
+          'enterprise': 'enterprise',
+          'work': c.actor['role'] == 'manager' ? 'support' : 'work',
+          'help': 'help',
+          'activity': 'activity',
+          'capabilities': 'capabilities',
+          'sync': 'syncCentre',
+        }[widget.page] ??
+        'home',
+  );
+  Widget syncIndicator() => SyncStatusBar(
+    label:
+        '${c.syncing
+            ? t('syncing')
+            : c.error != null || !c.online
+            ? t('offline')
+            : t('online')} · ${c.unresolved.length} ${t('waitingToSync')}',
+    actionLabel: t('syncCentre'),
+    icon: c.syncing
+        ? Icons.sync_rounded
+        : c.error != null || !c.online
+        ? Icons.cloud_off_outlined
+        : Icons.cloud_done_outlined,
+    onPressed: () => context.go('/sync'),
+  );
   @override
   Widget build(BuildContext context) => ListenableBuilder(
     listenable: c,
     builder: (context, _) {
       final manager = c.actor['role'] == 'manager';
-      final wide = MediaQuery.sizeOf(context).width >= 1000 && manager;
+      final participant = c.actor['role'] == 'participant';
+      final authenticated = c.valid && c.data.isNotEmpty;
+      final desktop =
+          manager && authenticated && MediaQuery.sizeOf(context).width >= 720;
       final labels = manager
           ? [
               'overview',
@@ -292,71 +299,150 @@ class _DemoShellState extends State<DemoShell> {
               'activity',
               'capabilities',
             ]
-          : c.actor['role'] == 'participant'
+          : participant
           ? ['home', 'passbook', 'enterprise', 'help']
           : ['home', 'groups', 'work', 'help'];
       final pages = manager
           ? ['home', 'groups', 'meetings', 'work', 'activity', 'capabilities']
-          : c.actor['role'] == 'participant'
-          ? ['home', 'groups', 'enterprise', 'help']
+          : participant
+          ? ['home', 'member/${c.actor['memberId']}', 'enterprise', 'help']
           : ['home', 'groups', 'work', 'help'];
       final icons = manager
           ? [
-              Icons.dashboard_outlined,
+              Icons.space_dashboard_outlined,
               Icons.groups_outlined,
-              Icons.event_outlined,
-              Icons.support_agent,
-              Icons.history,
-              Icons.tune,
+              Icons.event_note_outlined,
+              Icons.support_agent_outlined,
+              Icons.history_rounded,
+              Icons.tune_rounded,
+            ]
+          : participant
+          ? [
+              Icons.home_outlined,
+              Icons.account_balance_wallet_outlined,
+              Icons.storefront_outlined,
+              Icons.help_outline_rounded,
             ]
           : [
               Icons.home_outlined,
               Icons.groups_outlined,
-              Icons.work_outline,
-              Icons.help_outline,
+              Icons.work_outline_rounded,
+              Icons.help_outline_rounded,
             ];
-      final selected = pages.indexOf(widget.page);
-      final body = c.busy
-          ? Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const CircularProgressIndicator(),
-                  const SizedBox(height: 16),
-                  Text(t('downloading')),
-                ],
+      var selected = pages.indexOf(widget.page);
+      if (widget.page == 'member') selected = 1;
+      if (widget.page == 'enterprise' && !participant) selected = 2;
+      if (selected < 0) selected = 0;
+      Widget pageBody;
+      if (c.busy) {
+        pageBody = Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox.square(
+                dimension: 28,
+                child: CircularProgressIndicator(strokeWidth: 2.5),
               ),
-            )
-          : !c.valid || c.data.isEmpty
-          ? login()
-          : Padding(
-              padding: const EdgeInsets.all(20),
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1280),
-                child: ListView(
-                  children: [
-                    if (c.error != null)
-                      card(
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(errorText(c.error!)),
-                            Text(t('staleData')),
-                            TextButton(
-                              onPressed: () => act(() => c.refresh()),
-                              child: Text(t('retry')),
-                            ),
-                          ],
+              const SizedBox(height: 20),
+              Text(t('downloading')),
+            ],
+          ),
+        );
+      } else if (!authenticated) {
+        pageBody = login();
+      } else {
+        pageBody = Align(
+          alignment: Alignment.topCenter,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1280),
+            child: ListView(
+              padding: EdgeInsets.all(desktop ? 32 : 20),
+              children: [
+                if (c.error != null && c.error != 'TEMPORARILY_UNAVAILABLE')
+                  ErrorState(
+                    message: errorText(c.error!),
+                    retryLabel: t('retry'),
+                    onRetry: () => act(() => c.refresh()),
+                  ),
+                ...content(),
+              ],
+            ),
+          ),
+        );
+      }
+      final language = LanguageSwitcher(
+        onPressed: widget.onLanguage,
+        label: widget.lang == 'en' ? 'हिन्दी' : 'English',
+      );
+      if (!authenticated &&
+          c.portal &&
+          MediaQuery.sizeOf(context).width >= 900) {
+        return Scaffold(
+          body: SafeArea(
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: WelcomePanel(
+                    title: t('welcomeHeadline'),
+                    description: t('welcomeDescription'),
+                    offline: t('welcomeOffline'),
+                    sync: t('welcomeSync'),
+                    review: t('welcomeReview'),
+                  ),
+                ),
+                Expanded(
+                  flex: 6,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [language],
                         ),
                       ),
-                    ...content(),
-                  ],
+                      DemoBanner(t('demoBanner')),
+                      Expanded(child: pageBody),
+                    ],
+                  ),
                 ),
-              ),
-            );
+              ],
+            ),
+          ),
+        );
+      }
+      if (desktop) {
+        return ProgrammeWorkspace(
+          pageTitle: pageTitle,
+          programmeLabel: t('programmePortal'),
+          demoLabel: t('demoBanner'),
+          name: c.actor['displayName'] ?? '',
+          role: t('managerRole'),
+          refreshLabel: t('refresh'),
+          signOutLabel: t('extraLabel1'),
+          destinations: labels.map(t).toList(),
+          icons: icons,
+          selected: selected,
+          onNavigate: (i) => context.go('/${pages[i]}'),
+          refresh: () => act(() => c.refresh()),
+          signOut: () => act(() => c.logout()),
+          languageControl: language,
+          refreshing: c.refreshing,
+          body: Column(
+            children: [
+              syncIndicator(),
+              Expanded(child: pageBody),
+            ],
+          ),
+        );
+      }
+      final memberAction = authenticated && widget.page == 'member' && !manager;
       return AppScaffold(
         appBar: AppBar(
-          backgroundColor: canvas,
+          toolbarHeight: MediaQuery.textScalerOf(context).scale(1) > 1.4
+              ? 80
+              : 64,
           leading: widget.page == 'member'
               ? IconButton(
                   tooltip: t('back'),
@@ -367,15 +453,14 @@ class _DemoShellState extends State<DemoShell> {
                       context.go('/groups');
                     }
                   },
-                  icon: const Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back_rounded),
                 )
               : null,
-          title: const Text(
-            'PoP 2.0',
-            style: TextStyle(fontWeight: FontWeight.w700, color: teal),
-          ),
+          title: widget.page == 'home' || !authenticated
+              ? const PopWordmark()
+              : Text(pageTitle),
           actions: [
-            if (c.valid && manager && !wide)
+            if (authenticated && manager)
               PopupMenuButton<String>(
                 tooltip: t('more'),
                 onSelected: (value) {
@@ -400,90 +485,58 @@ class _DemoShellState extends State<DemoShell> {
                     ),
                 ],
               ),
-            LanguageSwitcher(
-              onPressed: widget.onLanguage,
-              label: widget.lang == 'en' ? 'हिन्दी' : 'English',
-            ),
+            language,
             if (widget.page == 'member')
               IconButton(
                 tooltip: t('help'),
                 onPressed: () => context.go('/help'),
-                icon: const Icon(Icons.help_outline),
+                icon: const Icon(Icons.help_outline_rounded),
               ),
-            if (c.valid && manager && wide)
-              IconButton(
-                tooltip: t('refresh'),
-                onPressed: () => act(() => c.refresh()),
-                icon: const Icon(Icons.refresh),
-              ),
-            if (c.valid && manager && wide)
-              IconButton(
-                tooltip: t('extraLabel1'),
-                onPressed: () => act(() => c.logout()),
-                icon: const Icon(Icons.logout),
-              ),
+            const SizedBox(width: 8),
           ],
         ),
         body: Column(
           children: [
             DemoBanner(t('demoBanner')),
-            if (c.valid &&
-                !(widget.page == 'home' && c.actor['role'] == 'sakhi'))
-              SyncStatusBar(
-                label:
-                    '${c.syncing
-                        ? t('syncing')
-                        : c.error != null || !c.online
-                        ? t('offline')
-                        : t('online')} · ${c.unresolved.length} ${t('waitingToSync')}',
-                actionLabel: t('syncCentre'),
-                icon: c.syncing
-                    ? Icons.sync
-                    : c.error != null || !c.online
-                    ? Icons.cloud_off
-                    : Icons.cloud_done_outlined,
-                onPressed: () => context.go('/sync'),
-              ),
-            Expanded(
-              child: wide
-                  ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        SizedBox(
-                          width: 240,
-                          child: NavigationRail(
-                            extended: true,
-                            selectedIndex: selected < 0 ? 0 : selected,
-                            onDestinationSelected: (i) =>
-                                context.go('/${pages[i]}'),
-                            destinations: List.generate(
-                              labels.length,
-                              (i) => NavigationRailDestination(
-                                icon: Icon(icons[i]),
-                                label: Text(t(labels[i])),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const VerticalDivider(width: 1),
-                        Expanded(child: body),
-                      ],
-                    )
-                  : body,
-            ),
+            if (authenticated &&
+                !(widget.page == 'home' && !participant && !manager))
+              syncIndicator(),
+            Expanded(child: pageBody),
           ],
         ),
-        bottomNavigationBar: c.valid && !wide
-            ? NavigationBar(
-                selectedIndex: selected < 0 || selected > 3 ? 0 : selected,
-                onDestinationSelected: (i) => context.go('/${pages[i]}'),
-                destinations: List.generate(
-                  4,
-                  (i) => NavigationDestination(
-                    icon: Icon(icons[i]),
-                    label: t(labels[i]),
+        bottomNavigationBar: authenticated
+            ? Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (memberAction)
+                    Container(
+                      color: Colors.white,
+                      padding: const EdgeInsets.fromLTRB(20, 12, 20, 10),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: button(
+                          t(participant ? 'requestHelp' : 'recordEntry'),
+                          () => participant
+                              ? requestHelp(currentMember()!)
+                              : entry(currentMember()!, 'savings_deposit'),
+                          icon: participant
+                              ? Icons.support_agent_outlined
+                              : Icons.add_rounded,
+                        ),
+                      ),
+                    ),
+                  NavigationBar(
+                    selectedIndex: selected.clamp(0, 3),
+                    onDestinationSelected: (i) => context.go('/${pages[i]}'),
+                    destinations: List.generate(
+                      4,
+                      (i) => NavigationDestination(
+                        icon: Icon(icons[i]),
+                        label: t(labels[i]),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               )
             : null,
       );
@@ -497,64 +550,119 @@ class _DemoShellState extends State<DemoShell> {
 
   Widget login() => Center(
     child: ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 560),
+      constraints: const BoxConstraints(maxWidth: 460),
       child: ListView(
         shrinkWrap: true,
         padding: const EdgeInsets.all(24),
         children: [
-          const Icon(Icons.spa_outlined, size: 48, color: teal),
-          title(t('chooseRole')),
-          Text(t('extraLabel2')),
-          const SizedBox(height: 24),
+          Text(
+            c.portal ? t('programmePortal') : t('chooseRole'),
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          const SizedBox(height: 8),
+          Text(t('extraLabel2'), style: Theme.of(context).textTheme.bodySmall),
+          const SizedBox(height: 28),
           for (final role
               in c.portal ? ['arun'] : ['kavita', 'rani-user', 'arun'])
-            SurfaceCard(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-              child: ListTile(
-                selected: selectedRole == role,
-                leading: Icon(
-                  selectedRole == role
-                      ? Icons.radio_button_checked
-                      : Icons.radio_button_unchecked,
-                  color: teal,
-                ),
-                onTap: () => setState(() => selectedRole = role),
-                contentPadding: EdgeInsets.zero,
-                title: Text(
-                  t(
-                    role == 'kavita'
-                        ? 'sakhiRole'
-                        : role == 'arun'
-                        ? 'managerRole'
-                        : 'participantRole',
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Material(
+                color: selectedRole == role
+                    ? PopColors.primaryTint
+                    : Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: BorderSide(
+                    color: selectedRole == role ? teal : PopColors.border,
+                    width: selectedRole == role ? 1.5 : 1,
                   ),
                 ),
-                subtitle: Text(
-                  role == 'kavita'
-                      ? 'Kavita Rao'
-                      : role == 'arun'
-                      ? 'Arun Sen'
-                      : 'Rani Mahto',
+                clipBehavior: Clip.antiAlias,
+                child: ListTile(
+                  selected: selectedRole == role,
+                  onTap: () => setState(() => selectedRole = role),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 7,
+                  ),
+                  leading: Container(
+                    width: 40,
+                    height: 40,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: selectedRole == role
+                          ? Colors.white
+                          : PopColors.surfaceSoft,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Icon(
+                      role == 'kavita'
+                          ? Icons.badge_outlined
+                          : role == 'arun'
+                          ? Icons.admin_panel_settings_outlined
+                          : Icons.person_outline_rounded,
+                      size: 22,
+                      color: teal,
+                    ),
+                  ),
+                  title: Text(
+                    t(
+                      role == 'kavita'
+                          ? 'sakhiRole'
+                          : role == 'arun'
+                          ? 'managerRole'
+                          : 'participantRole',
+                    ),
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  subtitle: Text(
+                    role == 'kavita'
+                        ? 'Kavita Rao'
+                        : role == 'arun'
+                        ? 'Arun Sen'
+                        : 'Rani Mahto',
+                  ),
+                  trailing: Icon(
+                    selectedRole == role
+                        ? Icons.radio_button_checked_rounded
+                        : Icons.radio_button_unchecked_rounded,
+                    size: 22,
+                    color: selectedRole == role ? teal : muted,
+                  ),
                 ),
               ),
             ),
-          if (c.portal && selectedRole != 'arun')
-            TextButton(
-              onPressed: () => setState(() => selectedRole = 'arun'),
-              child: Text(t('managerRole')),
-            ),
-          Text(t('firstLoginOnline')),
           const SizedBox(height: 12),
           TextField(
             controller: access,
             obscureText: true,
-            decoration: InputDecoration(labelText: t('accessCode')),
+            decoration: InputDecoration(
+              labelText: t('accessCode'),
+              prefixIcon: const Icon(Icons.lock_outline_rounded, size: 21),
+            ),
             onSubmitted: (_) => act(() => signIn()),
           ),
           const SizedBox(height: 20),
-          button(
-            c.busy ? t('downloading') : t('signIn'),
-            c.busy ? null : () => act(() => signIn()),
+          SizedBox(
+            width: double.infinity,
+            child: button(
+              c.busy ? t('downloading') : t('signIn'),
+              c.busy ? null : () => act(() => signIn()),
+            ),
+          ),
+          const SizedBox(height: 14),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(Icons.cloud_download_outlined, size: 18, color: muted),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  t('firstLoginOnline'),
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
+            ],
           ),
           if (c.error != null)
             Padding(
@@ -563,9 +671,15 @@ class _DemoShellState extends State<DemoShell> {
                 c.error == 'TEMPORARILY_UNAVAILABLE' && c.data.isEmpty
                     ? t('firstLoginOnline')
                     : errorText(c.error!),
+                style: Theme.of(context).textTheme.bodyMedium
+                    ?.copyWith(color: PopColors.error),
               ),
             ),
-          if (c.identity != null && !c.valid) Text(t('sessionExpired')),
+          if (c.identity != null && !c.valid)
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: Text(t('sessionExpired')),
+            ),
           if (c.unresolved.isNotEmpty) ...[
             const SizedBox(height: 16),
             Text('${c.unresolved.length} ${t('waitingToSync')}'),
@@ -603,246 +717,681 @@ class _DemoShellState extends State<DemoShell> {
     }
   }
 
-  List<Widget> home() => [
-    title(
-      t('greeting').replaceAll(
-        '{name}',
-        (c.actor['displayName'] ?? '').toString().split(' ').first,
-      ),
-    ),
-    Text(
-      DateFormat(
-        'dd MMM yyyy',
-        widget.lang,
-      ).format(DateTime.parse(c.data['businessDate'] ?? '2026-11-05')),
-    ),
-    const SizedBox(height: 24),
-    if (c.actor['role'] == 'participant')
-      ...member()
-    else ...[
-      card(
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            chip(t('todaysMeeting')),
-            const SizedBox(height: 20),
-            Text(
-              c.rows('groups').firstOrNull?['displayName'] ?? '',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            Text(c.rows('groups').firstOrNull?['villageLabel'] ?? ''),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              child: button(t('openMeeting'), () => context.go('/meetings')),
-            ),
-          ],
+  List<Widget> home() {
+    final firstName = (c.actor['displayName'] ?? '')
+        .toString()
+        .split(' ')
+        .first;
+    final date = DateFormat(
+      'dd MMM yyyy',
+      widget.lang,
+    ).format(DateTime.parse(c.data['businessDate'] ?? '2026-11-05'));
+    if (c.actor['role'] == 'participant') {
+      return [
+        Text(
+          t('greeting').replaceAll('{name}', firstName),
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
-        color: const Color(0xffe8f3ef),
+        const SizedBox(height: 6),
+        Text(date, style: Theme.of(context).textTheme.bodySmall),
+        const SizedBox(height: 20),
+        ...member(includeTitle: false),
+      ];
+    }
+    final group = c.rows('groups').firstOrNull;
+    final meeting = c.rows('meetings').firstOrNull;
+    final members = c
+        .rows('members')
+        .where((m) => m['groupId'] == group?['id'])
+        .toList();
+    final requests = c
+        .rows('supportRequests')
+        .where((r) => r['status'] != 'resolved')
+        .length;
+    return [
+      LayoutBuilder(
+        builder: (context, box) {
+          final greeting = Text(
+            t('greeting').replaceAll('{name}', firstName),
+            style: Theme.of(context).textTheme.headlineMedium,
+          );
+          final dateLabel = Text(
+            date,
+            style: Theme.of(context).textTheme.bodySmall,
+          );
+          if (box.maxWidth >= 340 &&
+              MediaQuery.textScalerOf(context).scale(1) <= 1.2) {
+            return Row(
+              children: [
+                Expanded(child: greeting),
+                const SizedBox(width: 12),
+                dateLabel,
+              ],
+            );
+          }
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [greeting, const SizedBox(height: 7), dateLabel],
+          );
+        },
       ),
+      const SizedBox(height: 24),
+      if (group != null)
+        SurfaceCard(
+          color: PopColors.forest,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(
+                    Icons.event_note_rounded,
+                    color: Color(0xffe6bc72),
+                    size: 24,
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      t('todaysMeeting'),
+                      style: Theme.of(context).textTheme.titleSmall
+                          ?.copyWith(color: Colors.white),
+                    ),
+                  ),
+                  if (meeting?['status'] == 'submitted')
+                    const Icon(
+                      Icons.check_circle_outline_rounded,
+                      color: PopColors.forestMuted,
+                      size: 20,
+                    ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Text(
+                group['displayName'],
+                style: Theme.of(context).textTheme.headlineMedium
+                    ?.copyWith(color: Colors.white),
+              ),
+              const SizedBox(height: 6),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.location_on_outlined,
+                    size: 17,
+                    color: PopColors.forestMuted,
+                  ),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      group['villageLabel'] ?? '',
+                      style: Theme.of(context).textTheme.bodySmall
+                          ?.copyWith(color: PopColors.forestMuted),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 22),
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: () => context.go('/meetings'),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: teal,
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(child: Text(t('openMeeting'))),
+                      const SizedBox(width: 12),
+                      const Icon(Icons.arrow_forward_rounded, size: 22),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      Container(
+        margin: const EdgeInsets.only(bottom: 24),
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+        child: syncIndicator(),
+      ),
+      if (group != null) ...[
+        SurfaceCard(
+          padding: EdgeInsets.zero,
+          child: ListTile(
+            onTap: () => context.go('/groups'),
+            contentPadding: const EdgeInsets.all(16),
+            leading: Container(
+              width: 42,
+              height: 42,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: PopColors.primaryTint,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Icon(Icons.groups_outlined, color: teal, size: 24),
+            ),
+            title: Text(
+              group['displayName'],
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Text(
+                '${members.length} ${t('memberCount')} · ${money(members.fold<int>(0, (n, m) => n + c.savings(m)))} ${t('confirmedSavings')}',
+              ),
+            ),
+            trailing: const Icon(Icons.chevron_right_rounded),
+          ),
+        ),
+      ],
       SurfaceCard(
         padding: EdgeInsets.zero,
-        child: SyncStatusBar(
-          label:
-              '${c.syncing
-                  ? t('syncing')
-                  : c.error != null || !c.online
-                  ? t('offline')
-                  : t('online')} · ${c.unresolved.length} ${t('waitingToSync')}',
-          actionLabel: t('syncCentre'),
-          icon: c.syncing
-              ? Icons.sync
-              : c.error != null || !c.online
-              ? Icons.cloud_off
-              : Icons.cloud_done_outlined,
-          onPressed: () => context.go('/sync'),
+        child: ListTile(
+          onTap: () => context.go('/work'),
+          contentPadding: const EdgeInsets.all(16),
+          leading: Container(
+            width: 42,
+            height: 42,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: PopColors.warningTint,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(
+              Icons.assignment_outlined,
+              color: PopColors.warning,
+              size: 23,
+            ),
+          ),
+          title: Text(
+            t('pendingRequests'),
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+          subtitle: Text(
+            requests == 0 ? t('noFollowupNeeded') : t('followupMembers'),
+          ),
+          trailing: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 7),
+            decoration: BoxDecoration(
+              color: PopColors.warningTint,
+              borderRadius: BorderRadius.circular(9),
+            ),
+            child: Text(
+              '$requests',
+              style: Theme.of(context).textTheme.titleMedium
+                  ?.copyWith(color: PopColors.warning),
+            ),
+          ),
         ),
       ),
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: InkWell(
-              onTap: () => context.go('/work'),
-              child: metric(
-                t('pendingRequests'),
-                c
-                    .rows('supportRequests')
-                    .where((r) => r['status'] != 'resolved')
-                    .length,
-                currency: false,
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: InkWell(
-              onTap: () => context.go('/groups'),
-              child: metric(
-                t('recentActivity'),
-                c.rows('transactions').length,
-                currency: false,
-              ),
-            ),
-          ),
-        ],
+    ];
+  }
+
+  void openGroup(Json group) {
+    setState(() => managerGroup = group['id']);
+    context.go('/groups');
+  }
+
+  Widget groupFilter() => Semantics(
+    container: true,
+    child: DropdownButtonFormField<String>(
+      isExpanded: true,
+      itemHeight: null,
+      initialValue: managerGroup,
+      decoration: InputDecoration(
+        labelText: t('group'),
+        prefixIcon: const Icon(Icons.filter_list_rounded, size: 19),
       ),
-    ],
-  ];
+      items: [
+        DropdownMenuItem(value: 'all', child: Text(t('allGroups'))),
+        for (final g in c.rows('groups'))
+          DropdownMenuItem(value: g['id'], child: Text(g['displayName'])),
+      ],
+      onChanged: (value) => setState(() => managerGroup = value!),
+    ),
+  );
   List<Widget> overview() {
+    final groups = c
+        .rows('groups')
+        .where((g) => managerGroup == 'all' || g['id'] == managerGroup)
+        .toList();
     final members = c
         .rows('members')
         .where((m) => managerGroup == 'all' || m['groupId'] == managerGroup)
         .toList();
-    final metrics = [
-      metric(t('memberCount'), members.length, currency: false),
-      metric(
+    final requests = c
+        .rows('supportRequests')
+        .where(
+          (r) =>
+              r['status'] != 'resolved' &&
+              (managerGroup == 'all' || r['groupId'] == managerGroup),
+        )
+        .toList();
+    final records = c
+        .rows('transactions')
+        .where((tx) => members.any((m) => m['id'] == tx['memberId']))
+        .toList()
+        .reversed
+        .take(3)
+        .toList();
+    final stats = [
+      (t('memberCount'), '${members.length}', Icons.groups_outlined),
+      (
         t('confirmedSavings'),
-        members.fold<int>(0, (n, m) => n + c.savings(m)),
+        money(members.fold<int>(0, (n, m) => n + c.savings(m))),
+        Icons.account_balance_wallet_outlined,
       ),
-      metric(
+      (
         t('loanPrincipal'),
-        members.fold<int>(0, (n, m) => n + c.principal(m)),
+        money(members.fold<int>(0, (n, m) => n + c.principal(m))),
+        Icons.account_balance_outlined,
       ),
-      metric(
-        t('openRequests'),
-        c
-            .rows('supportRequests')
-            .where(
-              (r) =>
-                  r['status'] != 'resolved' &&
-                  (managerGroup == 'all' || r['groupId'] == managerGroup),
-            )
-            .length,
-        currency: false,
-      ),
+      (t('openRequests'), '${requests.length}', Icons.support_agent_outlined),
     ];
-    final groupCard = card(
-      Column(
+    final groupPanel = SurfaceCard(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(t('groups'), style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: 16),
-          for (final group
-              in c
-                  .rows('groups')
-                  .where(
-                    (g) => managerGroup == 'all' || g['id'] == managerGroup,
-                  ))
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              onTap: () => context.go('/groups'),
-              title: Text(group['displayName']),
-              subtitle: Text(
-                '${members.where((m) => m['groupId'] == group['id']).length} ${t('memberCount')} · ${t('lastAccepted')}: ${displayTime(c.groupLastAcceptedAt(group['id']))}',
-              ),
-              trailing: Text(
-                money(
-                  members
-                      .where((m) => m['groupId'] == group['id'])
-                      .fold<int>(0, (n, m) => n + c.savings(m)),
-                ),
-                style: const TextStyle(fontWeight: FontWeight.w600),
-              ),
+          SectionHeading(
+            '${t('groupsAtGlance')} (${groups.length})',
+            trailing: TextButton(
+              onPressed: () {
+                setState(() => managerGroup = 'all');
+                context.go('/groups');
+              },
+              child: Text(t('viewAllGroups')),
             ),
+          ),
+          LayoutBuilder(
+            builder: (context, box) {
+              if (box.maxWidth >= 850 &&
+                  MediaQuery.textScalerOf(context).scale(1) <= 1.35) {
+                Widget heading(String value, double width) =>
+                    SizedBox(width: width, child: Text(value, maxLines: 2));
+                return SizedBox(
+                  width: double.infinity,
+                  child: DataTable(
+                    showCheckboxColumn: false,
+                    columnSpacing: 16,
+                    horizontalMargin: 12,
+                    columns: [
+                      DataColumn(label: heading(t('group'), 210)),
+                      DataColumn(
+                        label: heading(t('memberCount'), 64),
+                        numeric: true,
+                      ),
+                      DataColumn(
+                        label: heading(t('confirmedSavings'), 122),
+                        numeric: true,
+                      ),
+                      DataColumn(
+                        label: heading(t('loanPrincipal'), 142),
+                        numeric: true,
+                      ),
+                      DataColumn(label: heading(t('lastAccepted'), 172)),
+                    ],
+                    rows: [
+                      for (final g in groups)
+                        DataRow(
+                          onSelectChanged: (_) => openGroup(g),
+                          cells: [
+                            DataCell(
+                              SizedBox(
+                                width: 210,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 34,
+                                      height: 34,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        color: PopColors.primaryTint,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: const Icon(
+                                        Icons.groups_outlined,
+                                        color: teal,
+                                        size: 19,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            g['displayName'],
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleSmall,
+                                          ),
+                                          const SizedBox(height: 3),
+                                          Text(
+                                            g['villageLabel'] ?? '',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            DataCell(
+                              Text(
+                                '${members.where((m) => m['groupId'] == g['id']).length}',
+                              ),
+                            ),
+                            DataCell(
+                              Text(
+                                money(
+                                  members
+                                      .where((m) => m['groupId'] == g['id'])
+                                      .fold<int>(0, (n, m) => n + c.savings(m)),
+                                ),
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                            ),
+                            DataCell(
+                              Text(
+                                money(
+                                  members
+                                      .where((m) => m['groupId'] == g['id'])
+                                      .fold<int>(
+                                        0,
+                                        (n, m) => n + c.principal(m),
+                                      ),
+                                ),
+                              ),
+                            ),
+                            DataCell(
+                              Text(
+                                displayTime(c.groupLastAcceptedAt(g['id'])),
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
+                );
+              }
+              return Column(
+                children: [
+                  for (final g in groups)
+                    Semantics(
+                      container: true,
+                      button: true,
+                      child: InkWell(
+                        onTap: () => openGroup(g),
+                        borderRadius: BorderRadius.circular(10),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 14,
+                            horizontal: 2,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.groups_outlined,
+                                    color: teal,
+                                    size: 22,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Text(
+                                      g['displayName'],
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium,
+                                    ),
+                                  ),
+                                  const Icon(
+                                    Icons.chevron_right_rounded,
+                                    color: teal,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                '${members.where((m) => m['groupId'] == g['id']).length} ${t('memberCount')} · ${g['villageLabel'] ?? ''}',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                              const SizedBox(height: 9),
+                              Text(
+                                '${t('confirmedSavings')}: ${money(members.where((m) => m['groupId'] == g['id']).fold<int>(0, (n, m) => n + c.savings(m)))}',
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                '${t('loanPrincipal')}: ${money(members.where((m) => m['groupId'] == g['id']).fold<int>(0, (n, m) => n + c.principal(m)))}',
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                '${t('lastAccepted')}: ${displayTime(c.groupLastAcceptedAt(g['id']))}',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            },
+          ),
         ],
       ),
     );
-    final supportCard = card(
-      Column(
+    final activityPanel = SurfaceCard(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            t('pendingRequests'),
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: 16),
-          for (final r
-              in c
-                  .rows('supportRequests')
-                  .where(
-                    (r) =>
-                        r['status'] != 'resolved' &&
-                        (managerGroup == 'all' || r['groupId'] == managerGroup),
-                  )
-                  .take(3))
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(r['reference']),
-              subtitle: Text(r['description']),
-              onTap: () => context.go('/work'),
+          SectionHeading(
+            t('recentFinancialActivity'),
+            trailing: IconButton(
+              tooltip: t('activity'),
+              onPressed: () => context.go('/activity'),
+              icon: const Icon(Icons.arrow_forward_rounded, size: 21),
             ),
-          TextButton(
-            onPressed: () => context.go('/work'),
-            child: Text(t('support')),
+          ),
+          if (records.isEmpty) ...[
+            empty(),
+            Text(
+              t('activityEmptyHint'),
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
+          for (final tx in records) transactionRow(tx),
+        ],
+      ),
+    );
+    final supportPanel = SurfaceCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SectionHeading(
+            t('supportPreview'),
+            trailing: TextButton(
+              onPressed: () {
+                setState(() => supportStatus = 'active');
+                context.go('/work');
+              },
+              child: Text(t('viewAllRequests')),
+            ),
+          ),
+          if (requests.isEmpty) EmptyState(t('noFollowupNeeded')),
+          for (final r in requests.take(2))
+            Padding(
+              padding: const EdgeInsets.only(bottom: 14),
+              child: InkWell(
+                onTap: () => context.go('/work'),
+                borderRadius: BorderRadius.circular(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            r['reference'],
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
+                        ),
+                        StatusChip(
+                          t(
+                            r['status'] == 'open' ? 'openStatus' : 'inProgress',
+                          ),
+                          warning: true,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 9),
+                    Text(
+                      r['description'],
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          const Divider(),
+          const SizedBox(height: 6),
+          TextButton.icon(
+            onPressed: simulation,
+            icon: const Icon(Icons.chat_bubble_outline_rounded, size: 18),
+            label: Text(t('whatsappSimulation')),
           ),
         ],
       ),
     );
     return [
-      title(t('overview')),
-      Text(c.actor['displayName'] ?? ''),
-      const SizedBox(height: 16),
-      DropdownButtonFormField<String>(
-        isExpanded: true,
-        itemHeight: null,
-        initialValue: managerGroup,
-        decoration: InputDecoration(labelText: t('group')),
-        items: [
-          DropdownMenuItem(value: 'all', child: Text(t('allGroups'))),
-          for (final group in c.rows('groups'))
-            DropdownMenuItem(
-              value: group['id'],
-              child: Text(group['displayName']),
-            ),
-        ],
-        onChanged: (value) => setState(() => managerGroup = value!),
-      ),
-      const SizedBox(height: 20),
       LayoutBuilder(
         builder: (context, box) {
-          final columns = box.maxWidth > 850
-              ? 4
-              : box.maxWidth > 500
-              ? 2
-              : 1;
-          return Wrap(
-            spacing: 16,
-            children: [
-              for (var i = 0; i < metrics.length; i++)
-                SizedBox(
-                  width: (box.maxWidth - 16 * (columns - 1)) / columns,
-                  child: InkWell(
-                    onTap: () => context.go(i == 3 ? '/work' : '/groups'),
-                    child: metrics[i],
-                  ),
+          final heading = Semantics(
+            container: true,
+            header: true,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  t('programmeOverview'),
+                  style: Theme.of(context).textTheme.headlineLarge,
                 ),
-            ],
+                const SizedBox(height: 7),
+                Text(
+                  t('programmeOverviewHint'),
+                  style: Theme.of(context).textTheme.bodyMedium
+                      ?.copyWith(color: muted),
+                ),
+              ],
+            ),
+          );
+          if (box.maxWidth > 720 &&
+              MediaQuery.textScalerOf(context).scale(1) < 1.4) {
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(child: heading),
+                const SizedBox(width: 24),
+                SizedBox(width: 235, child: groupFilter()),
+              ],
+            );
+          }
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [heading, const SizedBox(height: 20), groupFilter()],
           );
         },
       ),
-      Text(
-        '${t('lastRefreshed')}: ${displayTime(c.lastContact)}',
-        style: const TextStyle(fontSize: 14, color: muted),
-      ),
       const SizedBox(height: 24),
+      SurfaceCard(
+        padding: EdgeInsets.zero,
+        child: LayoutBuilder(
+          builder: (context, box) {
+            final columns = box.maxWidth >= 900
+                ? 4
+                : box.maxWidth >= 480
+                ? 2
+                : 1;
+            return Wrap(
+              children: [
+                for (var i = 0; i < stats.length; i++)
+                  SizedBox(
+                    width: box.maxWidth / columns,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          right: i % columns != columns - 1
+                              ? const BorderSide(color: PopColors.border)
+                              : BorderSide.none,
+                          bottom: i + columns < stats.length
+                              ? const BorderSide(color: PopColors.border)
+                              : BorderSide.none,
+                        ),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          if (i == 3) setState(() => supportStatus = 'active');
+                          context.go(i == 3 ? '/work' : '/groups');
+                        },
+                        child: MetricCard(
+                          label: stats[i].$1,
+                          value: stats[i].$2,
+                          icon: stats[i].$3,
+                          enclosed: false,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(bottom: 24),
+        child: Row(
+          children: [
+            const Icon(Icons.schedule_rounded, size: 15, color: muted),
+            const SizedBox(width: 6),
+            Expanded(
+              child: Text(
+                '${t('lastRefreshed')}: ${displayTime(c.lastContact)}',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
+          ],
+        ),
+      ),
+      groupPanel,
+      const SizedBox(height: 8),
       LayoutBuilder(
-        builder: (context, box) => box.maxWidth > 850
+        builder: (context, box) =>
+            box.maxWidth >= 850 &&
+                MediaQuery.textScalerOf(context).scale(1) < 1.4
             ? Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(flex: 3, child: groupCard),
+                  Expanded(flex: 6, child: activityPanel),
                   const SizedBox(width: 20),
-                  Expanded(flex: 2, child: supportCard),
+                  Expanded(flex: 5, child: supportPanel),
                 ],
               )
-            : Column(children: [groupCard, supportCard]),
+            : Column(children: [activityPanel, supportPanel]),
       ),
-      title(t('recentActivity')),
-      if (c.rows('transactions').isEmpty) empty(),
-      for (final tx in c.rows('transactions').reversed.take(5))
-        transactionRow(tx),
-      button(t('whatsappSimulation'), () => simulation()),
     ];
   }
 
@@ -854,69 +1403,226 @@ class _DemoShellState extends State<DemoShell> {
     return '${DateFormat.yMMMd(widget.lang).add_Hm().format(date)} IST';
   }
 
-  List<Widget> groups({bool includeTitle = true}) => [
-    if (includeTitle) title(t('groups')),
-    if (c.rows('groups').isEmpty) empty(),
-    TextField(
+  List<Widget> groups({bool includeTitle = true}) {
+    final visible = c
+        .rows('groups')
+        .where(
+          (g) =>
+              c.actor['role'] != 'manager' ||
+              managerGroup == 'all' ||
+              g['id'] == managerGroup,
+        )
+        .toList();
+    final members = c
+        .rows('members')
+        .where(
+          (m) =>
+              visible.any((g) => g['id'] == m['groupId']) &&
+              m['displayName'].toString().toLowerCase().contains(
+                search.toLowerCase(),
+              ),
+        )
+        .toList();
+    Widget searchField() => TextField(
       decoration: InputDecoration(
         labelText: t('extraLabel4'),
-        prefixIcon: const Icon(Icons.search),
+        prefixIcon: const Icon(Icons.search_rounded, size: 22),
       ),
-      onChanged: (v) => setState(() => search = v),
-    ),
-    const SizedBox(height: 20),
-    for (final group
-        in c
-            .rows('groups')
-            .where(
-              (g) =>
-                  c.actor['role'] != 'manager' ||
-                  managerGroup == 'all' ||
-                  g['id'] == managerGroup,
-            ))
-      card(
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              group['displayName'],
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            Text(
-              group['villageLabel'],
-              style: const TextStyle(fontSize: 14, color: muted),
-            ),
-            const Divider(height: 32),
-            for (final m
-                in c
-                    .rows('members')
-                    .where(
-                      (m) =>
-                          m['groupId'] == group['id'] &&
-                          m['displayName'].toString().toLowerCase().contains(
-                            search.toLowerCase(),
-                          ),
-                    ))
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                minVerticalPadding: 12,
-                leading: CircleAvatar(
-                  backgroundColor: const Color(0xffe8f3ef),
-                  child: Text(m['displayName'].toString().substring(0, 1)),
-                ),
-                title: Text(m['displayName']),
-                subtitle: Text(
-                  '${t('confirmedSavings')} ${money(c.savings(m))}',
-                ),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () => context.push('/member/${m['id']}'),
-              ),
-          ],
+      onChanged: (value) => setState(() => search = value),
+    );
+    return [
+      if (includeTitle && c.portal) ...[
+        Text(t('groups'), style: Theme.of(context).textTheme.headlineLarge),
+        const SizedBox(height: 7),
+        Text(
+          t('memberDirectoryHint'),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: muted),
         ),
+        const SizedBox(height: 24),
+      ],
+      LayoutBuilder(
+        builder: (context, box) {
+          if (c.actor['role'] == 'manager' &&
+              box.maxWidth > 650 &&
+              MediaQuery.textScalerOf(context).scale(1) < 1.4) {
+            return Row(
+              children: [
+                Expanded(child: searchField()),
+                const SizedBox(width: 16),
+                SizedBox(width: 235, child: groupFilter()),
+              ],
+            );
+          }
+          return Column(
+            children: [
+              searchField(),
+              if (c.actor['role'] == 'manager') ...[
+                const SizedBox(height: 16),
+                groupFilter(),
+              ],
+            ],
+          );
+        },
       ),
-    if (c.actor['role'] == 'sakhi')
-      button(t('addMember'), registration, icon: Icons.person_add_alt),
-  ];
+      const SizedBox(height: 24),
+      if (c.rows('groups').isEmpty) empty(),
+      LayoutBuilder(
+        builder: (context, box) {
+          if (c.actor['role'] == 'manager' &&
+              box.maxWidth > 850 &&
+              MediaQuery.textScalerOf(context).scale(1) < 1.4) {
+            return SurfaceCard(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (members.isEmpty)
+                    EmptyState(t('noMatchingMembers'))
+                  else
+                    SizedBox(
+                      width: double.infinity,
+                      child: DataTable(
+                        showCheckboxColumn: false,
+                        columns: [
+                          DataColumn(label: Text(t('member'))),
+                          DataColumn(label: Text(t('group'))),
+                          DataColumn(
+                            label: Text(t('confirmedSavings')),
+                            numeric: true,
+                          ),
+                          DataColumn(
+                            label: Text(t('loanPrincipal')),
+                            numeric: true,
+                          ),
+                        ],
+                        rows: [
+                          for (final m in members)
+                            DataRow(
+                              onSelectChanged: (_) =>
+                                  context.push('/member/${m['id']}'),
+                              cells: [
+                                DataCell(
+                                  SizedBox(
+                                    width: 240,
+                                    child: Row(
+                                      children: [
+                                        IdentityAvatar(
+                                          m['displayName'],
+                                          size: 34,
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Expanded(
+                                          child: Text(
+                                            m['displayName'],
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleSmall,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    visible.firstWhere(
+                                      (g) => g['id'] == m['groupId'],
+                                    )['displayName'],
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    money(c.savings(m)),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleSmall,
+                                  ),
+                                ),
+                                DataCell(Text(money(c.principal(m)))),
+                              ],
+                            ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            );
+          }
+          return Column(
+            children: [
+              for (final g in visible)
+                SurfaceCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  g['displayName'],
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  g['villageLabel'] ?? '',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 11,
+                              vertical: 7,
+                            ),
+                            decoration: BoxDecoration(
+                              color: PopColors.primaryTint,
+                              borderRadius: BorderRadius.circular(9),
+                            ),
+                            child: Text(
+                              '${c.rows('members').where((m) => m['groupId'] == g['id']).length}',
+                              style: Theme.of(context).textTheme.titleSmall,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 17),
+                      const Divider(),
+                      const SizedBox(height: 5),
+                      if (members.where((m) => m['groupId'] == g['id']).isEmpty)
+                        EmptyState(t('noMatchingMembers')),
+                      for (final m in members.where(
+                        (m) => m['groupId'] == g['id'],
+                      ))
+                        MemberRow(
+                          name: m['displayName'],
+                          summary:
+                              '${t('confirmedSavings')} ${money(c.savings(m))}',
+                          onTap: () => context.push('/member/${m['id']}'),
+                        ),
+                    ],
+                  ),
+                ),
+            ],
+          );
+        },
+      ),
+      if (c.actor['role'] == 'sakhi')
+        SizedBox(
+          width: double.infinity,
+          child: button(
+            t('addMember'),
+            registration,
+            icon: Icons.person_add_alt_outlined,
+          ),
+        ),
+    ];
+  }
+
   Json? currentMember() =>
       c.rows('members').where((m) => m['id'] == widget.memberId).firstOrNull ??
       c
@@ -924,74 +1630,164 @@ class _DemoShellState extends State<DemoShell> {
           .where((m) => m['id'] == c.actor['memberId'])
           .firstOrNull ??
       c.rows('members').firstOrNull;
-  List<Widget> member() {
+  List<Widget> member({bool includeTitle = true}) {
     final m = currentMember();
     if (m == null) return [empty()];
     final pending = c.pending(m['id'], 'savings_deposit');
+    final group = c
+        .rows('groups')
+        .where((g) => g['id'] == m['groupId'])
+        .firstOrNull;
+    final records = c
+        .rows('transactions')
+        .where((tx) => tx['memberId'] == m['id'])
+        .toList()
+        .reversed
+        .toList();
     return [
-      title(t('passbook')),
-      card(
-        Row(
+      if (c.portal && includeTitle) title(t('passbook')),
+      SurfaceCard(
+        color: PopColors.forest,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            CircleAvatar(
-              radius: 28,
-              backgroundColor: const Color(0xffe8f3ef),
-              child: Text(m['displayName'].substring(0, 1)),
+            Row(
+              children: [
+                IdentityAvatar(m['displayName'], size: 52, inverse: true),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        m['displayName'],
+                        style: Theme.of(context).textTheme.titleLarge
+                            ?.copyWith(color: Colors.white),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        group?['displayName'] ?? '',
+                        style: Theme.of(context).textTheme.bodySmall
+                            ?.copyWith(color: PopColors.forestMuted),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 16),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 18),
+              child: Divider(color: Color(0xff38685a)),
+            ),
+            Row(
+              children: [
+                const Icon(
+                  Icons.check_circle_outline_rounded,
+                  color: PopColors.forestMuted,
+                  size: 17,
+                ),
+                const SizedBox(width: 7),
+                Expanded(
+                  child: Text(
+                    t('confirmedSavings'),
+                    style: Theme.of(context).textTheme.bodySmall
+                        ?.copyWith(color: PopColors.forestMuted),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 9),
+            MoneyAmount(money(c.savings(m)), size: 38, color: Colors.white),
+          ],
+        ),
+      ),
+      if (pending != 0)
+        Semantics(
+          liveRegion: true,
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: PopColors.warningTint,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.schedule_rounded,
+                  color: PopColors.warning,
+                  size: 22,
+                ),
+                const SizedBox(width: 11),
+                Expanded(
+                  child: Text(
+                    '${money(pending)} · ${t('waitingToSync')}',
+                    style: Theme.of(context).textTheme.titleSmall
+                        ?.copyWith(color: PopColors.warning),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      SurfaceCard(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: PopColors.primaryTint,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(
+                Icons.account_balance_outlined,
+                size: 23,
+                color: teal,
+              ),
+            ),
+            const SizedBox(width: 13),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    m['displayName'],
-                    style: Theme.of(context).textTheme.titleMedium,
+                    t('loanPrincipal'),
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
-                  Text(
-                    c
-                        .rows('groups')
-                        .firstWhere(
-                          (g) => g['id'] == m['groupId'],
-                        )['displayName'],
-                  ),
+                  const SizedBox(height: 4),
+                  MoneyAmount(money(c.principal(m)), size: 24),
                 ],
               ),
             ),
           ],
         ),
       ),
-      metric(t('confirmedSavings'), c.savings(m)),
-      if (pending != 0)
-        card(
-          chip('${money(pending)} · ${t('waitingToSync')}', warning: true),
-          color: const Color(0xfffff4de),
+      if (widget.page != 'member' && c.actor['role'] == 'participant') ...[
+        SizedBox(
+          width: double.infinity,
+          child: button(
+            t('requestHelp'),
+            () => requestHelp(m),
+            icon: Icons.support_agent_outlined,
+          ),
         ),
-      metric(t('loanPrincipal'), c.principal(m)),
-      if (c.actor['role'] == 'sakhi')
-        button(t('recordEntry'), () => entry(m, 'savings_deposit'))
-      else if (c.actor['role'] == 'participant')
-        button(t('requestHelp'), () => requestHelp(m)),
-      const SizedBox(height: 24),
-      title(t('recentActivity')),
-      for (final tx
-          in c
-              .rows('transactions')
-              .where((t) => t['memberId'] == m['id'])
-              .toList()
-              .reversed)
-        transactionRow(tx),
-      if (c.rows('transactions').where((t) => t['memberId'] == m['id']).isEmpty)
-        empty(),
+        const SizedBox(height: 20),
+      ],
+      SectionHeading(t('recentActivity')),
+      if (records.isEmpty) empty(),
+      for (final tx in records) transactionRow(tx),
       for (final o in c.queue.where(
         (o) =>
             o['kind'] == 'transaction.post' &&
             o['payload']['memberId'] == m['id'] &&
-            o['state'] != 'acknowledged' &&
-            o['state'] != 'discarded',
+            !['acknowledged', 'discarded', 'superseded'].contains(o['state']),
       ))
-        card(
-          Text(
+        Padding(
+          padding: const EdgeInsets.only(top: 12),
+          child: Text(
             '${money(o['payload']['amountPaise'])} · ${o['error'] == null ? t('savedOnPhone') : errorText(o['error'])}',
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
     ];
@@ -1012,6 +1808,16 @@ class _DemoShellState extends State<DemoShell> {
     amount: money(tx['amountPaise']),
     date: tx['businessDate'],
     status: t(tx['reversedByTransactionId'] != null ? 'reversed' : 'confirmed'),
+    subject: widget.page == 'member'
+        ? null
+        : c
+              .rows('members')
+              .where((m) => m['id'] == tx['memberId'])
+              .firstOrNull?['displayName'],
+    icon:
+        ['enterprise_expense', 'loan_principal_repayment'].contains(tx['type'])
+        ? Icons.north_east_rounded
+        : Icons.south_west_rounded,
     correction:
         c.actor['role'] == 'manager' &&
             tx['type'] != 'reversal' &&
@@ -1183,6 +1989,7 @@ class _DemoShellState extends State<DemoShell> {
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, set) => AlertDialog(
+          scrollable: true,
           title: Text(typeLabel(type)),
           content: SingleChildScrollView(
             child: Column(
@@ -1670,46 +2477,40 @@ class _DemoShellState extends State<DemoShell> {
     contact.dispose();
   }
 
-  List<Widget> support({bool includeTitle = true}) => [
-    if (includeTitle) title(t('support')),
-    if (c.actor['role'] == 'sakhi' && c.rows('enterprises').isNotEmpty)
-      card(
-        ListTile(
-          contentPadding: EdgeInsets.zero,
-          leading: const Icon(Icons.storefront_outlined),
-          title: Text(t('enterprise')),
-          subtitle: Text(c.rows('enterprises').first['name']),
-          onTap: () => context.go('/enterprise'),
-        ),
-      ),
-    DropdownButtonFormField<String>(
-      isExpanded: true,
-      itemHeight: null,
-      initialValue: supportStatus,
-      decoration: InputDecoration(labelText: t('statusFilter')),
-      items: ['all', 'open', 'in_progress', 'resolved']
-          .map(
-            (v) => DropdownMenuItem(
-              value: v,
-              child: Text(
-                t(
-                  v == 'all'
-                      ? 'allStatuses'
-                      : v == 'open'
-                      ? 'openStatus'
-                      : v == 'in_progress'
-                      ? 'inProgress'
-                      : 'resolved',
+  List<Widget> support({bool includeTitle = true}) {
+    final statusField = Semantics(
+      container: true,
+      child: DropdownButtonFormField<String>(
+        isExpanded: true,
+        itemHeight: null,
+        initialValue: supportStatus,
+        decoration: InputDecoration(labelText: t('statusFilter')),
+        items: ['all', 'active', 'open', 'in_progress', 'resolved']
+            .map(
+              (v) => DropdownMenuItem(
+                value: v,
+                child: Text(
+                  t(
+                    v == 'all'
+                        ? 'allStatuses'
+                        : v == 'active'
+                        ? 'openRequests'
+                        : v == 'open'
+                        ? 'openStatus'
+                        : v == 'in_progress'
+                        ? 'inProgress'
+                        : 'resolved',
+                  ),
                 ),
               ),
-            ),
-          )
-          .toList(),
-      onChanged: (v) => setState(() => supportStatus = v!),
-    ),
-    const SizedBox(height: 16),
-    if (c.actor['role'] == 'manager')
-      DropdownButtonFormField<String>(
+            )
+            .toList(),
+        onChanged: (v) => setState(() => supportStatus = v!),
+      ),
+    );
+    final ownerField = Semantics(
+      container: true,
+      child: DropdownButtonFormField<String>(
         isExpanded: true,
         itemHeight: null,
         initialValue: supportOwner,
@@ -1721,92 +2522,180 @@ class _DemoShellState extends State<DemoShell> {
         ],
         onChanged: (v) => setState(() => supportOwner = v!),
       ),
-    const SizedBox(height: 16),
-    if (c.rows('supportRequests').isEmpty) empty(),
-    for (final r
-        in c
-            .rows('supportRequests')
-            .where(
-              (r) =>
-                  (supportStatus == 'all' || r['status'] == supportStatus) &&
-                  (supportOwner == 'all' ||
-                      r['assignedActorId'] == supportOwner),
-            ))
-      card(
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              r['reference'],
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            Text(r['description']),
-            chip(
-              t(
-                r['source'] == 'whatsapp_simulation'
-                    ? 'simulation'
-                    : 'requestHelp',
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              t(
-                r['status'] == 'open'
-                    ? 'openStatus'
-                    : r['status'] == 'in_progress'
-                    ? 'inProgress'
-                    : 'resolved',
-              ),
-            ),
-            Text(
-              t('assignedTo').replaceAll(
-                '{name}',
-                c
-                        .rows('actors')
-                        .where((a) => a['id'] == r['assignedActorId'])
-                        .firstOrNull?['displayName'] ??
-                    'Smart Sakhi',
-              ),
-            ),
-            if (r['resolutionNote'] != null) Text(r['resolutionNote']),
-            TextButton(
-              onPressed: () => supportHistory(r),
-              child: Text(t('activity')),
-            ),
-            if (c.actor['role'] == 'manager' && r['status'] != 'resolved')
-              TextButton(
-                onPressed: () => assignSupport(r),
-                child: Text(t('reassign')),
-              ),
-
-            if (c.actor['role'] != 'participant' && r['status'] != 'resolved')
-              TextButton(
-                onPressed: () => act(() async {
-                  final status = r['status'] == 'open'
-                      ? 'in_progress'
-                      : 'resolved';
-                  final note = status == 'resolved'
-                      ? await input(t('resolutionNote'))
-                      : null;
-                  if (status == 'resolved' &&
-                      (note == null || note.trim().isEmpty)) {
-                    return;
-                  }
-                  await c.onlineMutation('support.update', {
-                    'requestId': r['id'],
-                    'expectedVersion': r['version'],
-                    'status': status,
-                    'resolutionNote': ?note,
-                  });
-                }),
-                child: Text(
-                  t(r['status'] == 'open' ? 'inProgress' : 'resolved'),
-                ),
-              ),
-          ],
+    );
+    final requests = c
+        .rows('supportRequests')
+        .where(
+          (r) =>
+              (supportStatus == 'all' ||
+                  (supportStatus == 'active' && r['status'] != 'resolved') ||
+                  r['status'] == supportStatus) &&
+              (supportOwner == 'all' || r['assignedActorId'] == supportOwner),
+        )
+        .toList();
+    return [
+      if (includeTitle) ...[
+        Text(t('support'), style: Theme.of(context).textTheme.headlineLarge),
+        const SizedBox(height: 24),
+      ],
+      if (c.actor['role'] == 'sakhi' && c.rows('enterprises').isNotEmpty)
+        SurfaceCard(
+          padding: EdgeInsets.zero,
+          child: ListTile(
+            leading: const Icon(Icons.storefront_outlined),
+            title: Text(t('enterprise')),
+            subtitle: Text(c.rows('enterprises').first['name']),
+            trailing: const Icon(Icons.chevron_right_rounded),
+            onTap: () => context.go('/enterprise'),
+          ),
         ),
+      LayoutBuilder(
+        builder: (context, box) {
+          if (c.actor['role'] == 'manager' &&
+              box.maxWidth >= 650 &&
+              MediaQuery.textScalerOf(context).scale(1) < 1.4) {
+            return Row(
+              children: [
+                SizedBox(width: 250, child: statusField),
+                const SizedBox(width: 16),
+                SizedBox(width: 250, child: ownerField),
+              ],
+            );
+          }
+          return Column(
+            children: [
+              statusField,
+              if (c.actor['role'] == 'manager') ...[
+                const SizedBox(height: 16),
+                ownerField,
+              ],
+            ],
+          );
+        },
       ),
-  ];
+      const SizedBox(height: 24),
+      if (requests.isEmpty) EmptyState(t('noMatchingRequests')),
+      for (final r in requests)
+        SurfaceCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Text(
+                      r['reference'],
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  StatusChip(
+                    t(
+                      r['status'] == 'open'
+                          ? 'openStatus'
+                          : r['status'] == 'in_progress'
+                          ? 'inProgress'
+                          : 'resolved',
+                    ),
+                    warning: r['status'] != 'resolved',
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Text(
+                r['description'],
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              const SizedBox(height: 14),
+              Wrap(
+                spacing: 16,
+                runSpacing: 8,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  StatusChip(
+                    t(
+                      r['source'] == 'whatsapp_simulation'
+                          ? 'simulation'
+                          : 'requestHelp',
+                    ),
+                    icon: Icons.chat_bubble_outline_rounded,
+                  ),
+                  Text(
+                    t('assignedTo').replaceAll(
+                      '{name}',
+                      c
+                              .rows('actors')
+                              .where((a) => a['id'] == r['assignedActorId'])
+                              .firstOrNull?['displayName'] ??
+                          'Smart Sakhi',
+                    ),
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
+              if (r['resolutionNote'] != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 14),
+                  child: Text(r['resolutionNote']),
+                ),
+              const SizedBox(height: 18),
+              const Divider(),
+              const SizedBox(height: 6),
+              Wrap(
+                spacing: 8,
+                runSpacing: 4,
+                children: [
+                  TextButton.icon(
+                    onPressed: () => supportHistory(r),
+                    icon: const Icon(Icons.history_rounded, size: 19),
+                    label: Text(t('activity')),
+                  ),
+                  if (c.actor['role'] == 'manager' && r['status'] != 'resolved')
+                    TextButton.icon(
+                      onPressed: () => assignSupport(r),
+                      icon: const Icon(Icons.person_outline_rounded, size: 19),
+                      label: Text(t('reassign')),
+                    ),
+                  if (c.actor['role'] != 'participant' &&
+                      r['status'] != 'resolved')
+                    OutlinedButton.icon(
+                      onPressed: () => act(() async {
+                        final status = r['status'] == 'open'
+                            ? 'in_progress'
+                            : 'resolved';
+                        final note = status == 'resolved'
+                            ? await input(t('resolutionNote'))
+                            : null;
+                        if (status == 'resolved' &&
+                            (note == null || note.trim().isEmpty)) {
+                          return;
+                        }
+                        await c.onlineMutation('support.update', {
+                          'requestId': r['id'],
+                          'expectedVersion': r['version'],
+                          'status': status,
+                          'resolutionNote': ?note,
+                        });
+                      }),
+                      icon: Icon(
+                        r['status'] == 'open'
+                            ? Icons.play_arrow_rounded
+                            : Icons.check_rounded,
+                        size: 19,
+                      ),
+                      label: Text(
+                        t(r['status'] == 'open' ? 'inProgress' : 'resolved'),
+                      ),
+                    ),
+                ],
+              ),
+            ],
+          ),
+        ),
+    ];
+  }
+
   Future<void> supportHistory(Json request) async {
     await act(() async {
       final detail = await c.request(

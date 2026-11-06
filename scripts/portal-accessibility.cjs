@@ -21,7 +21,7 @@ const { chromium } = require("playwright");
         .trim(),
     );
   await p.getByRole("button", { name: "Open demo", exact: true }).click();
-  await p.getByText("Overview", { exact: true }).first().waitFor();
+  await p.getByRole("button", { name: "Overview Tab 1 of 6", exact: true }).waitFor();
   const session = await p.context().newCDPSession(p);
   await session.send("Emulation.setEmulatedVisionDeficiency", {
     type: "achromatopsia",

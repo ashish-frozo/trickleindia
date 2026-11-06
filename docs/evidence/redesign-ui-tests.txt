@@ -1,0 +1,20 @@
+Waiting for another flutter command to release the startup lock...
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.15 available)
+  vector_math 2.4.0 (2.4.4 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/ashishdhiman/WORK/trickleup/packages/ui/test/ui_test.dart
+00:00 +0: English/Hindi login at 360px and 200% text has no layout exceptions
+00:10 +1: authenticated mobile and manager layouts remain usable with large text
+00:20 +2: Hindi amount review with keyboard and repeated confirmation saves one pending entry
+00:23 +3: conflict review links replacement and preserves original intent
+00:24 +4: expired session retains a reachable counted local reset confirmation
+00:25 +5: profile conflict compares every proposed field with current server values
+00:25 +6: programme group drill-down keeps the selected group scope
+00:30 +7: offline passbook exposes confirmed and pending amounts in the first phone viewport
+00:30 +8: All tests passed!

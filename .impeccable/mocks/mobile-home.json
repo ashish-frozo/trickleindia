@@ -1,0 +1,6 @@
+{
+  "approved": true,
+  "approval": "User explicitly delegated design direction; selected against RFP criteria",
+  "direction": "Refined programme workspace / field record",
+  "constraints": "Do not copy invented timestamps, transaction rows, status claims, support description or group principal allocations from generated image. Use actual fixture/API values. Do not copy gradient/noise, image typography or fake brand marks. All interface text/controls stay semantic Flutter widgets."
+}

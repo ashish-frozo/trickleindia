@@ -1,0 +1,5 @@
+# Redesign device notes
+
+The native capture device is the existing API36 AOSP ARM64 emulator, software GLES, two cores, approximately 2.5GB guest RAM. The host was also compiling Flutter builds. Cold boot twice raised an Android **System UI** ANR; recovery restarted the emulator's System UI, not the PoP app. This is a capture-environment issue and is not evidence of a PoP render failure.
+
+The redesigned ordinary APK completed the offline savings/save/process-restart/reconciliation journey, verified separately against PostgreSQL. Screenshots establish visual layout, not startup performance. An observed cold activity launch during the offline journey was 6.12s; a later post-install launch timed out while System UI stalled. These are uncontrolled observations under host load. The original implementation's 2.46s cached launch remains historical evidence, not a benchmark for this UI revision. The <=2s full cached-start target remains an unmet acceptance item requiring a controlled representative-device run. Actual TalkBack speech still cannot be verified on this AOSP image.

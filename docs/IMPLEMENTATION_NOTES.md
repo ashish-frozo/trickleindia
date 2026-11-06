@@ -16,7 +16,7 @@ PostgreSQL's sync-clock row is locked before each mutation's canonical changes a
 
 ## Experience and content
 
-Design tokens are generated from the supplied canonical JSON. Noto Sans and Noto Sans Devanagari are bundled with OFL licensing. English/Hindi resources have matching keys; offline help cards are bundled draft instructional content. The language switch updates routed screens and the full Material locale. Layout checks cover large text, Hindi entry with keyboard, and repeated confirmation.
+The active redesign tokens are generated from `packages/ui/assets/design_tokens.json`; the original supplied specification JSON is retained unchanged. `PRODUCT.md`, `DESIGN.md` and `docs/design/RFP_UI_REQUIREMENTS.md` record the audience, built visual system and requirement traceability. Noto Sans and Noto Sans Devanagari are bundled with OFL licensing. English/Hindi resources have matching keys; offline help cards are bundled draft instructional content. The language switch updates routed screens and the full Material locale. Layout checks cover large text, Hindi entry with keyboard, and repeated confirmation.
 
 The WhatsApp surface is a local labelled simulation creating actual support records through the service. It sends no messages. Replay of a simulated message keeps its reference. Audio is explicitly unavailable because reviewed assets were not supplied; playback controls are not shown. Odia, Ho and Santhali, conversational AI, speech and official WhatsApp transport remain planned/P2. No live provider integration is claimed.
 

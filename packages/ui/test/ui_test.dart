@@ -372,11 +372,126 @@ void main() {
         'livestock',
         'tailoring',
       ]) {
-        expect(find.descendant(of: find.byType(AlertDialog), matching: find.textContaining(value)), findsOneWidget);
+        expect(
+          find.descendant(
+            of: find.byType(AlertDialog),
+            matching: find.textContaining(value),
+          ),
+          findsOneWidget,
+        );
       }
       await tester.tap(find.widgetWithText(TextButton, 'Cancel'));
       await tester.pumpAndSettle();
       expect(c.queue.single['state'], 'conflict');
+      await tester.pumpWidget(const SizedBox.shrink());
+      c.dispose();
+    },
+  );
+
+  testWidgets('programme group drill-down keeps the selected group scope', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1440, 1000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final seed = jsonDecode(
+      File('../../PoP_2_Demo_Coding_Pack/assets/demo_seed.json')
+          .readAsStringSync(),
+    ) as Json;
+    final c = AppController(MemoryStore(), 'http://unused', portal: true)
+      ..online = false;
+    c.identity = {
+      'actor': seed['actors'].firstWhere((a) => a['role'] == 'manager'),
+      'datasetId': seed['dataset']['id'],
+      'offlineUntil': DateTime.now()
+          .add(const Duration(hours: 1))
+          .toIso8601String(),
+    };
+    c.data = seed;
+    await tester.pumpWidget(PopApp(controller: c));
+    await tester.pumpAndSettle();
+    tester.view.physicalSize = const Size(768, 1024);
+    await tester.pumpAndSettle();
+    expect(find.text('Loan principal outstanding: ₹1,000'), findsOneWidget);
+    expect(find.text('Loan principal outstanding: ₹4,000'), findsOneWidget);
+    tester.view.physicalSize = const Size(1440, 1000);
+    await tester.pumpAndSettle();
+    var supportFocused = false;
+    for (var i = 0; i < 35; i++) {
+      await tester.sendKeyEvent(LogicalKeyboardKey.tab);
+      await tester.pump();
+      if (Focus.of(tester.element(find.text('Support').first)).hasFocus) {
+        supportFocused = true;
+        break;
+      }
+    }
+    expect(
+      supportFocused,
+      isTrue,
+      reason: 'Programme navigation is reachable by keyboard',
+    );
+    await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+    await tester.pumpAndSettle();
+    expect(find.text('Request status'), findsOneWidget);
+    await tester.tap(find.widgetWithText(TextButton, 'Overview'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Udaan SHG').first);
+    await tester.pumpAndSettle();
+    expect(find.text('Udaan SHG'), findsWidgets);
+    expect(find.text('Pragati SHG'), findsNothing);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+    c.dispose();
+  });
+  testWidgets(
+    'offline passbook exposes confirmed and pending amounts in the first phone viewport',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      final seed = jsonDecode(
+        File('../../PoP_2_Demo_Coding_Pack/assets/demo_seed.json')
+            .readAsStringSync(),
+      ) as Json;
+      final c = AppController(MemoryStore(), 'http://unused')..online = false;
+      final member = (seed['members'] as List).firstWhere(
+        (m) => m['code'] == 'rani',
+      );
+      c.identity = {
+        'actor': seed['actors'].firstWhere((a) => a['role'] == 'sakhi'),
+        'datasetId': seed['dataset']['id'],
+        'offlineUntil': DateTime.now()
+            .add(const Duration(hours: 1))
+            .toIso8601String(),
+      };
+      c.data = seed;
+      c.error = 'TEMPORARILY_UNAVAILABLE';
+      c.queue = [
+        {
+          'operationId': 'pending',
+          'kind': 'transaction.post',
+          'state': 'pending',
+          'payload': {
+            'transactionId': 'tx',
+            'memberId': member['id'],
+            'type': 'savings_deposit',
+            'amountPaise': 20000,
+          },
+        },
+      ];
+      await tester.pumpWidget(PopApp(controller: c));
+      await tester.pumpAndSettle();
+      GoRouter.of(tester.element(find.byType(DemoShell)))
+          .go('/member/${member['id']}');
+      await tester.pumpAndSettle();
+      expect(tester.getRect(find.text('₹1,200').first).bottom, lessThan(764));
+      expect(
+        tester.getRect(find.textContaining('₹200').first).bottom,
+        lessThan(764),
+      );
+      expect(tester.takeException(), isNull);
       await tester.pumpWidget(const SizedBox.shrink());
       c.dispose();
     },

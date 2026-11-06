@@ -1,0 +1,53 @@
+
+> pop-demo-workspace@1.0.0 test:portal
+> node scripts/portal-qa.cjs && node scripts/portal-accessibility.cjs
+
+- text: PoP 2.0 Overview
+- button "हिन्दी"
+- button "Refresh"
+- text: Programme portal Proposal demo • Fictional data
+- group:
+  - button "Overview Tab 1 of 6"
+  - button "Groups Tab 2 of 6"
+  - button "Meetings Tab 3 of 6"
+  - button "Support Tab 4 of 6"
+  - button "Activity Tab 5 of 6"
+  - button "Demo capabilities Tab 6 of 6"
+- text: Arun Sen Programme manager
+- button "Sign out"
+- group "Connected · 0 Waiting to sync":
+  - button "Sync centre"
+- group:
+  - heading "Programme overview SHG finance, meetings and follow-up" [level=2]
+  - button "Group All groups"
+  - button "Members 6"
+  - button "Confirmed savings ₹5,000"
+  - button "Loan principal outstanding ₹5,000"
+  - button "Open support requests 1"
+  - text: "Last refreshed: Nov 6, 2026 09:48 IST"
+  - group "Groups at a glance (2)":
+    - button "View all groups"
+    - table:
+      - row "Group Members Confirmed savings Loan principal outstanding Last accepted record":
+        - columnheader "Group"
+        - columnheader "Members"
+        - columnheader "Confirmed savings"
+        - columnheader "Loan principal outstanding"
+        - columnheader "Last accepted record"
+      - row "Pragati SHG Sample village B 2 ₹1,200 ₹1,000 Nov 5, 2026 05:30 IST":
+        - cell "Pragati SHG Sample village B"
+        - cell "2"
+        - cell "₹1,200"
+        - cell "₹1,000"
+        - cell "Nov 5, 2026 05:30 IST"
+      - row "Udaan SHG Sample village A 4 ₹3,800 ₹4,000 Nov 6, 2026 09:43 IST":
+        - cell "Udaan SHG Sample village A"
+        - cell "4"
+        - cell "₹3,800"
+        - cell "₹4,000"
+        - cell "Nov 6, 2026 09:43 IST"
+  - 'group "Recent financial activity Savings contribution Rani Mahto · 2026-11-05 Confirmed ₹200 Requests to follow up DEMO-0001 Open Fictional request: help finding the meeting screen."':
+    - button "Activity"
+    - button "View requests"
+    - button "Reverse entry"
+    - button "WhatsApp simulation • No messages sent"
