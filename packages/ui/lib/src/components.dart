@@ -110,15 +110,18 @@ class IdentityAvatar extends StatelessWidget {
         height: size,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: inverse ? const Color(0xffdceade) : PopColors.primaryTint,
+          color: inverse ? PopColors.primaryTint : PopColors.primaryTint,
           shape: BoxShape.circle,
         ),
-        child: Text(
-          initials,
-          style: TextStyle(
-            color: teal,
-            fontSize: size * .34,
-            fontWeight: FontWeight.w600,
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            initials,
+            style: TextStyle(
+              color: teal,
+              fontSize: size * .34,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ),

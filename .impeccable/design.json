@@ -11,7 +11,9 @@
       "VengeanceNavigation",
       "CommunityOrbit"
     ],
-    "reviewStatus": "Local verification; prior forest finish review is historical"
+    "reviewStatus": "Local verification; prior forest finish review is historical",
+    "currentDirection": "Blue/white structural redesign",
+    "currentSpecification": "docs/design/BLUEPRINT_UI.md"
   },
   "components": [
     {

@@ -41,164 +41,67 @@ class ProgrammeWorkspace extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    final expanded = MediaQuery.sizeOf(context).width >= 1100;
+    final wide = MediaQuery.sizeOf(context).width >= 1100;
+    final normalText = MediaQuery.textScalerOf(context).scale(1) < 1.4;
     return Scaffold(
       body: SafeArea(
-        child: Row(
+        child: Column(
           children: [
-            Container(
-              width: expanded ? 244 : 100,
-              margin: const EdgeInsets.fromLTRB(12, 12, 0, 12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: PopColors.border),
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: expanded ? 24 : 8,
-                      vertical: 28,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (expanded)
-                          const PopWordmark(size: 28)
-                        else
-                          const Text(
-                            'PoP',
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        if (expanded) ...[
-                          const SizedBox(height: 8),
-                          Text(
-                            programmeLabel,
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                  const Divider(indent: 20, endIndent: 20),
-                  const SizedBox(height: 18),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.all(8),
-                      child: VengeanceNavigation(
-                        labels: destinations,
-                        icons: icons,
-                        selected: selected,
-                        onSelected: onNavigate,
-                        vertical: true,
-                        compact: !expanded,
+            Material(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 28,
+                  vertical: 16,
+                ),
+                child: Row(
+                  children: [
+                    const PopWordmark(size: 26),
+                    if (wide && normalText) ...[
+                      const SizedBox(width: 24),
+                      Container(width: 1, height: 28, color: PopColors.border),
+                      const SizedBox(width: 24),
+                      Text(
+                        programmeLabel,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
+                    ],
+                    const Spacer(),
+                    languageControl,
+                    IconButton(
+                      tooltip: refreshLabel,
+                      onPressed: refreshing ? null : refresh,
+                      icon: const Icon(Icons.refresh_rounded),
                     ),
-                  ),
-                  const Divider(indent: 20, endIndent: 20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 18,
+                    const SizedBox(width: 12),
+                    IdentityAvatar(name, size: 36),
+                    if (wide && normalText) ...[
+                      const SizedBox(width: 10),
+                      Text(name, style: Theme.of(context).textTheme.titleSmall),
+                    ],
+                    IconButton(
+                      tooltip: '$name · $signOutLabel',
+                      onPressed: signOut,
+                      icon: const Icon(Icons.logout_rounded, size: 20),
                     ),
-                    child: expanded
-                        ? Row(
-                            children: [
-                              IdentityAvatar(name, size: 34),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      name,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall,
-                                    ),
-                                    Text(
-                                      role,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              IconButton(
-                                tooltip: signOutLabel,
-                                onPressed: signOut,
-                                icon: const Icon(
-                                  Icons.logout_rounded,
-                                  size: 18,
-                                ),
-                              ),
-                            ],
-                          )
-                        : IconButton(
-                            tooltip: '$name · $signOutLabel',
-                            onPressed: signOut,
-                            icon: const Icon(Icons.logout_rounded),
-                          ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-            Expanded(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(28, 18, 24, 16),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                programmeLabel,
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                pageTitle,
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                            ],
-                          ),
-                        ),
-                        languageControl,
-                        const SizedBox(width: 8),
-                        IconButton(
-                          tooltip: refreshLabel,
-                          onPressed: refreshing ? null : refresh,
-                          icon: refreshing
-                              ? const SizedBox.square(
-                                  dimension: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : const Icon(Icons.refresh_rounded),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: DemoBanner(demoLabel),
-                    ),
-                  ),
-                  Expanded(child: body),
-                ],
+            Material(
+              color: Colors.white,
+              child: VengeanceNavigation(
+                labels: destinations,
+                icons: icons,
+                selected: selected,
+                onSelected: onNavigate,
+                inline: wide && normalText,
+                compact: !wide,
               ),
             ),
+            const Divider(),
+            DemoBanner(demoLabel),
+            Expanded(child: body),
           ],
         ),
       ),
@@ -231,7 +134,7 @@ class WelcomePanel extends StatelessWidget {
             children: [
               const PopWordmark(inverse: true, size: 28),
               const SizedBox(height: 36),
-              const CommunityOrbit(),
+              const RecordIllustration(),
               const SizedBox(height: 28),
               Text(
                 title,
@@ -261,10 +164,10 @@ class WelcomePanel extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: const Color(0xff36412a),
+                          color: const Color(0xff2856bc),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Icon(item.$1, color: vengeanceLime, size: 21),
+                        child: Icon(item.$1, color: brandAccent, size: 21),
                       ),
                       const SizedBox(width: 14),
                       Expanded(

@@ -1,5 +1,7 @@
 # Verification report
 
+Current UI: blue/white structural redesign. See [BLUEPRINT_UI.md](design/BLUEPRINT_UI.md). `output/blueprint` contains the latest previews; the earlier olive/lime `vengeance` direction was rejected.
+
 Verification dates: original implementation 5 November 2026; UI redesign 6 November 2026. This report distinguishes executed checks from manual acceptance still requiring equipment. Synthetic data only. No production-readiness claim.
 
 ## Automated results
@@ -19,7 +21,7 @@ Flutter static analysis, API TypeScript compilation, ARM64 Android and release w
 
 ## RFP-led UI redesign
 
-The shared Flutter UI now uses bundled regular/semibold Noto fonts, a forest/sage theme, a task-led mobile home, a passbook with separate confirmed/pending money, and a dedicated responsive programme workspace. The portal adds aligned group/member tables, scoped group drill-down, compact filters and grouped support actions. `docs/design/RFP_UI_REQUIREMENTS.md` maps the supplied ten-page RFP to the implementation and full-production gaps.
+The historical forest revision introduced bundled regular/semibold Noto fonts, a forest/sage theme, a task-led mobile home, a passbook with separate confirmed/pending money, and a dedicated responsive programme workspace. The portal adds aligned group/member tables, scoped group drill-down, compact filters and grouped support actions. `docs/design/RFP_UI_REQUIREMENTS.md` maps the supplied ten-page RFP to the implementation and full-production gaps.
 
 The 23 real PostgreSQL API tests were rerun (`redesign-api-tests.txt`). The eight widget tests cover English/Hindi at 200%, keyboard and modal behavior, repeated confirmation, conflict review, group drill-down and first-viewport pending balances. The programme group test also reaches and activates Support with Tab/Enter and asserts both groups retain principal outstanding in the 768px layout. The tablet regression was confirmed failing before the missing field was restored (`redesign-tablet-red.txt`). Token/message checks are in `redesign-assets-and-contrast.txt`; the once-only mechanical design scan returned no findings (`redesign-detector.json`).
 
@@ -71,12 +73,10 @@ Actual TalkBack speech needs an Android installation with TalkBack and a TTS eng
 
 Reviewed audio is unavailable, as explicitly permitted by the pack. Live AI/speech/official WhatsApp are optional P2 and disabled. Docker container execution was not possible here; the tested startup uses native PostgreSQL. Hindi terminology/help copy still needs participant/content-owner review before production rollout. No credentials, private local config, credential-bearing test APKs or browser session traces belong in the handoff archive.
 
-
 ## Remaining-gap follow-up (6 November 2026)
 
 See [GAP_CLOSURE.md](GAP_CLOSURE.md) for current status. English/Hindi draft help now supports device-generated speech, with installed offline voices required on Android and explicit missing-voice errors. Reviewed audio recordings and five-language acceptance remain outstanding. Narrow/large-text page titles now wrap in scrollable content. Prior screenshot and finish-review evidence describes the earlier build.
 
+## Historical VengeanceUI adaptation — 6 November 2026
 
-## VengeanceUI adaptation — 6 November 2026
-
-The current UI uses Flutter adaptations of VengeanceUI SpotlightNavbar, GlowBorderCard and ResearchBentoGrid.Panel, with MIT attribution. It replaces the prior forest visual direction while retaining the existing Flutter apps, data and workflows. See [design/VENGEANCE_UI.md](design/VENGEANCE_UI.md). Current screenshots and verification use the `vengeance` prefix. Earlier finish reviews and screenshots are historical. External acceptance gaps are unchanged.
+The preceding UI revision used Flutter adaptations of VengeanceUI SpotlightNavbar, GlowBorderCard and ResearchBentoGrid.Panel, with MIT attribution. It replaces the prior forest visual direction while retaining the existing Flutter apps, data and workflows. See [design/VENGEANCE_UI.md](design/VENGEANCE_UI.md). That revision’s screenshots and verification use the `vengeance` prefix; current evidence uses `blueprint`. Earlier finish reviews and screenshots are historical. External acceptance gaps are unchanged.

@@ -1,8 +1,10 @@
 # PoP 2.0 proposal demo
 
+Current UI: blue/white structural redesign. See [BLUEPRINT_UI.md](docs/design/BLUEPRINT_UI.md). `output/blueprint` contains the latest previews; the earlier olive/lime `vengeance` direction was rejected.
+
 Flutter Android field app, Flutter programme portal, Node.js/TypeScript API and PostgreSQL. All records are synthetic. The original requirements remain in `PoP_2_Demo_Coding_Pack`.
 
-The app and portal use a shared forest-and-sage design system with distinct field-task and programme-monitoring layouts. RFP traceability is in [UI requirements](docs/design/RFP_UI_REQUIREMENTS.md); the built design system is in [DESIGN.md](DESIGN.md).
+The app and portal use a shared blue-and-white design system with distinct field-task and programme-monitoring layouts. RFP traceability is in [UI requirements](docs/design/RFP_UI_REQUIREMENTS.md); the built design system is in [DESIGN.md](DESIGN.md).
 
 The local review package is in `delivery/`. Implementation and automated/device evidence are available. The remaining acceptance gates are actual TalkBack spoken output and the full cached-start target; see `docs/TEST_RESULTS.md`.
 

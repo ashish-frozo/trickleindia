@@ -67,7 +67,7 @@ void main() {
                     as RenderRepaintBoundary)
                 .toImage(pixelRatio: 2);
         final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
-        final file = File('../../output/vengeance/$name.png');
+        final file = File('../../output/blueprint/$name.png');
         await file.parent.create(recursive: true);
         await file.writeAsBytes(bytes!.buffer.asUint8List());
         image.dispose();

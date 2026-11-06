@@ -1,8 +1,7 @@
 /*
-VengeanceUI Flutter adaptation: ink/ivory panels, lime focus, SpotlightNavbar
-navigation and GlowBorderCard/ResearchBentoGrid surface treatments.
-Provenance and MIT notice: docs/design/VENGEANCE_UI.md.
-Keep financial truth, offline workflow and accessible native interactions.
+Blue/white structural redesign: task-led mobile, top-navigation programme portal,
+white passbooks and an explicit savings summary. See docs/design/BLUEPRINT_UI.md.
+VengeanceUI-derived primitives retain MIT attribution; domain behaviour is preserved.
 */
 import 'dart:async';
 import 'dart:convert';
@@ -780,7 +779,6 @@ class _DemoShellState extends State<DemoShell> {
       ];
     }
     final group = c.rows('groups').firstOrNull;
-    final meeting = c.rows('meetings').firstOrNull;
     final members = c
         .rows('members')
         .where((m) => m['groupId'] == group?['id'])
@@ -819,154 +817,158 @@ class _DemoShellState extends State<DemoShell> {
       const SizedBox(height: 24),
       if (group != null)
         SurfaceCard(
-          color: PopColors.forest,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  const Icon(
-                    Icons.event_note_rounded,
-                    color: vengeanceLime,
-                    size: 24,
+                  Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: PopColors.primaryTint,
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: const Icon(
+                      Icons.calendar_month_outlined,
+                      color: teal,
+                      size: 28,
+                    ),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 14),
                   Expanded(
-                    child: Text(
-                      t('todaysMeeting'),
-                      style: Theme.of(context).textTheme.titleSmall
-                          ?.copyWith(color: Colors.white),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          t('todaysMeeting'),
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          group['displayName'],
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ],
                     ),
                   ),
-                  if (meeting?['status'] == 'submitted')
-                    const Icon(
-                      Icons.check_circle_outline_rounded,
-                      color: PopColors.forestMuted,
-                      size: 20,
-                    ),
                 ],
               ),
-              const SizedBox(height: 20),
-              Text(
-                group['displayName'],
-                style: Theme.of(context).textTheme.headlineMedium
-                    ?.copyWith(color: Colors.white),
-              ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 18),
               Row(
                 children: [
                   const Icon(
                     Icons.location_on_outlined,
-                    size: 17,
-                    color: PopColors.forestMuted,
+                    size: 18,
+                    color: muted,
                   ),
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text(
                       group['villageLabel'] ?? '',
-                      style: Theme.of(context).textTheme.bodySmall
-                          ?.copyWith(color: PopColors.forestMuted),
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
+                  ),
+                  Text(
+                    '${members.length} ${t('memberCount')}',
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
               ),
-              const SizedBox(height: 22),
+              const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
-                child: FilledButton(
+                child: FilledButton.icon(
                   onPressed: () => context.go('/meetings'),
-                  style: FilledButton.styleFrom(
-                    backgroundColor: vengeanceLime,
-                    foregroundColor: ink,
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(child: Text(t('openMeeting'))),
-                      const SizedBox(width: 12),
-                      const Icon(Icons.arrow_forward_rounded, size: 22),
-                    ],
-                  ),
+                  icon: const Icon(Icons.arrow_forward_rounded),
+                  label: Text(t('openMeeting')),
                 ),
               ),
             ],
           ),
         ),
-      Container(
-        margin: const EdgeInsets.only(bottom: 24),
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-        child: syncIndicator(),
+      Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: syncIndicator(),
+        ),
       ),
-      if (group != null) ...[
+      LayoutBuilder(
+        builder: (context, box) {
+          final cards = [
+            (
+              Icons.account_balance_wallet_outlined,
+              t('confirmedSavings'),
+              money(members.fold<int>(0, (n, m) => n + c.savings(m))),
+              '/groups',
+            ),
+            (
+              Icons.support_agent_outlined,
+              t('pendingRequests'),
+              '$requests',
+              '/work',
+            ),
+          ];
+          final columns = MediaQuery.textScalerOf(context).scale(1) > 1.4
+              ? 1
+              : 2;
+          return Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: [
+              for (var i = 0; i < cards.length; i++)
+                SizedBox(
+                  width: (box.maxWidth - (columns - 1) * 12) / columns,
+                  child: VengeanceSurface(
+                    padding: EdgeInsets.zero,
+                    child: InkWell(
+                      onTap: () => context.go(cards[i].$4),
+                      child: Padding(
+                        padding: const EdgeInsets.all(18),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              cards[i].$1,
+                              color: i == 0 ? teal : PopColors.warning,
+                              size: 24,
+                            ),
+                            const SizedBox(height: 18),
+                            MoneyAmount(cards[i].$3, size: 28),
+                            const SizedBox(height: 8),
+                            Text(
+                              cards[i].$2,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          );
+        },
+      ),
+      const SizedBox(height: 22),
+      SectionHeading(
+        t('groups'),
+        trailing: TextButton(
+          onPressed: () => context.go('/groups'),
+          child: Text(t('viewAllGroups')),
+        ),
+      ),
+      if (group != null)
         SurfaceCard(
           padding: EdgeInsets.zero,
           child: ListTile(
             onTap: () => context.go('/groups'),
-            contentPadding: const EdgeInsets.all(16),
-            leading: Container(
-              width: 42,
-              height: 42,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: PopColors.primaryTint,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Icon(Icons.groups_outlined, color: teal, size: 24),
-            ),
-            title: Text(
-              group['displayName'],
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: 5),
-              child: Text(
-                '${members.length} ${t('memberCount')} · ${money(members.fold<int>(0, (n, m) => n + c.savings(m)))} ${t('confirmedSavings')}',
-              ),
-            ),
-            trailing: const Icon(Icons.chevron_right_rounded),
+            leading: const Icon(Icons.groups_outlined),
+            title: Text(group['displayName']),
+            subtitle: Text(group['villageLabel'] ?? ''),
+            trailing: const Icon(Icons.arrow_forward_rounded),
           ),
         ),
-      ],
-      SurfaceCard(
-        padding: EdgeInsets.zero,
-        child: ListTile(
-          onTap: () => context.go('/work'),
-          contentPadding: const EdgeInsets.all(16),
-          leading: Container(
-            width: 42,
-            height: 42,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: PopColors.warningTint,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(
-              Icons.assignment_outlined,
-              color: PopColors.warning,
-              size: 23,
-            ),
-          ),
-          title: Text(
-            t('pendingRequests'),
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
-          subtitle: Text(
-            requests == 0 ? t('noFollowupNeeded') : t('followupMembers'),
-          ),
-          trailing: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 7),
-            decoration: BoxDecoration(
-              color: PopColors.warningTint,
-              borderRadius: BorderRadius.circular(9),
-            ),
-            child: Text(
-              '$requests',
-              style: Theme.of(context).textTheme.titleMedium
-                  ?.copyWith(color: PopColors.warning),
-            ),
-          ),
-        ),
-      ),
     ];
   }
 
@@ -1360,75 +1362,89 @@ class _DemoShellState extends State<DemoShell> {
       const SizedBox(height: 24),
       LayoutBuilder(
         builder: (context, box) {
-          final columns = box.maxWidth >= 900
-              ? 4
-              : box.maxWidth >= 480
-              ? 2
-              : 1;
-          final width = (box.maxWidth - (columns - 1) * 14) / columns;
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 20),
-            child: Wrap(
-              spacing: 14,
-              runSpacing: 14,
+          Widget savings = VengeanceSurface(
+            dark: true,
+            padding: const EdgeInsets.all(26),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                for (var i = 0; i < stats.length; i++)
-                  SizedBox(
-                    width: width,
-                    child: VengeanceSurface(
-                      dark: i == 1,
-                      padding: EdgeInsets.zero,
-                      child: InkWell(
-                        onTap: () {
-                          if (i == 3) setState(() => supportStatus = 'active');
-                          context.go(i == 3 ? '/work' : '/groups');
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    stats[i].$3,
-                                    size: 22,
-                                    color: i == 1 ? vengeanceLime : muted,
-                                  ),
-                                  const Spacer(),
-                                  Icon(
-                                    Icons.north_east_rounded,
-                                    size: 16,
-                                    color: i == 1
-                                        ? PopColors.forestMuted
-                                        : muted,
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 22),
-                              MoneyAmount(
-                                stats[i].$2,
-                                size: 34,
-                                color: i == 1 ? Colors.white : ink,
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                stats[i].$1,
-                                style: Theme.of(context).textTheme.bodySmall
-                                    ?.copyWith(
-                                      color: i == 1
-                                          ? PopColors.forestMuted
-                                          : muted,
-                                    ),
-                              ),
-                            ],
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.account_balance_wallet_outlined,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        stats[1].$1,
+                        style: Theme.of(context).textTheme.titleSmall
+                            ?.copyWith(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                MoneyAmount(stats[1].$2, size: 46, color: Colors.white),
+                const SizedBox(height: 20),
+                Text(
+                  t('programmeOverviewHint'),
+                  style: Theme.of(context).textTheme.bodySmall
+                      ?.copyWith(color: PopColors.forestMuted),
+                ),
+              ],
+            ),
+          );
+          Widget details = VengeanceSurface(
+            padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 4),
+            child: Column(
+              children: [
+                for (final i in [0, 2, 3]) ...[
+                  if (i != 0) const Divider(),
+                  InkWell(
+                    onTap: () {
+                      if (i == 3) setState(() => supportStatus = 'active');
+                      context.go(i == 3 ? '/work' : '/groups');
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: Row(
+                        children: [
+                          Icon(stats[i].$3, color: teal, size: 22),
+                          const SizedBox(width: 12),
+                          Expanded(child: Text(stats[i].$1)),
+                          const SizedBox(width: 12),
+                          Flexible(
+                            child: MoneyAmount(
+                              stats[i].$2,
+                              size: 24,
+                              align: TextAlign.right,
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   ),
+                ],
               ],
             ),
+          );
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child:
+                box.maxWidth >= 780 &&
+                    MediaQuery.textScalerOf(context).scale(1) < 1.4
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(flex: 5, child: savings),
+                      const SizedBox(width: 20),
+                      Expanded(flex: 6, child: details),
+                    ],
+                  )
+                : Column(
+                    children: [savings, const SizedBox(height: 16), details],
+                  ),
           );
         },
       ),
@@ -1447,22 +1463,21 @@ class _DemoShellState extends State<DemoShell> {
           ],
         ),
       ),
-      groupPanel,
-      const SizedBox(height: 8),
       LayoutBuilder(
         builder: (context, box) =>
-            box.maxWidth >= 850 &&
+            box.maxWidth >= 1000 &&
                 MediaQuery.textScalerOf(context).scale(1) < 1.4
             ? Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(flex: 6, child: activityPanel),
+                  Expanded(flex: 7, child: groupPanel),
                   const SizedBox(width: 20),
-                  Expanded(flex: 5, child: supportPanel),
+                  Expanded(flex: 4, child: supportPanel),
                 ],
               )
-            : Column(children: [activityPanel, supportPanel]),
+            : Column(children: [groupPanel, supportPanel]),
       ),
+      activityPanel,
     ];
   }
 
@@ -1718,13 +1733,12 @@ class _DemoShellState extends State<DemoShell> {
     return [
       if (c.portal && includeTitle) title(t('passbook')),
       SurfaceCard(
-        color: PopColors.forest,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
               children: [
-                IdentityAvatar(m['displayName'], size: 52, inverse: true),
+                IdentityAvatar(m['displayName'], size: 52),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(
@@ -1732,43 +1746,43 @@ class _DemoShellState extends State<DemoShell> {
                     children: [
                       Text(
                         m['displayName'],
-                        style: Theme.of(context).textTheme.titleLarge
-                            ?.copyWith(color: Colors.white),
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 4),
                       Text(
                         group?['displayName'] ?? '',
-                        style: Theme.of(context).textTheme.bodySmall
-                            ?.copyWith(color: PopColors.forestMuted),
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
                   ),
                 ),
+                const Icon(
+                  Icons.account_balance_wallet_outlined,
+                  color: teal,
+                  size: 22,
+                ),
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 18),
-              child: Divider(color: Color(0xff525a43)),
-            ),
-            Row(
-              children: [
-                const Icon(
-                  Icons.check_circle_outline_rounded,
-                  color: PopColors.forestMuted,
-                  size: 17,
-                ),
-                const SizedBox(width: 7),
-                Expanded(
-                  child: Text(
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: PopColors.primaryTint,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
                     t('confirmedSavings'),
                     style: Theme.of(context).textTheme.bodySmall
-                        ?.copyWith(color: PopColors.forestMuted),
+                        ?.copyWith(color: teal),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 10),
+                  MoneyAmount(money(c.savings(m)), size: 40, color: teal),
+                ],
+              ),
             ),
-            const SizedBox(height: 9),
-            MoneyAmount(money(c.savings(m)), size: 38, color: Colors.white),
           ],
         ),
       ),
