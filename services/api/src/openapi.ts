@@ -1,3 +1,6 @@
+import {staffSchema} from './administration.js';
+import {dryRunSchema,commitSchema,rollbackSchema} from './migration-import.js';
+import {assistantQuestion} from './assistant.js';
 import { writeFile } from 'node:fs/promises';
 import { z } from 'zod';
 import { contentSchema } from './content.js';
@@ -20,6 +23,8 @@ for(const path of ['/bootstrap','/changes','/dashboard','/groups','/members/{id}
  if(path==='/support-requests')parameters.push(query('groupId',{type:'string',format:'uuid'}),query('status',{type:'string',enum:['open','in_progress','resolved']}));
  paths['/v1'+path]={get:{operationId:'get'+path.replace(/[^a-zA-Z]/g,''),summary:path,security:[{bearerAuth:[]}],parameters,responses:response(path==='/bootstrap'?ref('Bootstrap'):path==='/changes'?ref('Changes'):path==='/operations/{id}'?ref('Accepted'):undefined)}};
 }
+paths['/v1/staff']={get:{operationId:'listStaff',summary:'Manager-only staff identities and assignments',security:[{bearerAuth:[]}],responses:response()}};
+for(const [path,schema] of Object.entries({'/v1/staff':staffSchema,'/v1/imports/dry-run':dryRunSchema,'/v1/imports/commit':commitSchema,'/v1/imports/rollback':rollbackSchema,'/v1/assistant':assistantQuestion})) {paths[path]??={};paths[path].post={operationId:path.split('/').join('_'),summary:path,security:[{bearerAuth:[]}],requestBody:{required:true,content:json(z.toJSONSchema(schema))},responses:response()};}
 const kinds=Object.entries(payloads).map(([kind,payload])=>z.toJSONSchema(z.strictObject({datasetId:z.uuid(),operationId:z.uuid(),kind:z.literal(kind),clientCreatedAt:z.iso.datetime(),payload})));
 schemas.Mutation={oneOf:kinds};
 paths['/v1/mutations']={post:{operationId:'mutate',summary:'Idempotent domain mutation',security:[{bearerAuth:[]}],description:'Freeze the complete envelope on enqueue. Retry the same operationId and payload. Changed replay is rejected. Financial transactionId is independently unique within the dataset.',requestBody:{required:true,content:json(ref('Mutation'))},responses:response(ref('Accepted'))}};

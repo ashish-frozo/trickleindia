@@ -14,7 +14,9 @@
     "seed": "tsx src/cli.ts seed",
     "test": "tsx --test --test-concurrency=1 test/*.test.ts",
     "openapi": "tsx src/openapi.ts",
-    "identity:provision": "tsx src/provision-identity.ts"
+    "identity:provision": "tsx src/provision-identity.ts",
+    "bootstrap:production": "tsx src/bootstrap-production.ts",
+    "data:import": "tsx src/import-cli.ts"
   },
   "keywords": [],
   "author": "",

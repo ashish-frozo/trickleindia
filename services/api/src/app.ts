@@ -1,3 +1,6 @@
+import {registerAssistant,type AssistantProvider} from './assistant.js';
+import {listStaff,saveStaff} from './administration.js';
+import {dryRunImport,commitImport,rollbackImport} from './migration-import.js';
 import Fastify from 'fastify';
 import {content,publishContent} from './content.js';
 import {cognitoVerifier,identitySession} from './identity.js';
@@ -10,7 +13,7 @@ import { pool, transaction, snapshot, scope, assignments, active, seed, type Cli
 import { DomainError, fail, hash, balances, effective, sum, entities, type Entity, type Row } from './domain.js';
 import { authenticate, mutate, type Identity } from './mutations.js';
 
-export type Config = { demoMode: boolean; accessCodeHash: string; allowReset: boolean; allowFaults: boolean; origins: string[]; cognito?: {userPoolId:string;clientId:string;domain:string;redirectUri:string} };
+export type Config = { assistant?:AssistantProvider; demoMode: boolean; accessCodeHash: string; allowReset: boolean; allowFaults: boolean; origins: string[]; cognito?: {userPoolId:string;clientId:string;domain:string;redirectUri:string} };
 export async function buildApp(config: Config) {
   if(config.demoMode && !/^[a-f0-9]{64}$/.test(config.accessCodeHash)) throw new Error('DEMO_ACCESS_CODE_HASH must be a SHA-256 hex digest');
   const app=Fastify({logger:config.demoMode?false:{level:'info',serializers:{req:(req:any)=>({id:req.id,method:req.method,path:req.url?.split('?')[0]})}},bodyLimit:524288,ajv:{customOptions:{removeAdditional:false}}});
@@ -29,6 +32,7 @@ export async function buildApp(config: Config) {
     if(!token) fail('SESSION_EXPIRED',401);return hash(token);
   };
   const read=async<T>(req:any,work:(c:Client,identity:Identity)=>Promise<T>) => transaction(async c=>work(c,await authenticate(c,tokenHash(req))),'ISOLATION LEVEL REPEATABLE READ READ ONLY');
+  registerAssistant(app,read,config.assistant);
   const scoped=async(c:Client,i:Identity)=>scope(await snapshot(c,i.datasetId),i.actor,await assignments(c,i.datasetId,i.actor.id));
   const manager=(i:Identity)=>{if(i.actor.role!=='manager') fail('FORBIDDEN',403);};
   const demo=()=>{if(!config.demoMode) fail('NOT_FOUND',404);};
@@ -37,9 +41,9 @@ export async function buildApp(config: Config) {
   const idFrom=(req:any)=>parse(z.uuid(),req.params.id);
   const pageSchema=z.object({offset:z.coerce.number().int().min(0).default(0),limit:z.coerce.number().int().min(1).max(500).default(100)});
   app.get('/healthz',async()=>({status:'ok'}));
-  app.get('/readyz',async()=>transaction(async c=>{await active(c);const version=await c.query('SELECT version FROM migrations WHERE version=4');if(!version.rowCount)fail('TEMPORARILY_UNAVAILABLE',503);return {status:'ready'};}));
+  app.get('/readyz',async()=>transaction(async c=>{await active(c);const version=await c.query('SELECT version FROM migrations WHERE version=5');if(!version.rowCount)fail('TEMPORARILY_UNAVAILABLE',503);return {status:'ready'};}));
   const verifier=config.cognito?cognitoVerifier(config.cognito.userPoolId,config.cognito.clientId):null;
-  app.get('/v1/auth/config',async()=>({mode:config.demoMode?'demo':verifier?'cognito':'unconfigured',...(config.cognito?{clientId:config.cognito.clientId,domain:config.cognito.domain,redirectUri:config.cognito.redirectUri}:{})}));
+  app.get('/v1/auth/config',async()=>({mode:config.demoMode?'demo':verifier?'cognito':'unconfigured',...(config.cognito?{userPoolId:config.cognito.userPoolId,issuer:`https://cognito-idp.${config.cognito.userPoolId.split('_')[0]}.amazonaws.com/${config.cognito.userPoolId}`,clientId:config.cognito.clientId,domain:config.cognito.domain,redirectUri:config.cognito.redirectUri}:{})}));
   app.post('/v1/auth/session',{config:{rateLimit:{max:20,timeWindow:'1 minute'}}},async req=>{
     if(!verifier)fail('NOT_FOUND',404);
     const p=parse(z.strictObject({accessToken:z.string().min(20).max(16384)}),req.body);
@@ -130,5 +134,10 @@ export async function buildApp(config: Config) {
     if(!checkCode(p.accessCode)) fail('FORBIDDEN',403);
     return transaction(async c=>{const i=await authenticate(c,tokenHash(req));manager(i);return {datasetId:await seed(c)};});
   });
+  app.get('/v1/staff',async req=>listStaff(await read(req,async(_c,i)=>i)));
+  app.post('/v1/staff',async req=>saveStaff(await read(req,async(_c,i)=>i),req.body));
+  app.post('/v1/imports/dry-run',async req=>dryRunImport(await read(req,async(_c,i)=>i),req.body));
+  app.post('/v1/imports/commit',async req=>commitImport(await read(req,async(_c,i)=>i),req.body));
+  app.post('/v1/imports/rollback',async req=>rollbackImport(await read(req,async(_c,i)=>i),req.body));
   return app;
 }

@@ -15,7 +15,7 @@ export async function migrate() {
     await c.query('SELECT pg_advisory_xact_lock(4020261105)');
     const exists = await c.query("SELECT to_regclass('public.migrations') AS name");
     if (!exists.rows[0].name) await c.query(await readFile(new URL('../migrations/001_initial.sql', import.meta.url),'utf8'));
-    for (const [version,file] of [[2,'002_visits.sql'],[3,'003_identity.sql'],[4,'004_content.sql']] as const) if (!(await c.query('SELECT version FROM migrations WHERE version=$1',[version])).rowCount) await c.query(await readFile(new URL('../migrations/'+file, import.meta.url),'utf8'));
+    for (const [version,file] of [[2,'002_visits.sql'],[3,'003_identity.sql'],[4,'004_content.sql'],[5,'005_import.sql']] as const) if (!(await c.query('SELECT version FROM migrations WHERE version=$1',[version])).rowCount) await c.query(await readFile(new URL('../migrations/'+file, import.meta.url),'utf8'));
   });
 }
 export async function active(c: Client) {

@@ -9,7 +9,7 @@ export async function authenticate(c: Client, tokenHash: string): Promise<Identi
   if (!result.rowCount) fail('SESSION_EXPIRED',401);
   const {dataset_id,actor_id} = result.rows[0];
   const actor = (await c.query("SELECT body FROM records WHERE dataset_id=$1 AND entity_type='actors' AND id=$2",[dataset_id,actor_id])).rows[0]?.body;
-  if (!actor) fail('SESSION_EXPIRED',401);
+  if (!actor || actor.enabled===false) fail('SESSION_EXPIRED',401);
   return {actor,datasetId:dataset_id,tokenHash};
 }
 export async function mutate(identity: Identity, input: unknown, hooks?: { afterLock?: () => Promise<void> }) {
