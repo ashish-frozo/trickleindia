@@ -73,3 +73,32 @@ test('migration rejects group codes and enterprise names that normal creation tr
  assert.ok(report.errors.some(e=>e.startsWith('DUPLICATE_GROUP_CODE:')));
  assert.ok(report.errors.some(e=>e.startsWith('DUPLICATE_ENTERPRISE_NAME:')));
 });
+test('import assignments version actors, revoke sessions and rollback advances versions again',async()=>{
+ const mapping=(await pool.query('SELECT issuer,subject FROM external_identities WHERE dataset_id=$1 AND actor_id=$2',[datasetId,sakhiId])).rows[0];
+ const before=await login(mapping.subject),imported=await importIt();
+ await assert.rejects(transaction(c=>authenticate(c,before.tokenHash)),/SESSION_EXPIRED/);
+ const after=await login(mapping.subject);assert.equal(after.actor.version,2);
+ await assert.rejects(saveStaff(manager,staff({actorId:sakhiId,expectedVersion:1,mapping})),/VERSION_CONFLICT/);
+ const changes=(await pool.query('SELECT records FROM change_events WHERE dataset_id=$1 ORDER BY cursor DESC LIMIT 1',[datasetId])).rows[0].records;
+ assert.ok(changes.some((r:any)=>r.entityType==='actors'&&r.record.id===sakhiId&&r.record.version===2));
+ assert.ok(changes.every((r:any)=>!('previousRecord' in r)));
+ const audit=(await pool.query("SELECT body FROM audit_events WHERE dataset_id=$1 AND body->>'action'='import.commit'",[datasetId])).rows[0].body;
+ assert.deepEqual(audit.detail.assignmentActors,[{actorId:sakhiId,previousVersion:1,version:2,sessionsRevoked:true}]);
+ await rollbackImport(manager,{datasetId,operationId:randomUUID(),importOperationId:imported.operationId,reviewedHash:imported.reviewedHash});
+ await assert.rejects(transaction(c=>authenticate(c,after.tokenHash)),/SESSION_EXPIRED/);
+ const restored=await login(mapping.subject);assert.equal(restored.actor.version,3);
+ assert.equal((await pool.query('SELECT 1 FROM actor_groups WHERE dataset_id=$1 AND actor_id=$2',[datasetId,sakhiId])).rowCount,0);
+ manager=await login('manager');await assert.rejects(saveStaff(manager,staff({actorId:sakhiId,expectedVersion:2,mapping})),/VERSION_CONFLICT/);
+});
+test('identity remap audit retains old and new mappings and distinguishes session revocation',async()=>{
+ const op=staff({mapping:{issuer,subject:'audit-before'}});await saveStaff(manager,op);
+ const remap={...op,operationId:randomUUID(),expectedVersion:1,mapping:{issuer,subject:'audit-after'}};await saveStaff(manager,remap);
+ const revoke={...remap,operationId:randomUUID(),expectedVersion:2};await saveStaff(manager,revoke);
+ const rows=(await pool.query('SELECT operation_id,body FROM audit_events WHERE dataset_id=$1 AND operation_id=ANY($2::uuid[])',[datasetId,[remap.operationId,revoke.operationId]])).rows;
+ const changed=rows.find(r=>r.operation_id===remap.operationId).body.detail;
+ assert.deepEqual(changed.previousMappings,[op.mapping]);assert.deepEqual(changed.newMapping,remap.mapping);assert.equal(changed.mappingChanged,true);
+ const revoked=rows.find(r=>r.operation_id===revoke.operationId).body.detail;
+ assert.deepEqual(revoked.previousMappings,[remap.mapping]);assert.equal(revoked.mappingChanged,false);assert.equal(revoked.sessionsRevoked,true);
+ const snapshotText=JSON.stringify(await transaction(c=>snapshot(c,datasetId)));
+ assert.equal(snapshotText.includes('audit-before'),false);assert.equal(snapshotText.includes('audit-after'),false);
+});
