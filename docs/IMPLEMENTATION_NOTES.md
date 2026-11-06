@@ -18,7 +18,7 @@ PostgreSQL's sync-clock row is locked before each mutation's canonical changes a
 
 The active redesign tokens are generated from `packages/ui/assets/design_tokens.json`; the original supplied specification JSON is retained unchanged. `PRODUCT.md`, `DESIGN.md` and `docs/design/RFP_UI_REQUIREMENTS.md` record the audience, built visual system and requirement traceability. Noto Sans and Noto Sans Devanagari are bundled with OFL licensing. English/Hindi resources have matching keys; offline help cards are bundled draft instructional content. The language switch updates routed screens and the full Material locale. Layout checks cover large text, Hindi entry with keyboard, and repeated confirmation.
 
-The WhatsApp surface is a local labelled simulation creating actual support records through the service. It sends no messages. Replay of a simulated message keeps its reference. Audio is explicitly unavailable because reviewed assets were not supplied; playback controls are not shown. Odia, Ho and Santhali, conversational AI, speech and official WhatsApp transport remain planned/P2. No live provider integration is claimed.
+The WhatsApp surface is a local labelled simulation creating actual support records through the service. It sends no messages. Replay of a simulated message keeps its reference. Help supports conditional device-generated speech with matching installed voices; reviewed recorded audio is absent. Odia, Ho and Santhali, conversational AI, voice navigation and official WhatsApp transport remain unimplemented. The RFP AI requirement is distinct from optional demo integrations. No live provider execution is claimed.
 
 ## Tested environment
 
@@ -35,3 +35,5 @@ See `RUNBOOK.md` for startup, reset and recovery, `openapi.json` for the API and
 ## Screen composition deviations
 
 Member details use a dedicated routed passbook page in the portal instead of a separate desktop drawer. This reuses the same scoped read journey on Android and web, with explicit Back navigation. The server remains authoritative; this is a presentation choice. The local AOT profile manifest permits HTTP only to loopback/emulator host names; its configuration is excluded from the hosted release source set.
+
+Current follow-up: [REQUIREMENTS_CLOSURE.md](REQUIREMENTS_CLOSURE.md). Release signing, backup/restore and identity configuration: [OPERATIONS_PREPARATION.md](OPERATIONS_PREPARATION.md).

@@ -81,3 +81,74 @@ test('A11 stale member profile retains winning record and rejects original inten
  assert.equal((await post(corrected)).statusCode,200);
  assert.equal((await dashboard()).savingsPaise,480000);
 });
+
+test('group lifecycle is manager-only and assigned empty groups are visible',async()=>{
+ const groupId=randomUUID();const create=op('group.create',{groupId,code:'new-group',displayName:'New group',villageLabel:'Sample village',assignedActorId:sakhi.actor.id});
+ assert.equal((await post(create)).statusCode,403);
+ assert.equal((await post(create,participant)).statusCode,403);
+ assert.equal((await post(create,manager)).statusCode,200);
+ assert.equal((await post(create,manager)).json().replayed,true);
+ assert.ok((await call('GET','/v1/bootstrap',sakhi)).json().groups.some((g:any)=>g.id===groupId));
+ assert.equal((await post(op('group.update',{groupId,expectedVersion:1,displayName:'Renamed group',villageLabel:'Sample village'}),manager)).statusCode,200);
+ assert.equal((await post(op('group.update',{groupId,expectedVersion:1,displayName:'Stale',villageLabel:'Sample village'}),manager)).json().error.code,'VERSION_CONFLICT');
+});
+test('scheduled meetings seed attendance and enforce assignment and duplicate date',async()=>{
+ const body={meetingId:randomUUID(),groupId:snap.groups[0].id,businessDate:'2026-11-06'};
+ assert.equal((await post(op('meeting.create',body),participant)).statusCode,403);
+ const result=await post(op('meeting.create',body));assert.equal(result.statusCode,200,result.body);
+ const detail=(await call('GET',`/v1/meetings/${body.meetingId}`,sakhi)).json();
+ assert.equal(detail.attendance.length,4);assert.equal(detail.cashReceivedPaise,0);
+ assert.equal((await post(op('meeting.create',{...body,meetingId:randomUUID()}))).statusCode,400);
+});
+test('enterprise onboarding starts at zero and update preserves ledger and owner',async()=>{
+ const enterpriseId=randomUUID(),memberId=snap.members[0].id;
+ const result=await post(op('enterprise.create',{enterpriseId,memberId,name:'Tailoring',businessPlan:'Buy fabric after confirmed orders'}));assert.equal(result.statusCode,200,result.body);
+ let detail=(await call('GET',`/v1/enterprises/${enterpriseId}`,sakhi)).json();assert.equal(detail.enterprise.cashSurplusPaise,0);
+ assert.equal((await post(op('enterprise.update',{enterpriseId,expectedVersion:1,name:'Tailoring business',businessPlan:'Review costs weekly'}))).statusCode,200);
+ assert.equal((await post(op('enterprise.update',{enterpriseId,expectedVersion:1,name:'Stale',businessPlan:''}))).json().error.code,'VERSION_CONFLICT');
+ assert.equal((await post(op('enterprise.create',{enterpriseId:randomUUID(),memberId,name:'Forbidden',businessPlan:''}),participant)).statusCode,403);
+});
+test('history endpoints bound pages without changing canonical financial totals',async()=>{
+ await post(action());await post(action('savings_deposit',10000));
+ const memberId=snap.members.find((m:any)=>m.code==='rani').id;
+ const first=(await call('GET',`/v1/members/${memberId}/passbook?limit=1&offset=0`,sakhi)).json();
+ const next=(await call('GET',`/v1/members/${memberId}/passbook?limit=1&offset=1`,sakhi)).json();
+ assert.equal(first.transactions.length,1);assert.equal(first.total,2);assert.notEqual(first.transactions[0].id,next.transactions[0].id);
+ assert.equal(first.member.savingsPaise,150000);assert.equal(next.member.savingsPaise,150000);
+ assert.equal((await call('GET','/v1/groups?limit=501',manager)).statusCode,400);
+});
+
+test('Sakhi visit intake is scoped, idempotent and follow-up requires current version',async()=>{
+ const member=snap.members[0],visitId=randomUUID();const create=op('visit.create',{visitId,memberId:member.id,businessDate:'2026-11-05',topic:'savings',notes:'Explained confirmed and pending savings',nextVisitDate:'2026-11-12'});
+ assert.equal((await post(create,participant)).statusCode,403);
+ const r=await post(create);assert.equal(r.statusCode,200,r.body);assert.equal((await post(create)).json().replayed,true);
+ assert.equal((await call('GET','/v1/bootstrap',sakhi)).json().sakhiVisits.length,1);
+ assert.equal((await call('GET','/v1/bootstrap',participant)).json().sakhiVisits.length,0);
+ assert.equal((await post(op('visit.complete',{visitId,expectedVersion:1,outcome:'Participant completed the task'}),manager)).statusCode,200);
+ assert.equal((await post(op('visit.complete',{visitId,expectedVersion:1,outcome:'Stale'}),manager)).json().error.code,'VERSION_CONFLICT');
+});
+
+test('content publishing is scoped, versioned, replay-safe and retains draft disclosure',async()=>{
+ const original=(await call('GET','/v1/content',manager)).json();
+ const cards=structuredClone(original.cards);cards[0].locales.en.title='Updated contribution help';
+ const body={operationId:randomUUID(),expectedRevision:0,cards};
+ assert.equal((await call('POST','/v1/content',sakhi,body)).statusCode,403);
+ const publish=await call('POST','/v1/content',manager,body);assert.equal(publish.statusCode,200,publish.body);assert.equal(publish.json().revision,1);
+ assert.equal((await call('POST','/v1/content',manager,body)).json().replayed,true);
+ assert.equal((await call('POST','/v1/content',manager,{...body,operationId:randomUUID()})).json().error.code,'VERSION_CONFLICT');
+ const downloaded=(await call('GET','/v1/content',participant)).json();assert.equal(downloaded.cards[0].locales.en.title,'Updated contribution help');assert.equal(downloaded.reviewStatus,'draft-not-tuif-approved');
+});
+
+test('identity mapping controls roles and session expiry independently of token claims',async()=>{
+ const {identitySession}=await import('../src/identity.js');
+ const subject={iss:'https://cognito-idp.ap-south-1.amazonaws.com/ap-south-1_Test',sub:'test-mapped-person',exp:Math.floor(Date.now()/1000)+120};
+ await assert.rejects(identitySession(subject),(e:any)=>e.code==='FORBIDDEN');
+ await pool.query('INSERT INTO external_identities(dataset_id,issuer,subject,actor_id) VALUES($1,$2,$3,$4)',[sakhi.datasetId,subject.iss,subject.sub,sakhi.actor.id]);
+ const signedIn=await identitySession(subject);
+ assert.equal(signedIn.actor.role,'sakhi');
+ assert.ok(Date.parse(signedIn.expiresAt)<=subject.exp*1000);
+ assert.equal((await call('GET','/v1/bootstrap',signedIn)).json().members.length,4);
+ await pool.query('UPDATE external_identities SET enabled=false WHERE dataset_id=$1',[sakhi.datasetId]);
+ await assert.rejects(identitySession(subject),(e:any)=>e.code==='FORBIDDEN');
+ await assert.rejects(identitySession({...subject,exp:1}),(e:any)=>e.code==='SESSION_EXPIRED');
+});

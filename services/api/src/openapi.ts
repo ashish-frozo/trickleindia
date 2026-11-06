@@ -1,5 +1,6 @@
 import { writeFile } from 'node:fs/promises';
 import { z } from 'zod';
+import { contentSchema } from './content.js';
 import { payloads, entities } from './domain.js';
 const ref=(name:string)=>({$ref:`#/components/schemas/${name}`});
 const json=(schema:unknown)=>({'application/json':{schema}});
@@ -15,7 +16,7 @@ for(const path of ['/bootstrap','/changes','/dashboard','/groups','/members/{id}
  const parameters:any[]=[];if(path.includes('{id}'))parameters.push({in:'path',name:'id',required:true,schema:{type:'string',format:'uuid'}});
  if(path==='/changes')parameters.push(query('datasetId',{type:'string',format:'uuid'},true),query('after',{type:'string',pattern:'^[0-9]{1,19}$'},true),query('limit',{type:'integer',minimum:1,maximum:500,default:100}));
  if(path==='/operations/{id}')parameters.push(query('datasetId',{type:'string',format:'uuid'},true));
- if(path==='/audit-events'||path==='/support-requests')parameters.push(...pagination);
+ if(['/audit-events','/support-requests','/groups','/members/{id}/passbook','/meetings/{id}','/enterprises/{id}'].includes(path))parameters.push(...pagination);
  if(path==='/support-requests')parameters.push(query('groupId',{type:'string',format:'uuid'}),query('status',{type:'string',enum:['open','in_progress','resolved']}));
  paths['/v1'+path]={get:{operationId:'get'+path.replace(/[^a-zA-Z]/g,''),summary:path,security:[{bearerAuth:[]}],parameters,responses:response(path==='/bootstrap'?ref('Bootstrap'):path==='/changes'?ref('Changes'):path==='/operations/{id}'?ref('Accepted'):undefined)}};
 }
@@ -27,5 +28,8 @@ for(const [path,schema] of Object.entries({
  '/v1/demo/reset':z.strictObject({accessCode:z.string().max(200),confirmation:z.literal('RESET DEMO')}),
  '/v1/demo/whatsapp-events':z.strictObject({simulatedMessageId:z.uuid(),demoContactCode:z.literal('demo-contact-rani'),topicCode:z.literal('expense_help')})
 }))paths[path]={post:{operationId:path.split('/').at(-1),summary:path,security:path.endsWith('session')?[]:[{bearerAuth:[]}],requestBody:{required:true,content:json(z.toJSONSchema(schema))},responses:response()}};
+paths['/v1/auth/config']={get:{operationId:'authConfig',security:[],responses:response()}};
+paths['/v1/auth/session']={post:{operationId:'identitySession',security:[],requestBody:{required:true,content:json(z.toJSONSchema(z.strictObject({accessToken:z.string().min(20).max(16384)})))},responses:response()}};
+paths['/v1/content'].post={operationId:'publishContent',security:[{bearerAuth:[]}],summary:'Manager-only versioned draft content publication',requestBody:{required:true,content:json(z.toJSONSchema(contentSchema))},responses:response()};
 for(const path of ['/healthz','/readyz'])paths[path]={get:{operationId:path.slice(1),summary:path,security:[],responses:response()}};
 await writeFile(new URL('../../../docs/openapi.json',import.meta.url),JSON.stringify({openapi:'3.1.0',info:{title:'PoP 2.0 demo API',version:'1.0.0',description:'Synthetic local proposal demonstration. Demo endpoints are disabled outside configured demo mode.'},servers:[{url:'http://127.0.0.1:3000'}],components:{securitySchemes:{bearerAuth:{type:'http',scheme:'bearer'}},schemas},paths},null,2)+'\n');

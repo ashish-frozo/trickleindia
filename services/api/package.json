@@ -13,7 +13,8 @@
     "migrate": "tsx src/cli.ts migrate",
     "seed": "tsx src/cli.ts seed",
     "test": "tsx --test --test-concurrency=1 test/*.test.ts",
-    "openapi": "tsx src/openapi.ts"
+    "openapi": "tsx src/openapi.ts",
+    "identity:provision": "tsx src/provision-identity.ts"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +23,7 @@
   "dependencies": {
     "@fastify/cors": "11.4.1",
     "@fastify/rate-limit": "11.2.2",
+    "aws-jwt-verify": "5.2.1",
     "fastify": "5.12.8",
     "pg": "8.23.1",
     "zod": "4.6.7"

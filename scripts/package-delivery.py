@@ -16,7 +16,7 @@ def archive(output,trees,filter_source=False):
    for p in paths:
     if not p.is_file() or p.is_symlink():continue
     relative=p.relative_to(base)
-    if filter_source and (any(part in skip for part in relative.parts) or p.name in {'.env','local.properties','.DS_Store'} or p.suffix in {'.iml','.log','.keystore','.jks'}):continue
+    if filter_source and (any(part in skip for part in relative.parts) or p.name in {'.env','local.properties','key.properties','.DS_Store'} or p.suffix in {'.iml','.log','.keystore','.jks'}):continue
     z.write(p,str(relative))
 archive('pop-2-web.zip',[(root/'apps/portal/build/web',root/'apps/portal/build/web')])
 roots=['PRODUCT.md','DESIGN.md','.impeccable','.dockerignore','.env.example','.flutter-version','.gitignore','.nvmrc','README.md','package.json','package-lock.json','compose.yaml','apps','packages','services','scripts','docs','PoP_2_Demo_Coding_Pack','Trickle_Up_PoP_2_Project_Brief.md','RfpDocuments_6a117cf26110482d92618ed039e0786d.pdf']
@@ -35,7 +35,7 @@ for path in dest.iterdir():
    assert not any(secret in z.read(n) for n in z.namelist() if not n.endswith('/')),'Local secret embedded in APK'
 try: revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True,stderr=subprocess.DEVNULL).strip()
 except subprocess.CalledProcessError: revision='uncommitted source'
-(dest/'BUILD_INFO.json').write_text(json.dumps({'createdAtUtc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'sourceRevision':revision,'designDisposition':'Blue/white structural redesign; locally verified','followUpStatus':'docs/GAP_CLOSURE.md: implemented fixes and open external acceptance','designRequirements':'docs/design/RFP_UI_REQUIREMENTS.md','uiAdaptation':'docs/design/BLUEPRINT_UI.md','flutter':'3.47.9','dart':'3.13.7','node':'24.11.1','postgresql':'18.3','android':'API36 AOSP ARM64 emulator; local profile build','remainingAcceptance':['Odia/Ho/Santhali reviewed UI and help translations','Reviewed recorded prompts and voice-assisted navigation','Participant UAT and terminology review','Actual TalkBack speech','Full cached-start target <=2s remains unmet: latest emulator samples 4.099s, 3.163s, 2.640s; physical-device verification required']},indent=2))
+(dest/'BUILD_INFO.json').write_text(json.dumps({'createdAtUtc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'sourceRevision':revision,'designDisposition':'Blue/white structural redesign; locally verified','followUpStatus':'docs/REQUIREMENTS_CLOSURE.md: implemented fixes, remaining engineering and external acceptance','designRequirements':'docs/design/RFP_UI_REQUIREMENTS.md','uiAdaptation':'docs/design/BLUEPRINT_UI.md','flutter':'3.47.9','dart':'3.13.7','node':'24.11.1','postgresql':'18.3','android':'ARM64 local profile build; current on-device acceptance outstanding','remainingAcceptance':['Full RFP production scope, live AI, cloud infrastructure, live identity callbacks and data migration remain unfinished','Odia/Ho/Santhali reviewed UI and help translations','Reviewed recorded prompts and voice-assisted navigation','Participant UAT and terminology review','Actual TalkBack speech','Full cached-start target <=2s remains unmet: latest emulator samples 4.099s, 3.163s, 2.640s; physical-device verification required']},indent=2))
 files=sorted(p for p in dest.iterdir() if p.is_file() and p.name!='SHA256SUMS')
 (dest/'SHA256SUMS').write_text(''.join(f'{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.name}\n' for p in files))
 print(json.dumps({p.name:p.stat().st_size for p in files},indent=2))

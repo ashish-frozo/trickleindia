@@ -17,6 +17,13 @@ const text = z.string().trim().min(1).max(280);
 const version = z.number().int().nonnegative();
 const memberFields = { displayName: z.string().trim().min(1).max(100), preferredLanguage: z.enum(['en','hi','or','hoc','sat']), livelihoodCategory: z.string().trim().min(1).max(80), contact: z.string().max(80).nullable().optional() };
 export const payloads = {
+  'visit.create': z.strictObject({visitId:uuid,memberId:uuid,businessDate:z.iso.date(),topic:z.enum(['savings','enterprise','digital_skills','other']),notes:z.string().trim().min(1).max(2000),nextVisitDate:z.iso.date().optional()}),
+  'visit.complete': z.strictObject({visitId:uuid,expectedVersion:version,outcome:z.string().trim().min(1).max(2000)}),
+  'group.create': z.strictObject({groupId:uuid,code:z.string().trim().min(1).max(40),displayName:text,villageLabel:text,assignedActorId:uuid}),
+  'group.update': z.strictObject({groupId:uuid,expectedVersion:version,displayName:text,villageLabel:text}),
+  'meeting.create': z.strictObject({meetingId:uuid,groupId:uuid,businessDate:z.iso.date()}),
+  'enterprise.create': z.strictObject({enterpriseId:uuid,memberId:uuid,name:text,businessPlan:z.string().max(2000).default('')}),
+  'enterprise.update': z.strictObject({enterpriseId:uuid,expectedVersion:version,name:text,businessPlan:z.string().max(2000)}),
   'member.create': z.strictObject({ memberId: uuid, groupId: uuid, ...memberFields }),
   'member.update': z.strictObject({ memberId: uuid, expectedVersion: version, patch: z.strictObject(memberFields).partial().refine(v => Object.keys(v).length > 0) }),
   'meeting.attendance_set': z.strictObject({ attendanceId: uuid, meetingId: uuid, memberId: uuid, status: z.enum(['present','absent','unmarked']), expectedVersion: version }),
@@ -29,7 +36,7 @@ export const payloads = {
 export const envelope = z.strictObject({ datasetId: uuid, operationId: uuid, kind: z.enum(Object.keys(payloads) as [keyof typeof payloads, ...Array<keyof typeof payloads>]), clientCreatedAt: z.iso.datetime(), payload: z.unknown() });
 export type Operation = z.infer<typeof envelope>;
 export type Row = { id: string; datasetId: string; version: number; [key: string]: any };
-export const entities = ['actors','groups','members','loans','enterprises','meetings','attendance','transactions','supportRequests'] as const;
+export const entities = ['actors','groups','members','loans','enterprises','meetings','attendance','transactions','supportRequests','sakhiVisits'] as const;
 export type Entity = typeof entities[number];
 export type Snapshot = Record<Entity, Row[]>;
 export function effective(s: Snapshot): Row[] { return s.transactions.filter(t => t.type !== 'reversal' && !t.reversedByTransactionId); }

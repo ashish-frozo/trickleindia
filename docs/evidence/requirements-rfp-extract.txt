@@ -1,0 +1,480 @@
+0001                         Terms of Reference/ Scope of Work
+0002                            Design and development of PoP 2.0 application
+0003                               MPowered Plus- Scale Up Cluster Project
+0004
+0005 Trickle Up India Foundation (TUIF) invites Expressions of Interest (EOI) from qualified technology
+0006 agencies, IT firms and consultants for the design and development of the PoP 2.0 application under
+0007 the MPowered Plus – Scale-Up Cluster Project.
+0008
+0009 1. About Trickle Up India Foundation (TUIF)
+0010
+0011 Trickle Up India Foundation (TUIF) is a nationally registered non-profit organization that partners with
+0012 women in ultra-poverty in India to build economic opportunity and drive inclusion. In collaboration
+0013 with government agencies and local non-governmental organizations, TUIF reaches underserved
+0014 women in remote rural areas through programs that enable them to build resilient pathways out of
+0015 poverty for themselves, their families, and their communities.
+0016 Since 2013, TUIF has been working with women in ultra-poverty who have faced lifelong
+0017 discrimination and socio-economic exclusion. Through its programs, participants develop sustainable
+0018 livelihoods and strong savings habits, strengthening their capacity, self-reliance, and stability. This
+0019 process fosters improved self-esteem and resilience, with positive ripple effects across families and
+0020 communities over generations.
+0021 TUIF has reached approximately 150,000 extremely poor women and their families across 22 districts
+0022 in Jharkhand, Odisha, and West Bengal.
+0023 Its programs are grounded in rigorous evidence, with a strong focus on the Graduation Approach. This
+0024 sequenced and time-bound model combines participant identification, livelihood planning based on
+0025 market assessments, training and coaching, consumption support, asset transfer, and savings support.
+0026 The approach promotes both economic and social inclusion by integrating participants into savings
+0027 groups.
+0028
+0029 2. PoP 2.0 application:
+0030
+0031 PoP 2.0 (Package of Practices 2.0) is envisioned as a comprehensive AI-enabled Digital Enterprise
+0032 Management Platform designed to strengthen women's economic empowerment through digitization
+0033 of Self-Help Groups (SHGs), Micro Enterprise Groups (MEGs), enterprise operations, cluster
+0034 management, market linkages, and financial governance.
+0035
+0036 PoP 2.0 is designed as a simple and user-friendly digital platform that can be used even in areas with
+0037 limited internet connectivity. The application should continue to function during network
+0038 interruptions and automatically synchronize information when internet connectivity becomes
+0039 available. The application will prioritize ease of use through local language support, voice-assisted
+0040 navigation, minimal data entry, and simple user interfaces, while providing advanced monitoring and
+0041 analytics through a separate web portal for programme teams.
+0042
+0043 The solution will consist of a mobile application for SHG members, Smart Sakhis and field teams, along
+0044 with a web portal for programme managers and administrators. The mobile application will focus on
+0045 simple day-to-day operations, while the web portal will provide advanced monitoring, reporting,
+0046 analytics, content management and administrative functions.
+0047
+0048 2.1 Offline Functionality and Data Synchronisation
+0049 Considering the limited internet connectivity in the project's operational areas, the application must
+0050 support offline data entry and access to essential functionalities. Users should be able to enter, save
+0051 and access relevant information without an active internet connection. The application shall
+0052
+0053 automatically synchronise locally stored data with the central server whenever internet connectivity
+0054 is restored.
+0055 The system should incorporate the following capabilities:
+0056 • Enable users to enter, save and access relevant data while offline.
+0057 • Automatically synchronise locally stored data with the central database when internet
+0058      connectivity is restored.
+0059 • Identify failed or pending synchronisation and provide appropriate status notifications to users.
+0060 • Prevent duplicate data submissions during synchronisation.
+0061 • Ensure data consistency and appropriate conflict resolution when multiple users or devices update
+0062      records.
+0063 • Provide users with visibility of synchronisation status, including pending, successful and failed
+0064      submissions.
+0065 The agency shall propose and implement an appropriate data synchronisation mechanism to ensure
+0066 data integrity, reliability and continuity of application usage in low-connectivity environments.
+0067
+0068 2.2 Language Support and Accessibility
+0069 The application shall be designed to ensure accessibility and ease of use for women with limited digital
+0070 literacy and varying levels of familiarity with smartphones. The user interface and navigation should
+0071 be simple, intuitive and suitable for users from diverse linguistic backgrounds.
+0072 The application shall support the following languages:
+0073      • English
+0074      • Hindi
+0075      • Odia
+0076      • Ho
+0077      • Santhali
+0078 The agency shall ensure the following accessibility features:
+0079      • Provide multilingual user interfaces, including appropriate language selection options.
+0080      • Incorporate voice-assisted navigation and audio instructions to guide users through key
+0081          application functions.
+0082      • Use simple language, clear icons, visual cues and intuitive navigation.
+0083      • Minimise manual data entry through dropdowns, predefined options and other simplified
+0084          input mechanisms wherever feasible.
+0085      • Ensure consistency in language presentation across the mobile application and relevant user-
+0086          facing features.
+0087      • Design interfaces that are accessible and easy to operate for users with limited reading and
+0088          writing abilities.
+0089 The agency shall demonstrate the proposed language and accessibility features during the design and
+0090 User Acceptance Testing (UAT) stages.
+0091
+0092 3. Objectives of PoP 2.0: The proposed platform will:
+0093
+0094  Governance Objectives      •    Digitize SHG records
+0095                             •    Improve transparency
+0096                             •    Improve financial accountability
+0097  Enterprise Objectives      •    Increase enterprise profitability
+0098                             •    Strengthen business planning
+0099                             •    Improve market access
+0100
+0101  Monitoring Objectives      •   Enable real-time monitoring
+0102                             •   Improve reporting efficiency
+0103                             •   Reduce paper-based systems
+0104  Inclusion Objectives       •   Enable digital access for illiterate women
+0105                             •   Support voice-based interaction
+0106                             •   Improve technology adoption
+0107
+0108 4. System Architecture
+0109
+0110  Mobile Application                Web Portal                        AI Layer
+0111  For:                              For:                              Includes:
+0112  • SHG Members                     • Program Management              • Voice Assistant
+0113  • Smart Sakhis                         team at TUIF                 • AI Chatbot
+0114  • Programme Team                  • Administrators                  • Predictive Analytics Engine
+0115                                                                      • Recommendation Engine
+0116
+0117 5.   Phase - 1 : Implementation Plan
+0118
+0119 The PoP 2.0 application’s implementation will progressively build from the core user, SHG and
+0120 enterprise foundation to cluster and market ecosystem capabilities, followed by advanced AI,
+0121 automation and analytics.
+0122
+0123               Financial
+0124  Phase                      Module               Module Name
+0125               Year
+0126                             Module 1             User Registration & Profiling
+0127                              Module 2             SHG Management System
+0128  Phase 1      2026–27        Module 3             SHG Financial Management
+0129                              Module 4             Enterprise Management
+0130                              Module 5             Smart Sakhi Monitoring
+0131  Module 6 (AI Voice Assistant) and Module 7 (AI Chatbot) will be a common module across all three
+0132  phases. Its capabilities may be progressively enhanced in each phase based on data availability, user
+0133  adoption, language readiness and project priorities.
+0134
+0135
+0136 6. Technical Requirements and Delivery Expectations
+0137
+0138 The selected consultant/vendor shall develop a secure, reliable, and easy-to-maintain mobile and
+0139 web application for Trickle Up India Foundation. The solution should be fit for purpose, cost-
+0140 effective, and avoid unnecessary complexity.
+0141
+0142
+0143 6.1. Technology Stack
+0144
+0145 The application shall use the following technologies:
+0146
+0147      ●   Frontend: Flutter for mobile application development and the web frontend.
+0148      ●   Backend: Node.js for backend services and APIs.
+0149      ●   Hosting: Trickle Up India Foundation’s AWS account.
+0150      ●   Authentication: Firebase Authentication or Amazon Cognito, to be decided by Trickle Up
+0151          India Foundation during the design phase.
+0152
+0153 The vendor shall adhere to the above technologies and obtain Trickle Up India Foundation’s approval
+0154 for key design decisions.
+0155
+0156
+0157 6.2. Source Code and Development Best Practices
+0158
+0159 The vendor shall provide complete, functional, secure, and maintainable source code for all developed
+0160 components, including the mobile app, web frontend, backend, APIs, and supporting scripts. Code
+0161 shall be maintained in a Trickle Up India Foundation -approved repository and accessible to Trickle Up
+0162 India Foundation.
+0163
+0164 The vendor shall follow recognised software development and security best practices, including secure
+0165 coding, input validation, error handling, code reviews, version control, and protection of credentials
+0166 and sensitive data.
+0167
+0168 The vendor shall follow recognised software development standards and best practices to ensure that
+0169 the application is secure, reliable, scalable, maintainable and easy to upgrade.
+0170
+0171 The vendor shall comply with the following requirements:
+0172
+0173 Source Code Access and Repository Management
+0174
+0175 •   The vendor shall provide complete, functional and maintainable source code for all developed
+0176     components, including the mobile application, web frontend, backend services, APIs, database
+0177     scripts and supporting components.
+0178 •   All source code shall be maintained in a Trickle Up India Foundation (TUIF)-approved repository,
+0179     with access provided to TUIF throughout the development period.
+0180 •   The vendor shall follow appropriate version control practices to maintain development history,
+0181     track modifications and manage different software releases.
+0182 •   All project-specific source code and associated technical assets developed under this assignment
+0183     shall be handed over to TUIF upon completion.
+0184
+0185 Secure Coding Practices
+0186
+0187 •   The vendor shall follow secure coding practices, including input validation, error handling, secure
+0188     authentication, access control and protection of sensitive information.
+0189 •   Application credentials, passwords, API keys and other sensitive configuration details shall not be
+0190     hardcoded into the source code.
+0191 •   Appropriate measures shall be implemented to protect participant information, SHG records and
+0192     financial data from unauthorised access, modification or disclosure.
+0193 •   Data transmission between the mobile application, web portal and backend services shall be
+0194     appropriately secured.
+0195
+0196 Code Quality and Maintainability
+0197
+0198 •   The vendor shall ensure that the source code is properly structured, readable, modular and
+0199     adequately documented.
+0200 •   Appropriate coding standards and naming conventions shall be followed across all application
+0201     components.
+0202
+0203 •   The application architecture shall support future modifications, additional modules and
+0204     integration of new functionalities without requiring major redevelopment.
+0205 •   The vendor shall conduct regular code reviews and appropriate quality checks during the
+0206     development process.
+0207
+0208 Third-Party Libraries and AI-Generated Code
+0209
+0210 •   The vendor shall disclose all third-party libraries, frameworks, SDKs and external components used
+0211     in the application, including applicable licensing conditions and recurring costs.
+0212 •   Any third-party components shall be selected based on their reliability, security, maintenance
+0213     status and compatibility with the proposed technology stack.
+0214 •   The vendor shall remain fully responsible for all delivered code, including code generated using AI
+0215     tools. Such code must be reviewed, tested and validated by the vendor before delivery.
+0216
+0217 Documentation and Code Handover
+0218
+0219 •   The vendor shall maintain appropriate technical documentation throughout the development
+0220     process.
+0221 •   The complete source code, database scripts, API specifications, configuration files, deployment
+0222     scripts and relevant technical documentation shall be handed over to TUIF.
+0223 •   The vendor shall ensure that the delivered code and documentation are sufficient to enable TUIF
+0224     or another authorised technology provider to maintain, troubleshoot, modify and further develop
+0225     the application independently.
+0226
+0227 The vendor shall ensure that all developed components comply with the above requirements before
+0228 final acceptance and handover of the application.
+0229
+0230 6.3. Solution Design and Architecture
+0231
+0232 The vendor shall be responsible for solution design and technical architecture required to deliver the
+0233 application, including:
+0234
+0235     ●   UX/UI Design: Conduct user experience (UX) and user interface (UI) design to ensure the
+0236         application is intuitive, accessible and suitable for its intended users, including users with
+0237         limited digital literacy.
+0238     ●   Database Design: Design the database structure, data models and relationships required to
+0239         support the application.
+0240     ●   API Design: Define API specifications, endpoints, data exchange mechanisms and integration
+0241         requirements.
+0242     ●   User Workflows and Wireframes: Prepare user workflows, screen-level wireframes and
+0243         navigation flows for the mobile application and web frontend, based on the approved
+0244         business requirements.
+0245     ●   BRD and Wireframe Alignment: The vendor shall review the approved Business Requirements
+0246         Document (BRD) and associated wireframes before initiating development. Any proposed
+0247         changes to the approved requirements or workflows shall be discussed with and approved by
+0248         TUIF.
+0249     ●   Offline and Multilingual Design Considerations: The proposed solution design and
+0250         architecture shall incorporate the approved requirements for offline functionality, data
+0251
+0252         synchronisation, multilingual support and accessibility to ensure usability in low-connectivity
+0253         environments and among users with limited digital literacy.
+0254
+0255 The vendor shall present the proposed designs and architecture to Trickle Up India Foundation for
+0256 review and approval before commencing the relevant development activities. Trickle Up India
+0257 Foundation shall retain approval authority over key design and architectural decisions.
+0258
+0259
+0260 6.4. Technical Reviews and Milestones
+0261
+0262 The vendor/agency shall participate in technical reviews at key milestones, including initial agreement
+0263 on the development approach, milestones, development progress, UAT, security review, and final
+0264 handover. The vendor shall demonstrate completed functionality and provide relevant
+0265 documentation and test results.
+0266
+0267 The vendor shall conduct periodic module-wise demonstrations to TUIF to present development
+0268 progress, validate functionalities against the approved BRD and incorporate feedback before
+0269 proceeding to subsequent development stages.
+0270
+0271 Observations raised during reviews shall be recorded, prioritised, and addressed within agreed
+0272 timeframes. Trickle Up India Foundation shall review and approve key deliverables at agreed
+0273 milestones.
+0274
+0275
+0276 6.5. Security Testing and Remediation
+0277
+0278 Trickle Up India Foundation shall conduct or arrange security assessments, vulnerability testing, and
+0279 penetration testing as required. The vendor shall cooperate with these activities and fix identified
+0280 vulnerabilities and technical observations attributable to its implementation within agreed
+0281 timeframes.
+0282
+0283 The vendor shall provide evidence of fixes and support retesting by Trickle Up India Foundation.
+0284 Critical and high-risk security findings must be resolved and retested before production release unless
+0285 Trickle Up India Foundation formally approves an exception.
+0286
+0287
+0288 6.6. Libraries and Third-Party Components
+0289
+0290 Libraries, frameworks, SDKs, and third-party packages proposed for key features shall be approved by
+0291 Trickle Up India Foundation before use. The vendor shall favour reliable, actively maintained, cost-
+0292 effective components and disclose any licensing fees, recurring charges, or material security concerns.
+0293
+0294
+0295 6.7. Testing and Quality Assurance
+0296
+0297 The vendor shall conduct appropriate functional, integration, and regression testing to ensure the
+0298 application works as expected across supported devices and browsers. Automated testing and code-
+0299 quality checks shall be used where practical.
+0300
+0301 Test results and defects shall be documented. Critical defects and release-blocking issues must be
+0302 resolved before acceptance unless Trickle Up India Foundation approves an exception.
+0303
+0304 6.8. AWS Hosting and Environments
+0305
+0306 The application shall be hosted in Trickle Up India Foundation’s AWS account. The vendor shall set up
+0307 and deploy the application to the development and UAT environments, configure required services,
+0308 and ensure appropriate access controls, secure configuration, logging, and monitoring.
+0309
+0310 The vendor shall propose an appropriate AWS infrastructure configuration based on the expected
+0311 application usage, data storage and performance requirements. The vendor shall provide an itemised
+0312 estimate of hosting, database, storage, backup and other associated recurring infrastructure costs.
+0313
+0314
+0315 6.9. Deployment and Release Management
+0316
+0317 The vendor shall be responsible for deployments to development and UAT, including resolving
+0318 deployment issues.
+0319
+0320 For production deployment, the vendor shall provide tested deployment scripts, configuration
+0321 instructions, prerequisites, and rollback guidance so Trickle Up India Foundation or its authorised team
+0322 can deploy independently. Production release shall require Trickle Up India Foundation’s approval and
+0323 completion of agreed acceptance and security requirements.
+0324
+0325
+0326 6.10.   Documentation and Knowledge Transfer
+0327
+0328 The vendor shall provide practical documentation covering application components, technology stack,
+0329 APIs, configuration, third-party dependencies, AWS setup, and build and deployment instructions.
+0330
+0331 The vendor shall prepare and submit a professional PowerPoint presentation of the PoP 2.0
+0332 application covering its overall architecture, key features, module-wise functionalities, user
+0333 workflows, application interfaces and major capabilities. The presentation shall provide a clear
+0334 overview of the application and shall be used during project reviews, demonstrations and knowledge-
+0335 transfer sessions with TUIF.
+0336
+0337 A handover session shall enable Trickle Up India Foundation to understand, operate, and maintain the
+0338 application or engage another provider if required.
+0339
+0340
+0341 6.11.   Final Acceptance and Support
+0342
+0343 Final acceptance shall require completion of the agreed scope, successful UAT, resolution of critical
+0344 defects and security findings, closure or authorised acceptance of outstanding observations, and
+0345 handover of all source code and documentation.
+0346
+0347 The vendor shall propose a reasonable post-implementation warranty and support period, including
+0348 fixes for issues attributable to its implementation.
+0349
+0350 The vendor shall ensure that all agreed application functionalities are successfully implemented,
+0351 tested and approved by TUIF before final handover. The handover shall include complete source code,
+0352 technical and user documentation, application presentation, deployment details and necessary
+0353 administrative access.
+0354
+0355 The vendor shall provide post-implementation warranty and technical support for the agreed period,
+0356 including bug fixes, troubleshooting and resolution of technical issues arising from the developed
+0357 application. The vendor shall clearly specify the warranty duration, support arrangements and
+0358 response timelines in its proposal.
+0359
+0360
+0361 Proposal Submission Guidelines
+0362
+0363 Interested agencies/Consultants are invited to submit both a Technical Proposal and a Financial
+0364 Proposal in response to this Terms of Reference (ToR).
+0365
+0366 13.1 Technical Proposal
+0367
+0368 The Technical Proposal should include, but not be limited to, the following:
+0369
+0370     •   Company’s profile and relevant experience.
+0371     •   Understanding of the assignment and the proposed approach.
+0372     •   Detailed methodology and implementation plan for the assignments.
+0373     •   Experience in developing mobile applications with offline functionality and multilingual
+0374         support.
+0375     •   Experience in developing applications for users with limited digital literacy.
+0376     •   Links or demonstrations of previously developed applications, wherever available.
+0377     •   Proposed work plan and timeline.
+0378     •   Composition of the proposed technical team, including CVs of key professionals.
+0379     •   Details of at least one or two similar assignments successfully completed, with client
+0380         references (where available).
+0381     •   Any additional information demonstrating the consultant/agency's technical capability to
+0382         undertake the assignment.
+0383
+0384 13.2 Financial Proposal
+0385
+0386 The Financial Proposal shall include a detailed cost breakdown covering all costs associated with the
+0387 consultancy, including:
+0388
+0389     •   Design and development of POP 2.0 application
+0390     •   Hosting – AWS
+0391     •   AI Subscription cost
+0392     •   Professional fees.
+0393     •   Applicable taxes and statutory charges.
+0394     •   Any other incidental costs required to complete the assignment.
+0395
+0396 The financial proposal shall be submitted in Indian Rupees (INR), inclusive of all applicable taxes.
+0397
+0398 13.3 Submission of Proposal
+0399
+0400 Interested agencies/consultants/companies shall submit their Technical Proposal and Financial
+0401 Proposal as two separate PDF documents through email only, on or before the specified submission
+0402 deadline.
+0403
+0404 Late or incomplete proposals may not be considered.
+0405
+0406 Submission Deadline: 5:00 PM (IST), Monday, 9th November 2026.
+0407
+0408 Email to:   rbehera@trickleupindia.org and CC to nbasista@trickleupindia.org
+0409
+0410 The email subject line shall clearly mention:
+0411
+0412      •   For Technical Proposal: "PoP 2.0 Application Development – Technical Proposal"
+0413      •   For Financial Proposal: "PoP 2.0 Application Development – Financial Proposal"
+0414
+0415 14. Payment Schedule
+0416
+0417 Payments shall be made upon satisfactory completion and written approval of the agreed deliverables
+0418 by TUIF, as per the following schedule:
+0419
+0420  Milestone Deliverables                                                  Payment
+0421            Submission and approval of the base document on PoP
+0422  1                                                                       20%
+0423            application, detailed work plan and requirement finalisation.
+0424               Submission and approval of UX/UI designs, wireframes,
+0425  2                                                                  20%
+0426               database design and technical architecture.
+0427               Completion and demonstration of all agreed Phase 1 modules
+0428  3                                                                       30%
+0429               as per the approved BRD.
+0430               Successful completion of testing, UAT and production
+0431  4                                                                 20%
+0432               deployment readiness.
+0433               Final handover of source code, technical documentation,
+0434  5                                                                      10%
+0435               application presentation and knowledge-transfer sessions.
+0436               Total                                                     100%
+0437
+0438 Payments shall be released upon submission of the corresponding invoice and supporting documents,
+0439 subject to satisfactory review and approval by TUIF.
+0440
+0441 18. Acceptance of Deliverables
+0442
+0443 All deliverables submitted by the vendor shall be reviewed by Trickle Up India Foundation (TUIF)
+0444 against the approved Business Requirements Document (BRD), agreed scope of work, technical
+0445 requirements and defined quality standards.
+0446
+0447 The acceptance process shall include the following:
+0448
+0449      •   Review and Validation: TUIF shall review the submitted deliverables, including application
+0450          functionalities, module-wise development, technical documentation and other agreed
+0451          outputs.
+0452      •   Testing and UAT: The developed application shall undergo functional testing and User
+0453          Acceptance Testing (UAT) to verify that the application meets the approved requirements and
+0454          intended user workflows.
+0455      •   Resolution of Observations: The vendor shall address identified gaps, defects and
+0456          observations within mutually agreed timelines and resubmit the deliverables for review,
+0457          without additional cost where such corrections relate to the approved scope.
+0458      •   Final Handover: The vendor shall submit the complete source code, technical and user
+0459          documentation, database and API specifications, deployment details, application
+0460          presentation and other agreed project deliverables.
+0461
+0462     •   Final Approval: Final acceptance shall be subject to successful completion of the agreed
+0463         scope, satisfactory UAT, resolution of critical defects and completion of the required
+0464         documentation and knowledge-transfer activities.
+0465
+0466 The vendor shall ensure that all deliverables meet the agreed requirements and obtain written
+0467 approval from TUIF before considering any milestone or the overall assignment completed.
+0468
+0469 19. Disclaimer
+0470
+0471 TUIF reserves the right to modify, amend, or withdraw this Terms of Reference, wholly or in part, at
+0472 any stage of the selection process without assigning any reason. Issuance of this ToR does not
+0473 constitute a commitment by TUIF to award a contract or reimburse any costs incurred by applicants
+0474 in preparing or submitting their proposals.
+0475
+0476 All project-specific deliverables developed under this assignment, including source code, application
+0477 designs, technical documentation, databases and related materials, shall be handed over to TUIF in
+0478 accordance with the agreed contractual terms. The vendor shall not use, disclose or share TUIF's
+0479 project data or confidential information with any third party without prior written approval from TUIF.
+0480

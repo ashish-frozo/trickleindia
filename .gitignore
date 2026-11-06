@@ -21,3 +21,8 @@ delivery/SHA256SUMS
 delivery/BUILD_INFO.json
 
 delivery/
+
+**/key.properties
+*.jks
+*.keystore
+*.dump

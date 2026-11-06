@@ -197,6 +197,69 @@ ui.speechDisclosure,Device-generated speech reads these draft instructions. It i
 ui.speechUnavailable,"No suitable voice is available. Install a voice for this language in device speech settings, then retry. The written instructions remain available.",,,needs-translation
 ui.speechFailed,Speech could not play. Check device speech settings and try again.,,,needs-translation
 ui.speechLoading,Preparing voice…,,,needs-translation
+ui.editProfile,Edit profile,,,needs-translation
+ui.loadMore,Load more,,,needs-translation
+ui.contentLoadFailed,Instructions could not load. Retry to open them.,,,needs-translation
+ui.blockedState,Waiting for sign-in or dependency,,,needs-translation
+ui.conflictState,Review conflicting changes,,,needs-translation
+ui.rejectedState,Not accepted — review details,,,needs-translation
+ui.supplies,Supplies,,,needs-translation
+ui.transport,Transport,,,needs-translation
+ui.sales,Sales,,,needs-translation
+ui.other,Other,,,needs-translation
+ui.tailoring,Tailoring,,,needs-translation
+ui.vegetable_sales,Vegetable sales,,,needs-translation
+ui.poultry,Poultry,,,needs-translation
+ui.action_member_create,Member registered,,,needs-translation
+ui.action_member_update,Profile updated,,,needs-translation
+ui.action_meeting_attendance_set,Attendance updated,,,needs-translation
+ui.action_transaction_post,Entry recorded,,,needs-translation
+ui.action_transaction_reverse,Entry reversed,,,needs-translation
+ui.action_meeting_submit,Meeting submitted,,,needs-translation
+ui.action_support_create,Support requested,,,needs-translation
+ui.action_support_update,Support updated,,,needs-translation
+ui.action_whatsapp_simulation,Simulated request received,,,needs-translation
+ui.action_support_simulation_create,Simulated support request received,,,needs-translation
+ui.createGroup,Create group,,,needs-translation
+ui.editGroup,Edit group,,,needs-translation
+ui.groupCode,Group code,,,needs-translation
+ui.village,Village,,,needs-translation
+ui.sakhiOwner,Assigned Smart Sakhi,,,needs-translation
+ui.scheduleMeeting,Schedule meeting,,,needs-translation
+ui.createEnterprise,Add enterprise,,,needs-translation
+ui.editEnterprise,Edit enterprise,,,needs-translation
+ui.businessPlan,Business plan and next steps,,,needs-translation
+ui.action_group_create,Group created,,,needs-translation
+ui.action_group_update,Group updated,,,needs-translation
+ui.action_meeting_create,Meeting scheduled,,,needs-translation
+ui.action_enterprise_create,Enterprise added,,,needs-translation
+ui.action_enterprise_update,Enterprise updated,,,needs-translation
+ui.sakhiMonitoring,Sakhi visits & follow-up,,,needs-translation
+ui.recordedVisits,Recorded visits,,,needs-translation
+ui.followUps,Follow-ups,,,needs-translation
+ui.recordVisit,Record visit,,,needs-translation
+ui.nextVisit,Next visit,,,needs-translation
+ui.visitOutcome,Follow-up outcome,,,needs-translation
+ui.completeFollowUp,Complete follow-up,,,needs-translation
+ui.followUpPending,Follow-up pending,,,needs-translation
+ui.completed,Completed,,,needs-translation
+ui.topic,Topic,,,needs-translation
+ui.visitNotes,Discussion and agreed action,,,needs-translation
+ui.savings,Savings,,,needs-translation
+ui.digital_skills,Digital skills,,,needs-translation
+ui.action_visit_create,Visit recorded,,,needs-translation
+ui.action_visit_complete,Follow-up completed,,,needs-translation
+ui.reports,Reports & exports,,,needs-translation
+ui.downloadCsv,Download CSV,,,needs-translation
+ui.copyCsv,Copy CSV,,,needs-translation
+ui.reportScope,Confirmed server balances only. Pending phone entries are excluded. CSV money columns use paise.,,,needs-translation
+ui.organisationSignIn,"Sign in with your organisation. After browser sign-in, select Sign in again if this page returns.",,,needs-translation
+ui.manageContent,Manage help content,,,needs-translation
+ui.contentTitle,Title,,,needs-translation
+ui.contentSteps,Steps (one per line),,,needs-translation
+ui.contentScript,Speech text,,,needs-translation
+ui.publishDraft,Publish draft revision,,,needs-translation
+ui.action_content_publish,Help content published,,,needs-translation
 help.save-contribution.title,Save a contribution,,,needs-translation
 help.save-contribution.audioScript,"Open the meeting and choose the member. Enter the amount and review the member, date and type. Confirm. If offline, the entry stays on this phone until it syncs.",,,needs-translation
 help.save-contribution.steps.0,Open the meeting and choose the member.,,,needs-translation

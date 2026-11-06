@@ -9,3 +9,7 @@ The Android profile APK for local demonstration uses a development signing confi
 The supplied bilingual help and copy remain draft demo content requiring field terminology review. No TUIF logo or brand asset was supplied or fabricated.
 
 The generated Unicode full case-fold mapping uses the Unicode 17 CaseFolding data. The applicable Unicode licence is retained at `services/api/UNICODE-LICENSE.txt`.
+
+## Requirements follow-up dependencies
+
+Added `aws-jwt-verify` 5.2.1 for Cognito access-token verification and `flutter_appauth` 13.0.0 for native PKCE sign-in. `web` 1.1.2, `http` 1.6.0 and `crypto` 3.0.8 support browser authentication/export. Exact dependencies and transitive licences are represented in their pinned lockfiles and package notices. PowerPoint generation uses development-only PptxGenJS, Playwright, Sharp and the html2pptx skill; these are not bundled in the app runtime. No paid identity, AI, speech or messaging service has been activated.

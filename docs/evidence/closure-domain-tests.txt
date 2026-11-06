@@ -1,0 +1,23 @@
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.15 available)
+  vector_math 2.4.0 (2.4.4 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/ashishdhiman/WORK/trickleup/packages/domain/test/domain_test.dart
+00:00 +0: decimal string parser preserves paise and rejects invalid boundaries
+00:00 +1: offline entry survives controller restart with same IDs and pending overlay
+00:00 +2: lost acknowledgment reconciles canonical origin and clears pending atomically
+00:00 +3: never-dispatched attendance edits supersede; uncertain edits require reconciliation
+00:00 +4: ambiguous discard reconciles accepted receipt and preserves financial effect
+00:00 +5: failed local commit never becomes a successful duplicate-tap result
+00:00 +6: retry backoff honors server Retry-After while unrelated entries continue
+00:00 +7: missing receipt does not discard an ambiguously dispatched financial intent
+00:00 +8: lease expiry, server revocation and actor or dataset switch retain private pending intent
+00:00 +9: reentrant sync triggers share one upload and preserve the frozen intent
+00:00 +10: unfinished form drafts survive reopening and clear on explicit reset
+00:00 +11: invalid content never replaces last validated offline instructions
+00:00 +12: All tests passed!

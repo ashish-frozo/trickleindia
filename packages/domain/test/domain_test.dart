@@ -606,4 +606,73 @@ void main() {
       c.dispose();
     },
   );
+  test(
+    'unfinished form drafts survive reopening and clear on explicit reset',
+    () async {
+      final store = MemoryStore();
+      await store.setSession({
+        'actor': {'id': 'a', 'role': 'sakhi'},
+        'datasetId': 'd',
+        'token': 't',
+        'offlineUntil': DateTime.now()
+            .add(const Duration(hours: 1))
+            .toIso8601String(),
+      });
+      final c = AppController(store, 'http://unused')..online = false;
+      await c.init(autoSync: false);
+      await c.saveFormDraft('entry/m', {
+        'amount': '200.50',
+        'intentId': 'stable',
+      });
+      c.dispose();
+      final reopened = AppController(store, 'http://unused')..online = false;
+      await reopened.init(autoSync: false);
+      expect(reopened.formDrafts['entry/m']['amount'], '200.50');
+      expect(reopened.queue, isEmpty);
+      await reopened.saveFormDraft('entry/m', null);
+      expect((await store.read())!['formDrafts'], isEmpty);
+      await reopened.saveFormDraft('profile/new', {
+        'displayName': 'Private draft',
+      });
+      await reopened.resetLocal();
+      expect(reopened.formDrafts, isEmpty);
+      expect((await store.read())!['formDrafts'], isEmpty);
+      reopened.dispose();
+    },
+  );
+  test(
+    'invalid content never replaces last validated offline instructions',
+    () async {
+      final store = MemoryStore();
+      await store.setSession({
+        'actor': {'id': 'a', 'role': 'sakhi'},
+        'datasetId': 'd',
+        'token': 't',
+        'offlineUntil': DateTime.now()
+            .add(const Duration(hours: 1))
+            .toIso8601String(),
+      });
+      final c = AppController(
+        store,
+        'http://unused',
+        client: MockClient(
+          (_) async => http.Response(
+            jsonEncode({
+              'schemaVersion': 1,
+              'contentVersion': 'bad',
+              'cards': [
+                {'id': 'missing-translations'},
+              ],
+            }),
+            200,
+          ),
+        ),
+      );
+      await c.init(autoSync: false);
+      c.contentPack = {'contentVersion': 'last-good'};
+      await expectLater(c.updateContent(), throwsFormatException);
+      expect(c.contentPack!['contentVersion'], 'last-good');
+      c.dispose();
+    },
+  );
 }

@@ -21,6 +21,9 @@ import 'src/components.dart';
 import 'src/theme.dart';
 import 'src/workspace.dart';
 import 'src/speech.dart';
+import 'src/reports.dart';
+import 'src/download.dart';
+import 'src/auth.dart';
 import 'src/vengeance.dart';
 export 'src/components.dart';
 
@@ -47,6 +50,7 @@ class _PopAppState extends State<PopApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    captureAuthCallback();
     if (kIsWeb) semanticsHandle = SemanticsBinding.instance.ensureSemantics();
     LicenseRegistry.addLicense(() async* {
       yield LicenseEntryWithLineBreaks(
@@ -180,7 +184,14 @@ class _DemoShellState extends State<DemoShell> {
   String? simulatedRequestId;
   String? assignedName;
   List<Json> audit = [];
-  bool auditLoaded = false;
+  bool auditLoaded = false, auditLoading = false, auditMore = true;
+  String? auditError;
+  int helpRevision = 0;
+  String businessDate(String iso) =>
+      DateFormat.yMMMd(widget.lang == 'hi' ? 'hi_IN' : 'en_IN')
+          .format(DateTime.parse(iso));
+  String actionLabel(String action) =>
+      t('action_${action.replaceAll('.', '_')}');
   @override
   void initState() {
     super.initState();
@@ -274,6 +285,7 @@ class _DemoShellState extends State<DemoShell> {
           'meetings': 'meetings',
           'enterprise': 'enterprise',
           'work': c.actor['role'] == 'manager' ? 'support' : 'work',
+          'monitoring': 'sakhiMonitoring',
           'help': 'help',
           'activity': 'activity',
           'capabilities': 'capabilities',
@@ -588,150 +600,188 @@ class _DemoShellState extends State<DemoShell> {
     if (mounted) FocusScope.of(context).unfocus();
   }
 
-  Widget login() => Center(
+  Widget organisationLogin() => Center(
     child: ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 460),
-      child: ListView(
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            c.portal ? t('programmePortal') : t('chooseRole'),
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-          const SizedBox(height: 8),
-          Text(t('extraLabel2'), style: Theme.of(context).textTheme.bodySmall),
-          const SizedBox(height: 28),
-          for (final role
-              in c.portal ? ['arun'] : ['kavita', 'rani-user', 'arun'])
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: Material(
-                color: selectedRole == role
-                    ? PopColors.primaryTint
-                    : Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(
-                    color: selectedRole == role ? teal : PopColors.border,
-                    width: selectedRole == role ? 1.5 : 1,
-                  ),
-                ),
-                clipBehavior: Clip.antiAlias,
-                child: ListTile(
-                  selected: selectedRole == role,
-                  onTap: () => setState(() => selectedRole = role),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 7,
-                  ),
-                  leading: Container(
-                    width: 40,
-                    height: 40,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: selectedRole == role
-                          ? Colors.white
-                          : PopColors.surfaceSoft,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Icon(
-                      role == 'kavita'
-                          ? Icons.badge_outlined
-                          : role == 'arun'
-                          ? Icons.admin_panel_settings_outlined
-                          : Icons.person_outline_rounded,
-                      size: 22,
-                      color: teal,
-                    ),
-                  ),
-                  title: Text(
-                    t(
-                      role == 'kavita'
-                          ? 'sakhiRole'
-                          : role == 'arun'
-                          ? 'managerRole'
-                          : 'participantRole',
-                    ),
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                  subtitle: Text(
-                    role == 'kavita'
-                        ? 'Kavita Rao'
-                        : role == 'arun'
-                        ? 'Arun Sen'
-                        : 'Rani Mahto',
-                  ),
-                  trailing: Icon(
-                    selectedRole == role
-                        ? Icons.radio_button_checked_rounded
-                        : Icons.radio_button_unchecked_rounded,
-                    size: 22,
-                    color: selectedRole == role ? teal : muted,
-                  ),
-                ),
-              ),
-            ),
-          const SizedBox(height: 12),
-          TextField(
-            controller: access,
-            obscureText: true,
-            decoration: InputDecoration(
-              labelText: t('accessCode'),
-              prefixIcon: const Icon(Icons.lock_outline_rounded, size: 21),
-            ),
-            onSubmitted: (_) => act(() => signIn()),
-          ),
+          const PopWordmark(size: 32),
+          const SizedBox(height: 24),
+          Text(t('organisationSignIn')),
           const SizedBox(height: 20),
-          SizedBox(
-            width: double.infinity,
-            child: button(
-              c.busy ? t('downloading') : t('signIn'),
-              c.busy ? null : () => act(() => signIn()),
-            ),
+          button(
+            t('signIn'),
+            () => act(() async {
+              final config = await c.request('GET', '/v1/auth/config');
+              if (config['mode'] != 'cognito') {
+                throw ApiError('TEMPORARILY_UNAVAILABLE', 503, {});
+              }
+              final token = await organisationSignIn(config);
+              if (token != null) await c.login('', '', accessToken: token);
+            }),
           ),
-          const SizedBox(height: 14),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Icon(Icons.cloud_download_outlined, size: 18, color: muted),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  t('firstLoginOnline'),
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ),
-            ],
-          ),
-          if (c.error != null)
-            Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: Text(
-                c.error == 'TEMPORARILY_UNAVAILABLE' && c.data.isEmpty
-                    ? t('firstLoginOnline')
-                    : errorText(c.error!),
-                style: Theme.of(context).textTheme.bodyMedium
-                    ?.copyWith(color: PopColors.error),
-              ),
-            ),
-          if (c.identity != null && !c.valid)
-            Padding(
-              padding: const EdgeInsets.only(top: 12),
-              child: Text(t('sessionExpired')),
-            ),
-          if (c.unresolved.isNotEmpty) ...[
-            const SizedBox(height: 16),
-            Text('${c.unresolved.length} ${t('waitingToSync')}'),
-            OutlinedButton(
-              onPressed: localReset,
-              child: Text(t('resetWarning')),
-            ),
-          ],
+          if (c.identity != null && !c.valid) Text(t('sessionExpired')),
         ],
       ),
     ),
   );
+  Widget login() => const String.fromEnvironment('AUTH_MODE') == 'cognito'
+      ? organisationLogin()
+      : Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 460),
+            child: ListView(
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(24),
+              children: [
+                Text(
+                  c.portal ? t('programmePortal') : t('chooseRole'),
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  t('extraLabel2'),
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(height: 28),
+                for (final role
+                    in c.portal ? ['arun'] : ['kavita', 'rani-user', 'arun'])
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: Material(
+                      color: selectedRole == role
+                          ? PopColors.primaryTint
+                          : Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: BorderSide(
+                          color: selectedRole == role ? teal : PopColors.border,
+                          width: selectedRole == role ? 1.5 : 1,
+                        ),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: ListTile(
+                        selected: selectedRole == role,
+                        onTap: () => setState(() => selectedRole = role),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 7,
+                        ),
+                        leading: Container(
+                          width: 40,
+                          height: 40,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: selectedRole == role
+                                ? Colors.white
+                                : PopColors.surfaceSoft,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(
+                            role == 'kavita'
+                                ? Icons.badge_outlined
+                                : role == 'arun'
+                                ? Icons.admin_panel_settings_outlined
+                                : Icons.person_outline_rounded,
+                            size: 22,
+                            color: teal,
+                          ),
+                        ),
+                        title: Text(
+                          t(
+                            role == 'kavita'
+                                ? 'sakhiRole'
+                                : role == 'arun'
+                                ? 'managerRole'
+                                : 'participantRole',
+                          ),
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                        subtitle: Text(
+                          role == 'kavita'
+                              ? 'Kavita Rao'
+                              : role == 'arun'
+                              ? 'Arun Sen'
+                              : 'Rani Mahto',
+                        ),
+                        trailing: Icon(
+                          selectedRole == role
+                              ? Icons.radio_button_checked_rounded
+                              : Icons.radio_button_unchecked_rounded,
+                          size: 22,
+                          color: selectedRole == role ? teal : muted,
+                        ),
+                      ),
+                    ),
+                  ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: access,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: t('accessCode'),
+                    prefixIcon: const Icon(
+                      Icons.lock_outline_rounded,
+                      size: 21,
+                    ),
+                  ),
+                  onSubmitted: (_) => act(() => signIn()),
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: button(
+                    c.busy ? t('downloading') : t('signIn'),
+                    c.busy ? null : () => act(() => signIn()),
+                  ),
+                ),
+                const SizedBox(height: 14),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      Icons.cloud_download_outlined,
+                      size: 18,
+                      color: muted,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        t('firstLoginOnline'),
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ),
+                  ],
+                ),
+                if (c.error != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Text(
+                      c.error == 'TEMPORARILY_UNAVAILABLE' && c.data.isEmpty
+                          ? t('firstLoginOnline')
+                          : errorText(c.error!),
+                      style: Theme.of(context).textTheme.bodyMedium
+                          ?.copyWith(color: PopColors.error),
+                    ),
+                  ),
+                if (c.identity != null && !c.valid)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: Text(t('sessionExpired')),
+                  ),
+                if (c.unresolved.isNotEmpty) ...[
+                  const SizedBox(height: 16),
+                  Text('${c.unresolved.length} ${t('waitingToSync')}'),
+                  OutlinedButton(
+                    onPressed: localReset,
+                    child: Text(t('resetWarning')),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        );
   List<Widget> content() {
     switch (widget.page) {
       case 'groups':
@@ -744,6 +794,10 @@ class _DemoShellState extends State<DemoShell> {
         return sync();
       case 'enterprise':
         return enterprise();
+      case 'reports':
+        return reports();
+      case 'monitoring':
+        return monitoring();
       case 'work':
         return support();
       case 'help':
@@ -1362,37 +1416,40 @@ class _DemoShellState extends State<DemoShell> {
       const SizedBox(height: 24),
       LayoutBuilder(
         builder: (context, box) {
-          Widget savings = VengeanceSurface(
-            dark: true,
-            padding: const EdgeInsets.all(26),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.account_balance_wallet_outlined,
-                      color: Colors.white,
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        stats[1].$1,
-                        style: Theme.of(context).textTheme.titleSmall
-                            ?.copyWith(color: Colors.white),
+          Widget savings = InkWell(
+            onTap: () => context.go('/groups'),
+            child: VengeanceSurface(
+              dark: true,
+              padding: const EdgeInsets.all(26),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.account_balance_wallet_outlined,
+                        color: Colors.white,
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                MoneyAmount(stats[1].$2, size: 46, color: Colors.white),
-                const SizedBox(height: 20),
-                Text(
-                  t('programmeOverviewHint'),
-                  style: Theme.of(context).textTheme.bodySmall
-                      ?.copyWith(color: PopColors.forestMuted),
-                ),
-              ],
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          stats[1].$1,
+                          style: Theme.of(context).textTheme.titleSmall
+                              ?.copyWith(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  MoneyAmount(stats[1].$2, size: 46, color: Colors.white),
+                  const SizedBox(height: 20),
+                  Text(
+                    t('programmeOverviewHint'),
+                    style: Theme.of(context).textTheme.bodySmall
+                        ?.copyWith(color: PopColors.forestMuted),
+                  ),
+                ],
+              ),
             ),
           );
           Widget details = VengeanceSurface(
@@ -1551,6 +1608,23 @@ class _DemoShellState extends State<DemoShell> {
         },
       ),
       const SizedBox(height: 24),
+      if (c.actor['role'] == 'manager')
+        Wrap(
+          spacing: 12,
+          runSpacing: 8,
+          children: [
+            button(t('createGroup'), () => manageRecord('group')),
+            for (final g in c.rows('groups'))
+              TextButton(
+                onPressed: () => manageRecord('group', existing: g),
+                child: Text('${t('editGroup')}: ${g['displayName']}'),
+              ),
+            TextButton(
+              onPressed: () => context.go('/enterprise'),
+              child: Text(t('enterprise')),
+            ),
+          ],
+        ),
       if (c.rows('groups').isEmpty) empty(),
       LayoutBuilder(
         builder: (context, box) {
@@ -1732,6 +1806,15 @@ class _DemoShellState extends State<DemoShell> {
         .toList();
     return [
       if (c.portal && includeTitle) title(t('passbook')),
+      if (c.actor['role'] == 'sakhi')
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton.icon(
+            onPressed: () => registration(memberToEdit: m),
+            icon: const Icon(Icons.edit_outlined),
+            label: Text(t('editProfile')),
+          ),
+        ),
       SurfaceCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1891,7 +1974,7 @@ class _DemoShellState extends State<DemoShell> {
   Widget transactionRow(Json tx) => TransactionRow(
     title: typeLabel(tx['type']),
     amount: money(tx['amountPaise']),
-    date: tx['businessDate'],
+    date: businessDate(tx['businessDate']),
     status: t(tx['reversedByTransactionId'] != null ? 'reversed' : 'confirmed'),
     subject: widget.page == 'member'
         ? null
@@ -1915,6 +1998,8 @@ class _DemoShellState extends State<DemoShell> {
   );
   List<Widget> meetings() => [
     title(t('meetings')),
+    if (c.actor['role'] != 'participant')
+      button(t('scheduleMeeting'), () => manageRecord('meeting')),
     if (c.rows('meetings').isEmpty) empty(),
     for (final meeting in c.rows('meetings'))
       card(
@@ -1929,7 +2014,7 @@ class _DemoShellState extends State<DemoShell> {
                   )['displayName'],
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            Text(meeting['businessDate']),
+            Text(businessDate(meeting['businessDate'])),
             chip(
               t(
                 meeting['status'] == 'open' ? 'openStatus' : 'meetingSubmitted',
@@ -2066,10 +2151,47 @@ class _DemoShellState extends State<DemoShell> {
     Json? meeting,
     Json? enterprise,
   }) async {
-    final amount = TextEditingController(), note = TextEditingController();
+    final selectedMeeting =
+        meeting ??
+        c
+            .rows('meetings')
+            .where((r) => r['groupId'] == m['groupId'] && r['status'] == 'open')
+            .firstOrNull;
+    final entryDate = enterprise == null
+        ? (selectedMeeting?['businessDate'] ??
+              c.data['businessDate'] ??
+              '2026-11-05')
+        : (c.data['businessDate'] ?? '2026-11-05');
+    final draftKey =
+        'entry/${m['id']}/$type/${meeting?['id'] ?? enterprise?['id'] ?? ''}';
+    final savedDraft = c.formDrafts[draftKey] as Map? ?? {};
+    final amount = TextEditingController(text: savedDraft['amount']),
+        note = TextEditingController(text: savedDraft['note']);
+    String category = savedDraft['category'] ?? 'seeds';
+    bool submitted = false;
+    Timer? draftTimer;
+    final intent = savedDraft['intentId'] as String? ?? const Uuid().v4(),
+        transaction =
+            savedDraft['transactionId'] as String? ?? const Uuid().v4();
+    Future<void> retainDraft() => c.saveFormDraft(draftKey, {
+      'amount': amount.text,
+      'note': note.text,
+      'category': category,
+      'intentId': intent,
+      'transactionId': transaction,
+    });
     String? validation;
     bool saving = false;
-    final intent = const Uuid().v4(), transaction = const Uuid().v4();
+    void changed() {
+      draftTimer?.cancel();
+      draftTimer = Timer(
+        const Duration(milliseconds: 300),
+        () => unawaited(act(retainDraft)),
+      );
+    }
+
+    amount.addListener(changed);
+    note.addListener(changed);
     final route = DialogRoute<void>(
       context: context,
       builder: (ctx) => StatefulBuilder(
@@ -2122,8 +2244,22 @@ class _DemoShellState extends State<DemoShell> {
                   maxLength: 280,
                   decoration: InputDecoration(labelText: t('noteOptional')),
                 ),
-                if (enterprise != null) Text('${t('category')}: ${t('seeds')}'),
-                Text('${t('date')}: 05 Nov 2026'),
+                if (enterprise != null)
+                  DropdownButtonFormField<String>(
+                    initialValue: category,
+                    isExpanded: true,
+                    decoration: InputDecoration(labelText: t('category')),
+                    items: ['seeds', 'supplies', 'transport', 'sales', 'other']
+                        .map(
+                          (v) => DropdownMenuItem(value: v, child: Text(t(v))),
+                        )
+                        .toList(),
+                    onChanged: (v) {
+                      set(() => category = v!);
+                      changed();
+                    },
+                  ),
+                Text('${t('date')}: ${businessDate(entryDate)}'),
               ],
             ),
           ),
@@ -2145,7 +2281,7 @@ class _DemoShellState extends State<DemoShell> {
                       }
                       final yes = await confirm(
                         t('review'),
-                        '${t('member')}: ${m['displayName']}\n${t('type')}: ${typeLabel(type)}\n${t('amount')}: ${money(paise)}\n${t('date')}: 05 Nov 2026',
+                        '${t('member')}: ${m['displayName']}\n${t('group')}: ${c.rows('groups').firstWhere((g) => g['id'] == m['groupId'])['displayName']}\n${t('type')}: ${typeLabel(type)}\n${t('amount')}: ${money(paise)}\n${t('date')}: ${businessDate(entryDate)}',
                         action: t(
                           type == 'savings_deposit'
                               ? 'saveContribution'
@@ -2159,16 +2295,7 @@ class _DemoShellState extends State<DemoShell> {
                       if (!yes || !ctx.mounted) return;
                       set(() => saving = true);
                       try {
-                        final meet =
-                            meeting ??
-                            c
-                                .rows('meetings')
-                                .where(
-                                  (r) =>
-                                      r['groupId'] == m['groupId'] &&
-                                      r['status'] == 'open',
-                                )
-                                .firstOrNull;
+                        final meet = selectedMeeting;
                         if (enterprise == null && meet == null) {
                           throw ApiError('MEETING_CLOSED', 409, {});
                         }
@@ -2177,10 +2304,10 @@ class _DemoShellState extends State<DemoShell> {
                           'memberId': m['id'],
                           'type': type,
                           'amountPaise': paise,
-                          'businessDate': '2026-11-05',
+                          'businessDate': entryDate,
                           if (enterprise != null)
                             'enterpriseId': enterprise['id'],
-                          if (enterprise != null) 'category': 'seeds',
+                          if (enterprise != null) 'category': category,
                           if (enterprise == null) 'meetingId': meet!['id'],
                           if (type == 'loan_principal_repayment')
                             'loanId': c
@@ -2190,7 +2317,12 @@ class _DemoShellState extends State<DemoShell> {
                                 )['id'],
                           if (note.text.isNotEmpty) 'note': note.text,
                         }, intentId: intent);
-                        if (ctx.mounted) Navigator.pop(ctx);
+                        submitted = true;
+                        draftTimer?.cancel();
+                        await c.saveFormDraft(draftKey, null);
+                        if (ctx.mounted) {
+                          Navigator.pop(ctx);
+                        }
                         if (mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text(t('savedOnPhone'))),
@@ -2213,6 +2345,8 @@ class _DemoShellState extends State<DemoShell> {
     );
     await Navigator.of(context, rootNavigator: true).push(route);
     await route.completed;
+    draftTimer?.cancel();
+    if (!submitted && c.valid) await act(retainDraft);
     amount.dispose();
     note.dispose();
   }
@@ -2241,13 +2375,22 @@ class _DemoShellState extends State<DemoShell> {
                             'member.create': 'addMember',
                             'member.update': 'review',
                             'support.create': 'requestHelp',
+                            'visit.create': 'recordVisit',
                           }[o['kind']] ??
                           'type',
                     ),
             ),
             chip(
               t(
-                o['state'] == 'discarded'
+                o['state'] == 'sending'
+                    ? 'syncing'
+                    : o['state'] == 'blocked'
+                    ? 'blockedState'
+                    : o['state'] == 'conflict'
+                    ? 'conflictState'
+                    : o['state'] == 'rejected'
+                    ? 'rejectedState'
+                    : o['state'] == 'discarded'
                     ? 'discarded'
                     : o['state'] == 'superseded'
                     ? 'superseded'
@@ -2369,9 +2512,18 @@ class _DemoShellState extends State<DemoShell> {
 
   List<Widget> enterprise() => [
     title(t('enterprise')),
+    if (c.actor['role'] != 'participant' && c.rows('members').isNotEmpty)
+      button(t('createEnterprise'), () => manageRecord('enterprise')),
     if (c.rows('enterprises').isEmpty) empty(),
     for (final e in c.rows('enterprises')) ...[
       title(e['name']),
+      if (c.actor['role'] != 'participant')
+        TextButton(
+          onPressed: () => manageRecord('enterprise', existing: e),
+          child: Text(t('editEnterprise')),
+        ),
+      if ((e['businessPlan'] as String? ?? '').isNotEmpty)
+        Text(e['businessPlan']),
       Text(t('demoPeriod')),
       const SizedBox(height: 16),
       metric(t('cashSales'), c.enterpriseAmount(e, true)),
@@ -2417,6 +2569,214 @@ class _DemoShellState extends State<DemoShell> {
         transactionRow(tx),
     ],
   ];
+  Future<void> manageRecord(String kind, {Json? existing}) async {
+    final name = TextEditingController(
+      text: existing?[kind == 'group' ? 'displayName' : 'name'],
+    );
+    final village = TextEditingController(text: existing?['villageLabel']);
+    final code = TextEditingController(text: existing?['code']);
+    final plan = TextEditingController(text: existing?['businessPlan']);
+    String groupId =
+        existing?['groupId'] ?? c.rows('groups').firstOrNull?['id'] ?? '';
+    String memberId =
+        existing?['memberId'] ?? c.rows('members').firstOrNull?['id'] ?? '';
+    String ownerId =
+        c
+            .rows('actors')
+            .where((a) => a['role'] == 'sakhi')
+            .firstOrNull?['id'] ??
+        '';
+    DateTime date = DateTime.now();
+    bool saving = false;
+    String? failure;
+    final id = existing?['id'] ?? const Uuid().v4();
+    final route = DialogRoute<void>(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, set) => AlertDialog(
+          scrollable: true,
+          title: Text(
+            t(
+              kind == 'group'
+                  ? existing == null
+                        ? 'createGroup'
+                        : 'editGroup'
+                  : kind == 'meeting'
+                  ? 'scheduleMeeting'
+                  : existing == null
+                  ? 'createEnterprise'
+                  : 'editEnterprise',
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (kind != 'meeting')
+                TextField(
+                  controller: name,
+                  decoration: InputDecoration(labelText: t('name')),
+                  maxLength: 100,
+                ),
+              if (kind == 'group') ...[
+                if (existing == null)
+                  TextField(
+                    controller: code,
+                    decoration: InputDecoration(labelText: t('groupCode')),
+                    maxLength: 40,
+                  ),
+                TextField(
+                  controller: village,
+                  decoration: InputDecoration(labelText: t('village')),
+                  maxLength: 100,
+                ),
+                if (existing == null)
+                  DropdownButtonFormField<String>(
+                    initialValue: ownerId.isEmpty ? null : ownerId,
+                    isExpanded: true,
+                    decoration: InputDecoration(labelText: t('sakhiOwner')),
+                    items: c
+                        .rows('actors')
+                        .where((a) => a['role'] == 'sakhi')
+                        .map(
+                          (a) => DropdownMenuItem<String>(
+                            value: a['id'],
+                            child: Text(a['displayName']),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (v) => ownerId = v!,
+                  ),
+              ],
+              if (kind == 'meeting') ...[
+                DropdownButtonFormField<String>(
+                  initialValue: groupId.isEmpty ? null : groupId,
+                  isExpanded: true,
+                  decoration: InputDecoration(labelText: t('group')),
+                  items: c
+                      .rows('groups')
+                      .map(
+                        (g) => DropdownMenuItem<String>(
+                          value: g['id'],
+                          child: Text(g['displayName']),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (v) => groupId = v!,
+                ),
+                TextButton.icon(
+                  icon: const Icon(Icons.calendar_month_outlined),
+                  label: Text(
+                    businessDate(date.toIso8601String().substring(0, 10)),
+                  ),
+                  onPressed: () async {
+                    final next = await showDatePicker(
+                      context: ctx,
+                      initialDate: date,
+                      firstDate: DateTime(2020),
+                      lastDate: DateTime(2100),
+                    );
+                    if (next != null) set(() => date = next);
+                  },
+                ),
+              ],
+              if (kind == 'enterprise') ...[
+                DropdownButtonFormField<String>(
+                  initialValue: memberId.isEmpty ? null : memberId,
+                  isExpanded: true,
+                  decoration: InputDecoration(labelText: t('member')),
+                  items: c
+                      .rows('members')
+                      .map(
+                        (m) => DropdownMenuItem<String>(
+                          value: m['id'],
+                          child: Text(m['displayName']),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: existing == null ? (v) => memberId = v! : null,
+                ),
+                TextField(
+                  controller: plan,
+                  maxLines: 4,
+                  maxLength: 2000,
+                  decoration: InputDecoration(labelText: t('businessPlan')),
+                ),
+              ],
+              if (failure != null)
+                Text(failure!, style: const TextStyle(color: PopColors.error)),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: saving ? null : () => Navigator.pop(ctx),
+              child: Text(t('cancel')),
+            ),
+            FilledButton(
+              onPressed: saving
+                  ? null
+                  : () async {
+                      set(() => saving = true);
+                      try {
+                        await c.onlineMutation(
+                          '$kind.${existing == null ? 'create' : 'update'}',
+                          {
+                            if (kind == 'group') ...{
+                              'groupId': id,
+                              'displayName': name.text.trim(),
+                              'villageLabel': village.text.trim(),
+                              if (existing == null) ...{
+                                'code': code.text.trim(),
+                                'assignedActorId': ownerId,
+                              },
+                            },
+                            if (kind == 'meeting') ...{
+                              'meetingId': id,
+                              'groupId': groupId,
+                              'businessDate': date.toIso8601String().substring(
+                                0,
+                                10,
+                              ),
+                            },
+                            if (kind == 'enterprise') ...{
+                              'enterpriseId': id,
+                              'name': name.text.trim(),
+                              'businessPlan': plan.text.trim(),
+                              if (existing == null) 'memberId': memberId,
+                            },
+                            if (existing != null)
+                              'expectedVersion': existing['version'],
+                          },
+                        );
+                        if (ctx.mounted) {
+                          Navigator.pop(ctx);
+                        }
+                      } catch (e) {
+                        if (ctx.mounted) {
+                          set(() {
+                            saving = false;
+                            failure = errorText(
+                              e is ApiError
+                                  ? e.code
+                                  : 'TEMPORARILY_UNAVAILABLE',
+                            );
+                          });
+                        }
+                      }
+                    },
+              child: Text(t(saving ? 'loading' : 'save')),
+            ),
+          ],
+        ),
+      ),
+    );
+    await Navigator.of(context, rootNavigator: true).push(route);
+    await route.completed;
+    name.dispose();
+    village.dispose();
+    code.dispose();
+    plan.dispose();
+  }
+
   Future<String?> input(String label, {bool secret = false}) async {
     final field = TextEditingController();
     final route = DialogRoute<String>(
@@ -2459,7 +2819,22 @@ class _DemoShellState extends State<DemoShell> {
     }
   }
 
-  Future<void> registration({Json? draft, String? replaces}) async {
+  Future<void> registration({
+    Json? draft,
+    String? replaces,
+    Json? memberToEdit,
+  }) async {
+    final draftKey = 'profile/${memberToEdit?['id'] ?? replaces ?? 'new'}';
+    draft ??= c.formDrafts[draftKey] == null
+        ? memberToEdit
+        : Map<String, dynamic>.from(c.formDrafts[draftKey]);
+    String groupId =
+        draft?['groupId'] ??
+        (managerGroup != 'all' ? managerGroup : c.rows('groups').first['id']);
+    final memberId =
+        draft?['memberId'] ?? memberToEdit?['id'] ?? const Uuid().v4();
+    final intentId = draft?['intentId'] ?? const Uuid().v4();
+    bool submitted = false;
     final name = TextEditingController(text: draft?['displayName']),
         contact = TextEditingController(text: draft?['contact']);
     String language = draft?['preferredLanguage'] ?? 'hi',
@@ -2469,11 +2844,29 @@ class _DemoShellState extends State<DemoShell> {
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, set) => AlertDialog(
-          title: Text(t('addMember')),
+          title: Text(t(memberToEdit == null ? 'addMember' : 'editProfile')),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                DropdownButtonFormField<String>(
+                  initialValue: groupId,
+                  isExpanded: true,
+                  decoration: InputDecoration(labelText: t('group')),
+                  items: c
+                      .rows('groups')
+                      .map(
+                        (g) => DropdownMenuItem<String>(
+                          value: g['id'],
+                          child: Text(g['displayName']),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: memberToEdit == null
+                      ? (v) => set(() => groupId = v!)
+                      : null,
+                ),
+                const SizedBox(height: 16),
                 TextField(
                   controller: name,
                   decoration: InputDecoration(labelText: t('name')),
@@ -2486,11 +2879,17 @@ class _DemoShellState extends State<DemoShell> {
                   decoration: InputDecoration(
                     labelText: t('preferredLanguage'),
                   ),
-                  items: ['en', 'hi']
+                  items: ['en', 'hi', 'or', 'hoc', 'sat']
                       .map(
                         (v) => DropdownMenuItem(
                           value: v,
-                          child: Text(v == 'en' ? t('english') : t('hindi')),
+                          child: Text(
+                            v == 'en'
+                                ? t('english')
+                                : v == 'hi'
+                                ? t('hindi')
+                                : '${{'or': 'Odia', 'hoc': 'Ho', 'sat': 'Santhali'}[v]} · ${t('planned')}',
+                          ),
                         ),
                       )
                       .toList(),
@@ -2536,19 +2935,60 @@ class _DemoShellState extends State<DemoShell> {
                   ? null
                   : () async {
                       if (name.text.trim().isEmpty) return;
-                      if (!await confirm(t('review'), name.text)) return;
+                      if (!await confirm(
+                        t('review'),
+                        '${t('name')}: ${name.text}\n${t('group')}: ${c.rows('groups').firstWhere((g) => g['id'] == groupId)['displayName']}\n${t('preferredLanguage')}: $language\n${t('livelihood')}: ${t(livelihood)}\n${t('contactOptional')}: ${contact.text}',
+                      )) {
+                        return;
+                      }
                       set(() => saving = true);
-                      await act(
-                        () => c.enqueue('member.create', {
-                          'memberId': const Uuid().v4(),
-                          'groupId': c.rows('groups').first['id'],
+                      try {
+                        final values = <String, dynamic>{
                           'displayName': name.text.trim(),
                           'preferredLanguage': language,
                           'livelihoodCategory': livelihood,
-                          if (contact.text.isNotEmpty) 'contact': contact.text,
-                        }, replacesOperationId: replaces),
-                      );
-                      if (ctx.mounted) Navigator.pop(ctx);
+                          'contact': contact.text.trim(),
+                        };
+                        await c.enqueue(
+                          memberToEdit == null
+                              ? 'member.create'
+                              : 'member.update',
+                          memberToEdit == null
+                              ? {
+                                  'memberId': memberId,
+                                  'groupId': groupId,
+                                  ...values,
+                                }
+                              : {
+                                  'memberId': memberId,
+                                  'expectedVersion': memberToEdit['version'],
+                                  'patch': values,
+                                },
+                          intentId: intentId,
+                          replacesOperationId: replaces,
+                        );
+                        submitted = true;
+                        await c.saveFormDraft(draftKey, null);
+                      } catch (e) {
+                        if (ctx.mounted) set(() => saving = false);
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                errorText(
+                                  e is ApiError
+                                      ? e.code
+                                      : 'TEMPORARILY_UNAVAILABLE',
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                        return;
+                      }
+                      if (ctx.mounted) {
+                        Navigator.pop(ctx);
+                      }
                     },
               child: Text(t('review')),
             ),
@@ -2558,6 +2998,19 @@ class _DemoShellState extends State<DemoShell> {
     );
     await Navigator.of(context, rootNavigator: true).push(route);
     await route.completed;
+    if (!submitted && c.valid) {
+      await act(
+        () => c.saveFormDraft(draftKey, {
+          'memberId': memberId,
+          'intentId': intentId,
+          'groupId': groupId,
+          'displayName': name.text,
+          'contact': contact.text,
+          'preferredLanguage': language,
+          'livelihoodCategory': livelihood,
+        }),
+      );
+    }
     name.dispose();
     contact.dispose();
   }
@@ -2619,6 +3072,12 @@ class _DemoShellState extends State<DemoShell> {
         )
         .toList();
     return [
+      if (c.actor['role'] != 'participant')
+        TextButton.icon(
+          onPressed: () => context.go('/monitoring'),
+          icon: const Icon(Icons.assignment_outlined),
+          label: Text(t('sakhiMonitoring')),
+        ),
       if (includeTitle) ...[
         Text(t('support'), style: Theme.of(context).textTheme.headlineLarge),
         const SizedBox(height: 24),
@@ -2781,6 +3240,253 @@ class _DemoShellState extends State<DemoShell> {
     ];
   }
 
+  List<Widget> reports() {
+    if (c.actor['role'] != 'manager') return [Text(t('forbidden'))];
+    final members = c
+        .rows('members')
+        .where((m) => managerGroup == 'all' || m['groupId'] == managerGroup)
+        .toList();
+    final rows = <List<Object?>>[
+      [
+        'member_id',
+        'member',
+        'group',
+        'confirmed_savings_paise',
+        'outstanding_principal_paise',
+        'last_refreshed_utc',
+      ],
+      for (final m in members)
+        [
+          m['id'],
+          m['displayName'],
+          c
+              .rows('groups')
+              .firstWhere((g) => g['id'] == m['groupId'])['displayName'],
+          c.savings(m),
+          c.principal(m),
+          c.lastContact,
+        ],
+    ];
+    return [
+      title(t('reports')),
+      Text(t('reportScope')),
+      groupFilter(),
+      const SizedBox(height: 16),
+      button(
+        t(kIsWeb ? 'downloadCsv' : 'copyCsv'),
+        () => act(() async {
+          await exportReport('pop-confirmed-balances.csv', reportCsv(rows));
+        }),
+        icon: Icons.download_outlined,
+      ),
+      const SizedBox(height: 16),
+      for (final m in members)
+        card(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                m['displayName'],
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Text('${t('confirmedSavings')}: ${money(c.savings(m))}'),
+              Text('${t('loanPrincipal')}: ${money(c.principal(m))}'),
+            ],
+          ),
+        ),
+    ];
+  }
+
+  List<Widget> monitoring() {
+    if (c.actor['role'] == 'participant') return [Text(t('forbidden'))];
+    final visits = c.rows('sakhiVisits');
+    return [
+      title(t('sakhiMonitoring')),
+      Wrap(
+        spacing: 12,
+        runSpacing: 12,
+        children: [
+          chip('${t('recordedVisits')}: ${visits.length}'),
+          chip(
+            '${t('followUps')}: ${visits.where((v) => v['status'] == 'follow_up').length}',
+            warning: true,
+          ),
+        ],
+      ),
+      const SizedBox(height: 16),
+      if (c.actor['role'] == 'sakhi') button(t('recordVisit'), recordVisit),
+      if (visits.isEmpty) empty(),
+      for (final v in visits.reversed)
+        card(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                c
+                        .rows('members')
+                        .where((m) => m['id'] == v['memberId'])
+                        .firstOrNull?['displayName'] ??
+                    '',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Text('${businessDate(v['businessDate'])} · ${t(v['topic'])}'),
+              Text(v['notes']),
+              if (v['nextVisitDate'] != null)
+                Text('${t('nextVisit')}: ${businessDate(v['nextVisitDate'])}'),
+              chip(
+                t(
+                  v['status'] == 'follow_up'
+                      ? 'followUpPending'
+                      : v['status'] == 'completed'
+                      ? 'completed'
+                      : 'recordedVisits',
+                ),
+                warning: v['status'] == 'follow_up',
+              ),
+              if (v['outcome'] != null) Text(v['outcome']),
+              if (v['status'] == 'follow_up')
+                TextButton(
+                  onPressed: () => act(() async {
+                    final outcome = await input(t('visitOutcome'));
+                    if (outcome != null && outcome.trim().isNotEmpty) {
+                      await c.onlineMutation('visit.complete', {
+                        'visitId': v['id'],
+                        'expectedVersion': v['version'],
+                        'outcome': outcome.trim(),
+                      });
+                    }
+                  }),
+                  child: Text(t('completeFollowUp')),
+                ),
+            ],
+          ),
+        ),
+    ];
+  }
+
+  Future<void> recordVisit() async {
+    final member = c.rows('members').firstOrNull;
+    if (member == null) return;
+    String memberId = member['id'], topic = 'savings';
+    DateTime? next;
+    final notes = TextEditingController();
+    bool saving = false;
+    String? failure;
+    final intent = const Uuid().v4(), id = const Uuid().v4();
+    final route = DialogRoute<void>(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, set) => AlertDialog(
+          scrollable: true,
+          title: Text(t('recordVisit')),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              DropdownButtonFormField<String>(
+                initialValue: memberId,
+                isExpanded: true,
+                decoration: InputDecoration(labelText: t('member')),
+                items: c
+                    .rows('members')
+                    .map(
+                      (m) => DropdownMenuItem<String>(
+                        value: m['id'],
+                        child: Text(m['displayName']),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (v) => memberId = v!,
+              ),
+              DropdownButtonFormField<String>(
+                initialValue: topic,
+                isExpanded: true,
+                decoration: InputDecoration(labelText: t('topic')),
+                items: ['savings', 'enterprise', 'digital_skills', 'other']
+                    .map((v) => DropdownMenuItem(value: v, child: Text(t(v))))
+                    .toList(),
+                onChanged: (v) => topic = v!,
+              ),
+              TextField(
+                controller: notes,
+                maxLength: 2000,
+                maxLines: 4,
+                decoration: InputDecoration(labelText: t('visitNotes')),
+              ),
+              TextButton(
+                onPressed: () async {
+                  final date = await showDatePicker(
+                    context: ctx,
+                    initialDate: DateTime.now().add(const Duration(days: 7)),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime(2100),
+                  );
+                  if (date != null) set(() => next = date);
+                },
+                child: Text(
+                  next == null
+                      ? t('nextVisit')
+                      : businessDate(next!.toIso8601String().substring(0, 10)),
+                ),
+              ),
+              if (failure != null) Text(failure!),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: saving ? null : () => Navigator.pop(ctx),
+              child: Text(t('cancel')),
+            ),
+            FilledButton(
+              onPressed: saving
+                  ? null
+                  : () async {
+                      if (notes.text.trim().isEmpty) {
+                        set(() => failure = t('invalidFields'));
+                        return;
+                      }
+                      set(() => saving = true);
+                      try {
+                        await c.enqueue('visit.create', {
+                          'visitId': id,
+                          'memberId': memberId,
+                          'businessDate': DateTime.now()
+                              .toIso8601String()
+                              .substring(0, 10),
+                          'topic': topic,
+                          'notes': notes.text.trim(),
+                          if (next != null)
+                            'nextVisitDate': next!.toIso8601String().substring(
+                              0,
+                              10,
+                            ),
+                        }, intentId: intent);
+                        if (ctx.mounted) {
+                          Navigator.pop(ctx);
+                        }
+                      } catch (e) {
+                        if (ctx.mounted) {
+                          set(() {
+                            saving = false;
+                            failure = errorText(
+                              e is ApiError
+                                  ? e.code
+                                  : 'TEMPORARILY_UNAVAILABLE',
+                            );
+                          });
+                        }
+                      }
+                    },
+              child: Text(t(saving ? 'loading' : 'save')),
+            ),
+          ],
+        ),
+      ),
+    );
+    await Navigator.of(context, rootNavigator: true).push(route);
+    await route.completed;
+    notes.dispose();
+  }
+
   Future<void> supportHistory(Json request) async {
     await act(() async {
       final detail = await c.request(
@@ -2798,7 +3504,7 @@ class _DemoShellState extends State<DemoShell> {
               children: [
                 for (final event in detail['audit'])
                   Text(
-                    '${event['action']} · ${displayTime(event['timestamp'])}',
+                    '${actionLabel(event['action'])} · ${displayTime(event['timestamp'])}',
                   ),
               ],
             ),
@@ -2866,10 +3572,25 @@ class _DemoShellState extends State<DemoShell> {
     chip(t('draftContent'), warning: true),
     const SizedBox(height: 16),
     FutureBuilder<String>(
-      future: rootBundle.loadString(
-        'packages/pop_ui/assets/content_cards.json',
-      ),
+      key: ValueKey(helpRevision),
+      future: c.contentPack == null
+          ? rootBundle.loadString('packages/pop_ui/assets/content_cards.json')
+          : Future.value(jsonEncode(c.contentPack)),
       builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Column(
+            children: [
+              Text(t('contentLoadFailed')),
+              TextButton(
+                onPressed: () {
+                  rootBundle.evict('packages/pop_ui/assets/content_cards.json');
+                  setState(() => helpRevision++);
+                },
+                child: Text(t('retry')),
+              ),
+            ],
+          );
+        }
         if (!snapshot.hasData) return Text(t('loading'));
         final cards = (jsonDecode(snapshot.data!)['cards'] as List)
             .where(
@@ -2939,31 +3660,74 @@ class _DemoShellState extends State<DemoShell> {
         event['entityId'];
   }
 
-  List<Widget> activity() {
-    if (!auditLoaded) {
-      auditLoaded = true;
-      unawaited(
-        act(() async {
-          final r = await c.request('GET', '/v1/audit-events');
-          if (mounted) {
-            setState(
-              () => audit = (r['events'] as List)
-                  .map((e) => Map<String, dynamic>.from(e))
-                  .toList(),
-            );
-          }
-        }),
+  Future<void> loadAudit({bool reset = false}) async {
+    if (auditLoading) return;
+    setState(() {
+      auditLoading = true;
+      auditError = null;
+      if (reset) {
+        audit = [];
+        auditMore = true;
+      }
+    });
+    try {
+      final r = await c.request(
+        'GET',
+        '/v1/audit-events?offset=${audit.length}&limit=50',
       );
+      final page = (r['events'] as List)
+          .map((e) => Map<String, dynamic>.from(e))
+          .toList();
+      if (mounted) {
+        setState(() {
+          audit.addAll(page);
+          auditLoaded = true;
+          auditMore = page.length == 50;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(
+          () => auditError = errorText(
+            e is ApiError ? e.code : 'TEMPORARILY_UNAVAILABLE',
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => auditLoading = false);
+    }
+  }
+
+  List<Widget> activity() {
+    if (!auditLoaded && !auditLoading && auditError == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) unawaited(loadAudit());
+      });
     }
     return [
       title(t('activity')),
-      if (audit.isEmpty) empty(),
+      Wrap(
+        children: [
+          TextButton(
+            onPressed: auditLoading ? null : () => loadAudit(reset: true),
+            child: Text(t('refresh')),
+          ),
+          if (auditMore && audit.isNotEmpty)
+            TextButton(
+              onPressed: auditLoading ? null : () => loadAudit(),
+              child: Text(t('loadMore')),
+            ),
+        ],
+      ),
+      if (auditLoading) Text(t('loading')),
+      if (auditError != null) Text(auditError!),
+      if (audit.isEmpty && !auditLoading && auditError == null) empty(),
       for (final a in audit)
         card(
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(a['action']),
+              Text(actionLabel(a['action'])),
               Text(
                 '${t('actorLabel')}: ${c.rows('actors').where((actor) => actor['id'] == a['actorId']).firstOrNull?['displayName'] ?? a['actorId']}',
               ),
@@ -2998,8 +3762,182 @@ class _DemoShellState extends State<DemoShell> {
     ];
   }
 
+  Future<void> editContent() async {
+    await c.updateContent();
+    if (!mounted || c.contentPack == null) return;
+    final pack = jsonDecode(jsonEncode(c.contentPack)) as Json;
+    final cards = pack['cards'] as List;
+    String selected = cards.first['id'];
+    String language = 'en';
+    final titleField = TextEditingController();
+    final stepsField = TextEditingController();
+    final scriptField = TextEditingController();
+    bool saving = false;
+    String? error;
+    void load() {
+      final locale = cards.firstWhere(
+        (card) => card['id'] == selected,
+      )['locales'][language];
+      titleField.text = locale['title'];
+      stepsField.text = (locale['steps'] as List).join('\n');
+      scriptField.text = locale['audioScript'];
+    }
+
+    void retain() {
+      final locale = cards.firstWhere(
+        (card) => card['id'] == selected,
+      )['locales'][language];
+      locale['title'] = titleField.text.trim();
+      locale['steps'] = stepsField.text
+          .split('\n')
+          .map((s) => s.trim())
+          .where((s) => s.isNotEmpty)
+          .toList();
+      locale['audioScript'] = scriptField.text.trim();
+    }
+
+    load();
+    final operationId = const Uuid().v4();
+    Json? publishBody;
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, update) => AlertDialog(
+          title: Text(t('manageContent')),
+          content: SizedBox(
+            width: 600,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(t('draftContent')),
+                  DropdownButtonFormField<String>(
+                    initialValue: selected,
+                    isExpanded: true,
+                    items: cards
+                        .map(
+                          (card) => DropdownMenuItem<String>(
+                            value: card['id'],
+                            child: Text(card['id']),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: saving || publishBody != null
+                        ? null
+                        : (value) {
+                            retain();
+                            update(() {
+                              selected = value!;
+                              load();
+                            });
+                          },
+                  ),
+                  DropdownButtonFormField<String>(
+                    initialValue: language,
+                    items: const [
+                      DropdownMenuItem(value: 'en', child: Text('English')),
+                      DropdownMenuItem(value: 'hi', child: Text('हिन्दी')),
+                    ],
+                    onChanged: saving || publishBody != null
+                        ? null
+                        : (value) {
+                            retain();
+                            update(() {
+                              language = value!;
+                              load();
+                            });
+                          },
+                  ),
+                  TextField(
+                    controller: titleField,
+                    enabled: !saving && publishBody == null,
+                    decoration: InputDecoration(labelText: t('contentTitle')),
+                  ),
+                  TextField(
+                    controller: stepsField,
+                    enabled: !saving && publishBody == null,
+                    maxLines: 6,
+                    decoration: InputDecoration(labelText: t('contentSteps')),
+                  ),
+                  TextField(
+                    controller: scriptField,
+                    enabled: !saving && publishBody == null,
+                    maxLines: 4,
+                    decoration: InputDecoration(labelText: t('contentScript')),
+                  ),
+                  if (error != null)
+                    Text(
+                      error!,
+                      style: TextStyle(color: Theme.of(ctx).colorScheme.error),
+                    ),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: saving ? null : () => Navigator.pop(ctx),
+              child: Text(t('cancel')),
+            ),
+            FilledButton(
+              onPressed: saving
+                  ? null
+                  : () async {
+                      retain();
+                      update(() {
+                        saving = true;
+                        error = null;
+                      });
+                      try {
+                        publishBody ??= jsonDecode(
+                          jsonEncode({
+                            'operationId': operationId,
+                            'expectedRevision': pack['revision'] ?? 0,
+                            'cards': cards,
+                          }),
+                        ) as Json;
+                        await c.request('POST', '/v1/content', publishBody);
+                        await c.updateContent();
+                        if (ctx.mounted) {
+                          Navigator.pop(ctx);
+                        }
+                      } catch (e) {
+                        if (ctx.mounted) {
+                          update(() {
+                            saving = false;
+                            error = errorText(
+                              e is ApiError
+                                  ? e.code
+                                  : 'TEMPORARILY_UNAVAILABLE',
+                            );
+                          });
+                        }
+                      }
+                    },
+              child: Text(t('publishDraft')),
+            ),
+          ],
+        ),
+      ),
+    );
+    titleField.dispose();
+    stepsField.dispose();
+    scriptField.dispose();
+  }
+
   List<Widget> capabilities() => [
     title(t('capabilities')),
+    if (c.actor['role'] == 'manager') ...[
+      TextButton(
+        onPressed: () => context.go('/reports'),
+        child: Text(t('reports')),
+      ),
+      TextButton(
+        onPressed: () => act(editContent),
+        child: Text(t('manageContent')),
+      ),
+    ],
     TextButton(
       onPressed: () => showLicensePage(
         context: context,
@@ -3040,7 +3978,7 @@ class _DemoShellState extends State<DemoShell> {
           Text(
             '${t('serviceAvailability')}: ${t(c.error == null ? 'online' : 'offline')}',
           ),
-          Text('${t('date')}: 05 Nov 2026'),
+          Text('${t('date')}: ${businessDate('2026-11-05')}'),
         ],
       ),
     ),
@@ -3070,6 +4008,14 @@ class _DemoShellState extends State<DemoShell> {
       OutlinedButton(onPressed: reset, child: Text(t('resetDemo'))),
   ];
   Future<void> reauthenticate() async {
+    if (const String.fromEnvironment('AUTH_MODE') == 'cognito') {
+      await act(() async {
+        final config = await c.request('GET', '/v1/auth/config');
+        final token = await organisationSignIn(config);
+        if (token != null) await c.login('', '', accessToken: token);
+      });
+      return;
+    }
     final code = await input(t('accessCode'), secret: true);
     if (code != null) await act(() => c.login(c.actor['code'], code));
   }

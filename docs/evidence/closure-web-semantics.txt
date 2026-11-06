@@ -1,0 +1,31 @@
+- text: PoP 2.0 Programme portal
+- button "हिन्दी"
+- button "Refresh"
+- text: Arun Sen
+- button "Arun Sen · Sign out"
+- button "Overview Tab 1 of 6"
+- button "Groups Tab 2 of 6"
+- button "Meetings Tab 3 of 6"
+- button "Support Tab 4 of 6"
+- button "Activity Tab 5 of 6"
+- button "Demo capabilities Tab 6 of 6"
+- text: Proposal demo • Fictional data
+- group "Connected · 0 Waiting to sync":
+  - button "Sync centre"
+- group:
+  - heading "Programme overview SHG finance, meetings and follow-up" [level=2]
+  - button "Group All groups"
+  - button "Confirmed savings ₹5,000 SHG finance, meetings and follow-up"
+  - button "Members 6"
+  - button "Loan principal outstanding ₹5,000"
+  - button "Open support requests 1"
+  - text: "Last refreshed: Nov 6, 2026 11:32 IST"
+  - 'group "Groups at a glance (2) Requests to follow up DEMO-0001 Open Fictional request: help finding the meeting screen."':
+    - button "View all groups"
+    - button "View requests"
+    - 'button "Pragati SHG 2 Members · Sample village B Confirmed savings: ₹1,200 Loan principal outstanding: ₹1,000 Last accepted record: Nov 5, 2026 05:30 IST"'
+    - button "WhatsApp simulation • No messages sent"
+    - 'button "Udaan SHG 4 Members · Sample village A Confirmed savings: ₹3,800 Loan principal outstanding: ₹4,000 Last accepted record: Nov 6, 2026 09:43 IST"'
+  - group "Recent financial activity Savings contribution Rani Mahto · 5 Nov 2026 Confirmed ₹200":
+    - button "Activity"
+    - button "Reverse entry"

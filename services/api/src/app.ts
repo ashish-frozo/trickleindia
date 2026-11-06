@@ -1,18 +1,19 @@
 import Fastify from 'fastify';
+import {content,publishContent} from './content.js';
+import {cognitoVerifier,identitySession} from './identity.js';
 import { simulate } from './simulation.js';
 import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
 import { randomBytes, timingSafeEqual } from 'node:crypto';
-import { readFile } from 'node:fs/promises';
 import { z } from 'zod';
 import { pool, transaction, snapshot, scope, assignments, active, seed, type Client } from './db.js';
 import { DomainError, fail, hash, balances, effective, sum, entities, type Entity, type Row } from './domain.js';
 import { authenticate, mutate, type Identity } from './mutations.js';
 
-export type Config = { demoMode: boolean; accessCodeHash: string; allowReset: boolean; allowFaults: boolean; origins: string[] };
+export type Config = { demoMode: boolean; accessCodeHash: string; allowReset: boolean; allowFaults: boolean; origins: string[]; cognito?: {userPoolId:string;clientId:string;domain:string;redirectUri:string} };
 export async function buildApp(config: Config) {
   if(config.demoMode && !/^[a-f0-9]{64}$/.test(config.accessCodeHash)) throw new Error('DEMO_ACCESS_CODE_HASH must be a SHA-256 hex digest');
-  const app=Fastify({logger:false,bodyLimit:32768,ajv:{customOptions:{removeAdditional:false}}});
+  const app=Fastify({logger:config.demoMode?false:{level:'info',serializers:{req:(req:any)=>({id:req.id,method:req.method,path:req.url?.split('?')[0]})}},bodyLimit:524288,ajv:{customOptions:{removeAdditional:false}}});
   await app.register(cors,{origin:config.origins,methods:['GET','POST']});
   await app.register(rateLimit,{global:false});
   app.setErrorHandler((error,_req,reply)=>{
@@ -36,7 +37,15 @@ export async function buildApp(config: Config) {
   const idFrom=(req:any)=>parse(z.uuid(),req.params.id);
   const pageSchema=z.object({offset:z.coerce.number().int().min(0).default(0),limit:z.coerce.number().int().min(1).max(500).default(100)});
   app.get('/healthz',async()=>({status:'ok'}));
-  app.get('/readyz',async()=>transaction(async c=>{await active(c);const version=await c.query('SELECT version FROM migrations WHERE version=1');if(!version.rowCount)fail('TEMPORARILY_UNAVAILABLE',503);return {status:'ready'};}));
+  app.get('/readyz',async()=>transaction(async c=>{await active(c);const version=await c.query('SELECT version FROM migrations WHERE version=4');if(!version.rowCount)fail('TEMPORARILY_UNAVAILABLE',503);return {status:'ready'};}));
+  const verifier=config.cognito?cognitoVerifier(config.cognito.userPoolId,config.cognito.clientId):null;
+  app.get('/v1/auth/config',async()=>({mode:config.demoMode?'demo':verifier?'cognito':'unconfigured',...(config.cognito?{clientId:config.cognito.clientId,domain:config.cognito.domain,redirectUri:config.cognito.redirectUri}:{})}));
+  app.post('/v1/auth/session',{config:{rateLimit:{max:20,timeWindow:'1 minute'}}},async req=>{
+    if(!verifier)fail('NOT_FOUND',404);
+    const p=parse(z.strictObject({accessToken:z.string().min(20).max(16384)}),req.body);
+    let claims;try {claims=await verifier.verify(p.accessToken);}catch {fail('SESSION_EXPIRED',401);}
+    return identitySession(claims);
+  });
   app.post('/v1/demo/session',{config:{rateLimit:{max:10,timeWindow:'1 minute'}}},async req=>{
     demo();const input=parse(z.strictObject({actorCode:z.string().max(40),accessCode:z.string().max(200)}),req.body);
     if(!checkCode(input.accessCode)) fail('FORBIDDEN',403);
@@ -51,7 +60,7 @@ export async function buildApp(config: Config) {
   });
   app.get('/v1/bootstrap',async req=>read(req,async(c,i)=>{
     const s=await scoped(c,i),clock=await c.query('SELECT cursor::text FROM sync_clock WHERE dataset_id=$1',[i.datasetId]);
-    return {...s,datasetId:i.datasetId,cursor:clock.rows[0].cursor,serverTime:new Date().toISOString(),contentVersion:1,businessDate:'2026-11-05',demoFaultsEnabled:config.demoMode&&config.allowFaults};
+    return {...s,datasetId:i.datasetId,cursor:clock.rows[0].cursor,serverTime:new Date().toISOString(),contentVersion:(await content(c,i.datasetId)).revision,businessDate:(await active(c)).business_date,demoFaultsEnabled:config.demoMode&&config.allowFaults};
   }));
   app.post('/v1/mutations',async(req,reply)=>{
     const i=await read(req,async(_c,i)=>i);
@@ -82,22 +91,22 @@ export async function buildApp(config: Config) {
   }));
   app.get('/v1/dashboard',async req=>read(req,async(c,i)=>{manager(i);const s=await scoped(c,i);return {...balances(s),datasetId:i.datasetId,asOf:new Date().toISOString()};}));
   app.get('/v1/groups',async req=>read(req,async(c,i)=>{
-    const s=await scoped(c,i),b=balances(s);
-    return {groups:s.groups.map(g=>({...g,memberCount:b.members.filter(m=>m.groupId===g.id).length,savingsPaise:sum(b.members.filter(m=>m.groupId===g.id),'savingsPaise')}))};
+    const s=await scoped(c,i),b=balances(s),q=parse(pageSchema,req.query);
+    return {total:s.groups.length,groups:s.groups.slice(q.offset,q.offset+q.limit).map(g=>({...g,memberCount:b.members.filter(m=>m.groupId===g.id).length,savingsPaise:sum(b.members.filter(m=>m.groupId===g.id),'savingsPaise')}))};
   }));
   app.get('/v1/members/:id/passbook',async req=>read(req,async(c,i)=>{
     const s=await scoped(c,i),id=idFrom(req),member=balances(s).members.find(m=>m.id===id);
     if(!member) fail('NOT_FOUND',404);
-    return {member,transactions:s.transactions.filter(t=>t.memberId===id)};
+    const q=parse(pageSchema,req.query),history=s.transactions.filter(t=>t.memberId===id);return {member,transactions:history.slice(q.offset,q.offset+q.limit),total:history.length};
   }));
   app.get('/v1/meetings/:id',async req=>read(req,async(c,i)=>{
     const s=await scoped(c,i),id=idFrom(req),meeting=s.meetings.find(m=>m.id===id);
     if(!meeting) fail('NOT_FOUND',404);
-    return {meeting,attendance:s.attendance.filter(a=>a.meetingId===id),transactions:s.transactions.filter(t=>t.meetingId===id),cashReceivedPaise:sum(effective(s).filter(t=>t.meetingId===id),'amountPaise')};
+    const q=parse(pageSchema,req.query),history=s.transactions.filter(t=>t.meetingId===id);return {meeting,attendance:s.attendance.filter(a=>a.meetingId===id),transactions:history.slice(q.offset,q.offset+q.limit),total:history.length,cashReceivedPaise:sum(effective(s).filter(t=>t.meetingId===id),'amountPaise')};
   }));
   app.get('/v1/enterprises/:id',async req=>read(req,async(c,i)=>{
     const s=await scoped(c,i),id=idFrom(req),enterprise=balances(s).enterprises.find(e=>e.id===id);
-    if(!enterprise) fail('NOT_FOUND',404);return {enterprise,transactions:s.transactions.filter(t=>t.enterpriseId===id)};
+    if(!enterprise) fail('NOT_FOUND',404);const q=parse(pageSchema,req.query),history=s.transactions.filter(t=>t.enterpriseId===id);return {enterprise,transactions:history.slice(q.offset,q.offset+q.limit),total:history.length};
   }));
   app.get('/v1/support-requests',async req=>read(req,async(c,i)=>{
     const q=parse(pageSchema.extend({groupId:z.uuid().optional(),status:z.enum(['open','in_progress','resolved']).optional()}),req.query);
@@ -112,7 +121,8 @@ export async function buildApp(config: Config) {
   app.get('/v1/audit-events',async req=>read(req,async(c,i)=>{
     manager(i);const q=parse(pageSchema,req.query);return {events:(await c.query("SELECT body FROM audit_events WHERE dataset_id=$1 ORDER BY body->>'timestamp' DESC,id LIMIT $2 OFFSET $3",[i.datasetId,q.limit,q.offset])).rows.map(r=>r.body)};
   }));
-  app.get('/v1/content',async req=>read(req,async()=>JSON.parse(await readFile(new URL('../../../PoP_2_Demo_Coding_Pack/assets/content_cards.json',import.meta.url),'utf8'))));
+  app.get('/v1/content',async req=>read(req,async(c,i)=>content(c,i.datasetId)));
+  app.post('/v1/content',async req=>{const i=await read(req,async(_c,i)=>i);manager(i);return publishContent(i,req.body);});
   app.post('/v1/demo/whatsapp-events',async req=>{demo();const i=await read(req,async(_c,i)=>i);return simulate(i,req.body);});
   app.post('/v1/demo/reset',async req=>{
     demo();if(!config.allowReset) fail('FORBIDDEN',403);

@@ -38,6 +38,12 @@ export async function mutate(identity: Identity, input: unknown, hooks?: { after
     const openMeeting = (id: string) => { const m=find('meetings',id);groupAccess(m.groupId);if(m.status!=='open') fail('MEETING_CLOSED',409,{currentRecord:m});return m; };
     // Authorize the current operation before returning any stored receipt.
     if (['member.create','member.update','meeting.attendance_set','transaction.post'].includes(op.kind)) mustRole('sakhi');
+    if(op.kind==='visit.create') mustRole('sakhi');
+    if(op.kind==='visit.complete') {mustRole('sakhi','manager');const visit=find('sakhiVisits',p.visitId);groupAccess(visit.groupId);if(actor.role==='sakhi'&&visit.sakhiId!==actor.id)fail('FORBIDDEN',403);}
+    if(op.kind.startsWith('group.')) mustRole('manager');
+    if(op.kind==='meeting.create') {mustRole('manager','sakhi');groupAccess(p.groupId);}
+    if(op.kind==='enterprise.create') mustRole('manager','sakhi');
+    if(op.kind==='enterprise.update') {mustRole('manager','sakhi');memberAccess(find('enterprises',p.enterpriseId).memberId);}
     if(op.kind==='transaction.reverse') mustRole('manager');
     if(op.kind==='meeting.submit') { mustRole('sakhi','manager');groupAccess(find('meetings',p.meetingId).groupId); }
     if(p.memberId && op.kind!=='member.create') memberAccess(p.memberId);
@@ -53,6 +59,45 @@ export async function mutate(identity: Identity, input: unknown, hooks?: { after
     };
     const unused = (entity: Entity,id: string, code='INVALID_PAYLOAD') => { if(s[entity].some(r=>r.id===id)) fail(code,409); };
     switch(op.kind) {
+      case 'visit.create': {
+        unused('sakhiVisits',p.visitId);const member=memberAccess(p.memberId);
+        if(p.nextVisitDate && p.nextVisitDate < p.businessDate)fail('INVALID_PAYLOAD');
+        if(p.businessDate>new Date(Date.now()+19800000).toISOString().slice(0,10))fail('INVALID_PAYLOAD');
+        const {visitId,...fields}=p;await save('sakhiVisits',{...fields,id:visitId,groupId:member.groupId,sakhiId:actor.id,status:p.nextVisitDate?'follow_up':'recorded'});break;
+      }
+      case 'visit.complete': {
+        const visit=find('sakhiVisits',p.visitId);currentVersion(visit,p.expectedVersion);
+        if(visit.status!=='follow_up')fail('INVALID_PAYLOAD');
+        await save('sakhiVisits',{status:'completed',outcome:p.outcome,completedAt:now},visit);break;
+      }
+      case 'group.create': {
+        unused('groups',p.groupId);
+        if(s.groups.some(g=>g.code.toLowerCase()===p.code.toLowerCase())) fail('INVALID_PAYLOAD');
+        if(find('actors',p.assignedActorId).role!=='sakhi') fail('INVALID_PAYLOAD');
+        await save('groups',{id:p.groupId,code:p.code,displayName:p.displayName,villageLabel:p.villageLabel});
+        await c.query('INSERT INTO actor_groups VALUES($1,$2,$3)',[d.id,p.assignedActorId,p.groupId]);
+        break;
+      }
+      case 'group.update': {
+        const g=find('groups',p.groupId);currentVersion(g,p.expectedVersion);
+        await save('groups',{displayName:p.displayName,villageLabel:p.villageLabel},g);break;
+      }
+      case 'meeting.create': {
+        find('groups',p.groupId);unused('meetings',p.meetingId);
+        if(s.meetings.some(m=>m.groupId===p.groupId&&m.businessDate===p.businessDate)) fail('INVALID_PAYLOAD');
+        await save('meetings',{id:p.meetingId,groupId:p.groupId,businessDate:p.businessDate,status:'open',submittedAt:null,submittedBy:null});
+        for(const m of s.members.filter(m=>m.groupId===p.groupId&&m.status==='active')) await save('attendance',{id:randomUUID(),meetingId:p.meetingId,memberId:m.id,status:'unmarked'});
+        break;
+      }
+      case 'enterprise.create': {
+        unused('enterprises',p.enterpriseId);memberAccess(p.memberId);
+        if(s.enterprises.some(e=>e.memberId===p.memberId&&normalizeName(e.name)===normalizeName(p.name))) fail('INVALID_PAYLOAD');
+        await save('enterprises',{id:p.enterpriseId,memberId:p.memberId,name:p.name,businessPlan:p.businessPlan,openingCashSalesPaise:0,openingCashExpensesPaise:0});break;
+      }
+      case 'enterprise.update': {
+        const e=find('enterprises',p.enterpriseId);currentVersion(e,p.expectedVersion);
+        await save('enterprises',{name:p.name,businessPlan:p.businessPlan},e);break;
+      }
       case 'transaction.post': {
         unused('transactions',p.transactionId,'TRANSACTION_ID_REUSED');
         const member=memberAccess(p.memberId);
@@ -73,7 +118,7 @@ export async function mutate(identity: Identity, input: unknown, hooks?: { after
             if(p.amountPaise>remaining) fail('LOAN_BALANCE_EXCEEDED',409,{remainingPrincipalPaise:remaining});
           } else if(p.loanId) fail('INVALID_PAYLOAD');
         }
-        if(p.businessDate!==d.business_date) fail('INVALID_PAYLOAD');
+        if(p.businessDate > new Date(Date.now()+19800000).toISOString().slice(0,10)) fail('INVALID_PAYLOAD');
         const {transactionId,...fields}=p;
         await save('transactions',{...fields,id:transactionId,operationId:op.operationId,groupId:member.groupId,createdByActorId:actor.id});
         if(meeting) await save('meetings',{},meeting);

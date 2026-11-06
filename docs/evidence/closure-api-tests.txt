@@ -1,0 +1,46 @@
+
+> pop-demo-api@1.0.0 test
+> tsx --test --test-concurrency=1 test/*.test.ts
+
+✔ A01 server seed arithmetic and real readiness (178.212792ms)
+✔ A02/A23 scoped snapshots and guessed IDs (89.95ms)
+✔ A05/A06/A07/A08 concurrent identical retries have one financial effect (149.048042ms)
+✔ A09 invisible pages advance the raw cursor (68.620667ms)
+✔ A11 stale attendance returns canonical record (52.433583ms)
+✔ A12 concurrent repayments cannot exceed principal (43.590209ms)
+✔ A13 submitted meeting blocks subsequent posting (118.770167ms)
+✔ A14 expense reversal restores opening cash once (105.424791ms)
+✔ A15 registration has zero balances and duplicate review (67.985084ms)
+✔ A17 expired sessions reject reads and writes (75.986209ms)
+✔ A18 reset changes dataset and revokes old sessions (61.385125ms)
+✔ A25 money boundaries and unknown authority fields rejected (45.603792ms)
+✔ support state transitions and mandatory resolution (79.674959ms)
+✔ A10 controlled writer barrier preserves bootstrap and commit cursor order (59.664541ms)
+✔ A06 actual HTTP response loss after commit reconciles by receipt (127.105292ms)
+✔ A16 simulated message deduplicates and support lifecycle returns to one open request (132.158083ms)
+✔ A21 retryable fault leaves no receipt and same ID subsequently succeeds (54.003625ms)
+✔ A23 wrong loan/member and enterprise/member relationships fail without ledger effects (43.47275ms)
+{"level":30,"time":1793944919402,"pid":88164,"hostname":"Ashishs-MacBook-Air.local","reqId":"req-1","req":{"id":"req-1","method":"POST","path":"/v1/demo/session"},"msg":"incoming request"}
+✔ demo endpoints are absent when demo mode is disabled (101.168667ms)
+{"level":30,"time":1793944919404,"pid":88164,"hostname":"Ashishs-MacBook-Air.local","reqId":"req-1","res":{"statusCode":404},"responseTime":0.9982079999999769,"msg":"request completed"}
+✔ malformed JSON and unknown routes retain the structured error contract (42.803083ms)
+✔ all sequential financial checkpoints match the canonical fixture (90.573709ms)
+✔ A13 controlled close/post race rejects the posting that follows submission (128.949208ms)
+✔ A11 stale member profile retains winning record and rejects original intent (146.170834ms)
+✔ group lifecycle is manager-only and assigned empty groups are visible (151.693833ms)
+✔ scheduled meetings seed attendance and enforce assignment and duplicate date (61.465583ms)
+✔ enterprise onboarding starts at zero and update preserves ledger and owner (80.743667ms)
+✔ history endpoints bound pages without changing canonical financial totals (65.5755ms)
+✔ Sakhi visit intake is scoped, idempotent and follow-up requires current version (87.813292ms)
+✔ content publishing is scoped, versioned, replay-safe and retains draft disclosure (53.160292ms)
+✔ identity mapping controls roles and session expiry independently of token claims (42.158042ms)
+✔ Cognito verifier accepts a valid signed access token (6.734042ms)
+✔ Cognito verifier rejects wrong client, issuer, token type, expiry and altered signature (17.411417ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4830.674542

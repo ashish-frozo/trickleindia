@@ -14,14 +14,18 @@
 | Offline registration/duplicate review | Working | Android restart/sync, zero balances, seven members, normalized duplicate denial |
 | Support assignment/progress/resolution | Working | Real support records, required resolution note, browser workflow and audit |
 | WhatsApp transport | Simulation | No messages sent; creates real demo support requests; replay keeps reference |
-| English/Hindi UI | Working draft copy | Matching 170 resource keys, bundled fonts, target viewports, 200%/keyboard widget checks |
+| English/Hindi UI | Working draft copy | Matching 260 resource keys, bundled fonts, target viewports, 200%/keyboard widget checks |
 | Accessibility | Partially verified | Contrast, native semantics, keyboard and large text checked; actual TalkBack speech remains A20 blocker |
-| Offline help | Working illustrative content | Four bilingual bundled draft cards and keyword retrieval |
-| Audio | Unavailable, permitted exception | No reviewed clips; playback controls hidden |
+| Offline help | Versioned draft content | Bundled fallback, atomic cached updates and manager editor; no language approval claim |
+| Audio | Conditional device speech | Matching installed voice required; no reviewed recordings or audible field acceptance |
 | Odia/Ho/Santhali | Planned | No working-language claim |
-| Live AI/speech/official WhatsApp | P2 disabled | No provider setup or external message sending |
+| Live AI / voice navigation / official WhatsApp | Not implemented | Optional integrations in the demo pack; RFP AI baseline remains open |
 | Local startup | Working | Clean copied source/isolated PostgreSQL/API/encrypted-client reproduction |
 | Container startup | Configuration only | Compose validated; no running Docker daemon to execute containers |
 | Customer artifacts | Local review package | APK, web build, source, evidence, screenshots, recordings and runbook; see delivery README |
 
 The remaining A20 spoken-output check prevents claiming full customer acceptance. Production deployment, content/terminology approval and operational hardening remain separate from this proposal demo.
+
+## 6 November 2026 implementation follow-up
+
+See [REQUIREMENTS_CLOSURE.md](REQUIREMENTS_CLOSURE.md) for current changes and evidence. Added group/meeting/enterprise administration, ordinary profile editing, scoped Sakhi visits, confirmed-balance CSV, content editing, audit paging and retained form drafts. Cognito/PKCE code and local verification are present; live identity deployment is untested. Historical native evidence above predates this revision. The full RFP is not complete.

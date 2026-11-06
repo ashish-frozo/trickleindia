@@ -42,7 +42,7 @@ packages:
     source: hosted
     version: "1.19.1"
   crypto:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: crypto
       sha256: e3626ae6270383c9e3a549f34c9e4cd26c09ae6a9adaab2bf4737a00340efdc4
@@ -78,6 +78,22 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_appauth:
+    dependency: "direct main"
+    description:
+      name: flutter_appauth
+      sha256: "6482ea76a8c617782574c33991bee0317fa1e699ddc833ce4fc3df88a672c7cb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "13.0.0"
+  flutter_appauth_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_appauth_platform_interface
+      sha256: c79452f9886a915569bc2e9df3f43af24ebb921cddf3c1f4d647b27db28bfb3e
+      url: "https://pub.dev"
+    source: hosted
+    version: "13.0.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -126,7 +142,7 @@ packages:
     source: hosted
     version: "18.1.3"
   http:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: http
       sha256: "87721a4a50b19c7f1d49001e51409bddc46303966ce89a65af4f4e6004896412"
@@ -237,6 +253,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.1"
+  plugin_platform_interface:
+    dependency: transitive
+    description:
+      name: plugin_platform_interface
+      sha256: "4820fbfdb9478b1ebae27888254d445073732dae3d6ea81f0b7e06d5dedc3f02"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.8"
   pop_domain:
     dependency: "direct main"
     description:
@@ -346,7 +370,7 @@ packages:
     source: hosted
     version: "15.4.0"
   web:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: web
       sha256: e119e82ac4795c7925103b7cf3768191f33941b99e7ccffbd6c645201d9f606b

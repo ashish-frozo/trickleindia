@@ -44,7 +44,7 @@ To use the supplied local profile APK, install it with `adb install -r PATH_TO_A
 
 Start from a fresh dataset. Log in Android as Kavita and portal as Arun while connected. Open Rani's passbook: confirmed savings ₹1,200. Disconnect the API route; mark attendance in the meeting, record ₹200 savings, review and save. Confirmed savings remains ₹1,200 with a separate ₹200 pending amount. Force-stop through Android settings or `adb shell am force-stop com.frozo.pop_mobile`; reopen normally and inspect the same pending entry. Reconnect and retry: Rani ₹1,400, Udaan ₹3,800 and manager total ₹5,000. Record ₹100 principal repayment (Rani principal ₹1,900, overall ₹4,900) and ₹350 enterprise expense (expenses ₹2,150, surplus ₹850). Meeting submission requires current confirmed attendance and entries; review ₹300 cash received. Manager can reverse the full expense with a reason, restoring expenses ₹1,800 and surplus ₹1,200.
 
-Use the labelled WhatsApp simulation to create an expense-help request. Replay preserves its reference. Assign/resolve through support with a resolution note. The assigned Sakhi sees the same server record. Help cards are illustrative and bundled; reviewed audio is unavailable. Odia, Ho and Santhali and live AI/WhatsApp integrations are planned, not working providers.
+Use the labelled WhatsApp simulation to create an expense-help request. Replay preserves its reference. Assign/resolve through support with a resolution note. The assigned Sakhi sees the same server record. Help cards are illustrative drafts with bundled fallback and versioned cached updates. Device speech requires an installed matching voice; reviewed recordings are unavailable. Odia, Ho and Santhali and live AI/WhatsApp integrations are planned, not working providers.
 
 ## Reset, recovery and diagnostics
 
@@ -72,3 +72,7 @@ Docker Compose is supplied for PostgreSQL/API. Set the database password, build 
 ## Browser verification
 
 The checked browser is Google Chrome156.0.8078.80. With Chrome installed and the local API/portal running, run `npm ci` and `npm run test:portal` from the project root. The pinned Playwright1.64.1 checks login, English/Hindi screenshots at768/1440, reduced motion, grayscale and keyboard activation of Support. It reads the ignored local code file, creates no support records, and writes evidence under output/docs. `POP_WEB_URL` and `POP_ACCESS_CODE_FILE` override their local defaults.
+
+## Added workflows
+
+Follow [USER_TRAINING.md](USER_TRAINING.md) for group/meeting/enterprise setup, visits, profile editing, reports and help-content editing. Apply all migrations before running this revision; do not reseed an existing dataset just to update the schema. See [OPERATIONS_PREPARATION.md](OPERATIONS_PREPARATION.md) for isolated backup restoration and production configuration limits.

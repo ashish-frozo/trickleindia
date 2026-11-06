@@ -32,6 +32,7 @@ const entityNames = [
   'attendance',
   'transactions',
   'supportRequests',
+  'sakhiVisits',
 ];
 int parsePaise(String input) {
   if (!RegExp(r'^\d{1,7}(\.\d{1,2})?$').hasMatch(input.trim())) {
@@ -99,6 +100,8 @@ class AppController extends ChangeNotifier {
   final http.Client client;
   Json? identity;
   Json data = {};
+  Json formDrafts = {};
+  Json? contentPack;
   List<Json> queue = [];
   String cursor = '0';
   String? error, lastContact;
@@ -296,6 +299,10 @@ class AppController extends ChangeNotifier {
       final saved = await store.read();
       if (saved != null) {
         data = Map<String, dynamic>.from(saved['data']);
+        formDrafts = Map<String, dynamic>.from(saved['formDrafts'] ?? {});
+        contentPack = saved['contentPack'] == null
+            ? null
+            : Map<String, dynamic>.from(saved['contentPack']);
         queue = (saved['queue'] as List)
             .map((o) => Map<String, dynamic>.from(o))
             .toList();
@@ -323,6 +330,8 @@ class AppController extends ChangeNotifier {
       jsonDecode(
         jsonEncode({
           'data': data,
+          'formDrafts': formDrafts,
+          'contentPack': contentPack,
           'queue': queue,
           'cursor': cursor,
           'lastContact': lastContact,
@@ -331,19 +340,56 @@ class AppController extends ChangeNotifier {
     ),
   );
 
-  Future<void> login(String code, String accessCode) async {
+  Future<void> saveFormDraft(String key, Json? value) {
+    if (!valid) return Future.error(ApiError('SESSION_EXPIRED', 401, {}));
+    final owner = '${actor['id']}/${identity?['datasetId']}';
+    final frozen = value == null ? null : jsonDecode(jsonEncode(value));
+    final job = localSaves.then((_) async {
+      if (!valid || owner != '${actor['id']}/${identity?['datasetId']}') {
+        throw ApiError('SESSION_EXPIRED', 401, {});
+      }
+      final before = formDrafts[key];
+      if (frozen == null) {
+        formDrafts.remove(key);
+      } else {
+        formDrafts[key] = frozen;
+      }
+      try {
+        await persist();
+      } catch (_) {
+        if (before == null) {
+          formDrafts.remove(key);
+        } else {
+          formDrafts[key] = before;
+        }
+        rethrow;
+      }
+    });
+    localSaves = job.then<void>((_) {}, onError: (Object e, StackTrace st) {});
+    return job;
+  }
+
+  Future<void> login(
+    String code,
+    String accessCode, {
+    String? accessToken,
+  }) async {
     if (syncing || refreshing || saving || busy) {
       throw ApiError('RECONCILE_FIRST', 409, {});
     }
+    await localSaves;
     busy = true;
     error = null;
     notifyListeners();
     try {
       final next = Map<String, dynamic>.from(
-        await request('POST', '/v1/demo/session', {
-          'actorCode': code,
-          'accessCode': accessCode,
-        }),
+        await request(
+          'POST',
+          accessToken == null ? '/v1/demo/session' : '/v1/auth/session',
+          accessToken == null
+              ? {'actorCode': code, 'accessCode': accessCode}
+              : {'accessToken': accessToken},
+        ),
       );
       if (identity != null &&
           (next['actor']['id'] != actor['id'] ||
@@ -354,6 +400,8 @@ class AppController extends ChangeNotifier {
       await store.close();
       identity = next;
       data = {};
+      formDrafts = {};
+      contentPack = null;
       queue = [];
       cursor = '0';
       lastContact = null;
@@ -361,6 +409,10 @@ class AppController extends ChangeNotifier {
       final saved = await store.read();
       if (saved != null) {
         data = Map<String, dynamic>.from(saved['data']);
+        formDrafts = Map<String, dynamic>.from(saved['formDrafts'] ?? {});
+        contentPack = saved['contentPack'] == null
+            ? null
+            : Map<String, dynamic>.from(saved['contentPack']);
         queue = (saved['queue'] as List)
             .map((o) => Map<String, dynamic>.from(o))
             .toList();
@@ -375,6 +427,47 @@ class AppController extends ChangeNotifier {
     } finally {
       busy = false;
       notifyListeners();
+    }
+  }
+
+  Future<void> updateContent() async {
+    final owner = identity;
+    final candidate = await request('GET', '/v1/content');
+    if (!identical(owner, identity) || !valid) return;
+    if (candidate['schemaVersion'] != 1 ||
+        candidate['contentVersion'] is! String ||
+        candidate['cards'] is! List ||
+        (candidate['cards'] as List).length > 100) {
+      throw const FormatException('INVALID_CONTENT');
+    }
+    final ids = <String>{};
+    for (final card in candidate['cards']) {
+      if (card is! Map ||
+          card['id'] is! String ||
+          !ids.add(card['id']) ||
+          card['version'] is! int ||
+          card['reviewStatus'] is! String ||
+          card['keywords'] is! List) {
+        throw const FormatException('INVALID_CONTENT');
+      }
+      for (final language in ['en', 'hi']) {
+        final text = card['locales']?[language];
+        if (text is! Map ||
+            text['title'] is! String ||
+            text['audioScript'] is! String ||
+            text['steps'] is! List ||
+            !(text['steps'] as List).every((s) => s is String)) {
+          throw const FormatException('INVALID_CONTENT');
+        }
+      }
+    }
+    final before = contentPack;
+    contentPack = Map<String, dynamic>.from(candidate);
+    try {
+      await persist();
+    } catch (_) {
+      contentPack = before;
+      rethrow;
     }
   }
 
@@ -397,6 +490,11 @@ class AppController extends ChangeNotifier {
       error = null;
       lastContact = DateTime.now().toUtc().toIso8601String();
       await persist();
+      try {
+        await updateContent();
+      } catch (_) {
+        /* keep last valid/bundled help */
+      }
     } catch (e) {
       error = e is ApiError ? e.code : 'TEMPORARILY_UNAVAILABLE';
       rethrow;
@@ -505,6 +603,7 @@ class AppController extends ChangeNotifier {
       'meeting.attendance_set',
       'transaction.post',
       'support.create',
+      'visit.create',
     ].contains(kind)) {
       throw ApiError('ONLINE_ONLY', 409, {});
     }
@@ -754,6 +853,7 @@ class AppController extends ChangeNotifier {
     if (syncing) await syncDone?.future;
     if (refreshing) await refreshDone?.future;
     expiryTimer?.cancel();
+    formDrafts = {};
     for (final o in queue) {
       if (o['state'] != 'acknowledged') o['state'] = 'discarded';
     }
@@ -763,6 +863,8 @@ class AppController extends ChangeNotifier {
     await store.close();
     identity = null;
     data = {};
+    formDrafts = {};
+    contentPack = null;
     queue = [];
     cursor = '0';
     error = null;
@@ -770,6 +872,7 @@ class AppController extends ChangeNotifier {
   }
 
   Future<void> logout() async {
+    await localSaves;
     if (syncing || refreshing || saving || busy) {
       throw ApiError('RECONCILE_FIRST', 409, {});
     }
@@ -779,6 +882,8 @@ class AppController extends ChangeNotifier {
     await store.close();
     identity = null;
     data = {};
+    formDrafts = {};
+    contentPack = null;
     queue = [];
     notifyListeners();
   }

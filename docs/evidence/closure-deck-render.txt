@@ -1,0 +1,9 @@
+Processing: docs/training/PoP-Workflow-Training.pptx
+Analyzing presentation...
+Total slides: 7
+Converting to PDF...
+Converting to images at 100 DPI...
+Found 7 slides
+Creating grids with 3 columns (max 12 images per grid)
+Created 1 grid(s):
+  - .local/training-thumbnails.jpg

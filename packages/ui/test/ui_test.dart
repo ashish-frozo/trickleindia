@@ -244,7 +244,7 @@ void main() {
       GoRouter.of(tester.element(find.text('PoP 2.0'))).go('/sync');
       await tester.pumpAndSettle();
       await tester.scrollUntilVisible(
-        find.widgetWithText(TextButton, 'Review'),
+        find.widgetWithText(TextButton, 'Review').hitTestable(),
         200,
       );
       await tester.tap(find.widgetWithText(TextButton, 'Review'));
@@ -360,7 +360,7 @@ void main() {
       GoRouter.of(tester.element(find.text('PoP 2.0'))).go('/sync');
       await tester.pumpAndSettle();
       await tester.scrollUntilVisible(
-        find.widgetWithText(TextButton, 'Review'),
+        find.widgetWithText(TextButton, 'Review').hitTestable(),
         200,
         scrollable: find.byType(Scrollable).first,
       );

@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
@@ -20,6 +22,7 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 26
+        manifestPlaceholders.putAll(mapOf("appAuthRedirectScheme" to "com.frozo.pop"))
         targetSdk = flutter.targetSdkVersion
         // Uses the version code from pubspec.yaml. When using split APKs, 1000 * ABI_VERSION
         // is added automatically by Flutter. (https://developer.android.com/studio/build/configure-apk-splits#configure-APK-versions)
@@ -29,11 +32,25 @@ android {
         versionName = flutter.versionName
     }
 
+    val signingFile = rootProject.file("key.properties")
+    val releaseKeys = Properties()
+    if (signingFile.exists()) signingFile.inputStream().use { releaseKeys.load(it) }
+    signingConfigs {
+        if (signingFile.exists()) create("production") {
+            storeFile = file(releaseKeys.getProperty("storeFile"))
+            storePassword = releaseKeys.getProperty("storePassword")
+            keyAlias = releaseKeys.getProperty("keyAlias")
+            keyPassword = releaseKeys.getProperty("keyPassword")
+        }
+    }
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.findByName("production")
+        }
+    }
+    gradle.taskGraph.whenReady {
+        if (allTasks.any { it.name.contains("Release", ignoreCase = true) } && !signingFile.exists()) {
+            throw GradleException("Release requires private android/key.properties; use profile for the local demo.")
         }
     }
 }

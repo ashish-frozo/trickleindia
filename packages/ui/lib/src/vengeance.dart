@@ -174,8 +174,9 @@ class _VengeanceNavigationState extends State<VengeanceNavigation> {
             child: Semantics(
               selected: active,
               excludeSemantics: true,
-              label:
-                  '${widget.labels[i]} Tab ${i + 1} of ${widget.labels.length}',
+              label: Localizations.localeOf(context).languageCode == 'hi'
+                  ? '${widget.labels[i]} टैब ${i + 1}, कुल ${widget.labels.length}'
+                  : '${widget.labels[i]} Tab ${i + 1} of ${widget.labels.length}',
               child: (widget.vertical && !widget.compact) || widget.inline
                   ? Row(
                       children: [

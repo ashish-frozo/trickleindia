@@ -1,0 +1,23 @@
+ version
+---------
+       1
+       2
+       3
+       4
+(4 rows)
+
+   entity_type   | count
+-----------------+-------
+ actors          |  1158
+ attendance      |  1560
+ enterprises     |   390
+ groups          |   776
+ loans           |  1544
+ meetings        |   390
+ members         |  2332
+ sakhiVisits     |     3
+ supportRequests |   402
+ transactions    |   203
+(10 rows)
+
+Restore completed in isolated target. Verify application workflows before any cutover.
