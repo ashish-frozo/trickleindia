@@ -16,7 +16,8 @@
     "openapi": "tsx src/openapi.ts",
     "identity:provision": "tsx src/provision-identity.ts",
     "bootstrap:production": "tsx src/bootstrap-production.ts",
-    "data:import": "tsx src/import-cli.ts"
+    "data:import": "tsx src/import-cli.ts",
+    "pretest": "node scripts/guard-test-database.mjs"
   },
   "keywords": [],
   "author": "",

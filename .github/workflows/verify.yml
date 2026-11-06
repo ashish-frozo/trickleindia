@@ -1,0 +1,73 @@
+name: Verify application
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    services:
+      postgres:
+        image: postgres:18.3
+        env:
+          POSTGRES_USER: pop_test
+          POSTGRES_PASSWORD: local-ci-only
+          POSTGRES_DB: pop_test
+        ports: [5432:5432]
+        options: >-
+          --health-cmd "pg_isready -U pop_test -d pop_test"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    env:
+      TEST_DATABASE_URL: postgresql://pop_test:local-ci-only@127.0.0.1:5432/pop_test
+      FLUTTER_BIN: flutter
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24.11.1
+          cache: npm
+          cache-dependency-path: services/api/package-lock.json
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with:
+          flutter-version: 3.47.9
+          channel: stable
+          cache: true
+      - name: Validate secrets and resources
+        run: |
+          python3 scripts/check-source-secrets.py
+          node scripts/check-assets.mjs
+      - name: API and client tests
+        run: scripts/verify.sh
+      - name: Verify OpenAPI is current
+        run: |
+          npm --prefix services/api run openapi
+          git diff --exit-code -- docs/openapi.json
+      - name: Dependency advisories
+        run: npm --prefix services/api audit --omit=dev --audit-level=high
+      - name: Build self-contained web
+        working-directory: apps/portal
+        run: flutter build web --release --no-web-resources-cdn --no-wasm-dry-run
+      - name: Build development Android artifact
+        working-directory: apps/mobile
+        run: flutter build apk --profile --target-platform android-arm64 --dart-define=API_URL=http://127.0.0.1:3000
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: review-builds-${{ github.sha }}
+          retention-days: 14
+          if-no-files-found: error
+          path: |
+            apps/portal/build/web/
+            apps/mobile/build/app/outputs/flutter-apk/app-profile.apk

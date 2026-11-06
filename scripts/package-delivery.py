@@ -19,7 +19,7 @@ def archive(output,trees,filter_source=False):
     if filter_source and (any(part in skip for part in relative.parts) or p.name in {'.env','local.properties','key.properties','.DS_Store'} or p.suffix in {'.iml','.log','.keystore','.jks'}):continue
     z.write(p,str(relative))
 archive('pop-2-web.zip',[(root/'apps/portal/build/web',root/'apps/portal/build/web')])
-roots=['PRODUCT.md','DESIGN.md','.impeccable','.dockerignore','.env.example','.flutter-version','.gitignore','.nvmrc','README.md','package.json','package-lock.json','compose.yaml','apps','packages','services','scripts','docs','PoP_2_Demo_Coding_Pack','Trickle_Up_PoP_2_Project_Brief.md','RfpDocuments_6a117cf26110482d92618ed039e0786d.pdf']
+roots=['.github','PRODUCT.md','DESIGN.md','.impeccable','.dockerignore','.env.example','.flutter-version','.gitignore','.nvmrc','README.md','package.json','package-lock.json','compose.yaml','apps','packages','services','scripts','docs','PoP_2_Demo_Coding_Pack','Trickle_Up_PoP_2_Project_Brief.md','RfpDocuments_6a117cf26110482d92618ed039e0786d.pdf']
 archive('pop-2-source.zip',[(root/p,root) for p in roots],True)
 archive('pop-2-evidence.zip',[(root/'output',root),(root/'docs/evidence',root)])
 secret=(root/'.local/demo-access-code').read_bytes().strip()

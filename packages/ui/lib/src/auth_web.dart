@@ -10,6 +10,10 @@ void captureAuthCallback() {
   callback = Uri.parse(web.window.location.href);
 }
 
+bool hasAuthCallback() =>
+    callback?.queryParameters.containsKey('code') == true ||
+    callback?.queryParameters.containsKey('error') == true;
+
 String randomToken() =>
     base64UrlEncode(List<int>.generate(32, (_) => Random.secure().nextInt(256)))
         .replaceAll('=', '');
@@ -24,6 +28,7 @@ Future<String?> organisationSignIn(Map<String, dynamic> config) async {
   final params = callback?.queryParameters ?? <String, String>{};
   if (params.containsKey('error')) {
     callback = null;
+    web.window.history.replaceState(null, '', redirect.toString());
     web.window.sessionStorage.removeItem('pop.oauth');
     throw StateError('SIGN_IN_CANCELLED');
   }

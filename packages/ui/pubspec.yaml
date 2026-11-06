@@ -19,6 +19,7 @@ dependencies:
   flutter_appauth: 13.0.0
   http: 1.6.0
   crypto: 3.0.8
+  speech_to_text: 7.5.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

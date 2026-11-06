@@ -11,6 +11,8 @@ for package in domain ui; do
   "$project_dir/scripts/flutterw" pub get --enforce-lockfile
   "$project_dir/scripts/flutterw" test
  done
+cd "$project_dir/apps/portal"
+"$project_dir/scripts/flutterw" pub get --enforce-lockfile
 cd "$project_dir/apps/mobile"
 "$project_dir/scripts/flutterw" pub get --enforce-lockfile
 "$project_dir/scripts/flutterw" test test/encryption_test.dart

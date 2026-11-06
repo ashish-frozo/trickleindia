@@ -1,6 +1,7 @@
 import 'package:flutter_appauth/flutter_appauth.dart';
 
 void captureAuthCallback() {}
+bool hasAuthCallback() => false;
 Future<String?> organisationSignIn(Map<String, dynamic> config) async {
   final domain = Uri.parse(config['domain']);
   if (domain.scheme != 'https') throw StateError('HTTPS_REQUIRED');

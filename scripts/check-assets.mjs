@@ -1,11 +1,14 @@
-import {readFile,writeFile} from 'node:fs/promises';
+import {readFile,writeFile,readdir} from 'node:fs/promises';
 const root=new URL('../',import.meta.url);
 const load=async path=>JSON.parse(await readFile(new URL(path,root),'utf8'));
 const en=await load('packages/ui/assets/ui_en.arb'),hi=await load('packages/ui/assets/ui_hi.arb');
 const keys=value=>Object.keys(value).filter(k=>!k.startsWith('@')).sort();
 if(JSON.stringify(keys(en))!==JSON.stringify(keys(hi)))throw new Error('Locale keys differ');
-const source=await readFile(new URL('packages/ui/lib/pop_ui.dart',root),'utf8');
-for(const match of source.matchAll(/\bt\('([^']+)'\)/g))if(!(match[1] in en))throw new Error(`Missing locale key: ${match[1]}`);
+const lib=new URL('packages/ui/lib/',root);
+for(const path of (await readdir(lib,{recursive:true})).filter(p=>p.endsWith('.dart'))){
+ const source=await readFile(new URL(path,lib),'utf8');
+ for(const match of source.matchAll(/\bt\('([^']+)'\)/g))if(!match[1].includes('$')&&!(match[1] in en))throw new Error(`Missing locale key: ${match[1]} in ${path}`);
+}
 const tokens=await load('packages/ui/assets/design_tokens.json');
 const luminance=hex=>{const values=hex.slice(1).match(/../g).map(n=>parseInt(n,16)/255).map(n=>n<=0.04045?n/12.92:((n+0.055)/1.055)**2.4);return values[0]*0.2126+values[1]*0.7152+values[2]*0.0722;};
 const pairs=[['#FFFFFF','primary'],['text','canvas'],['text','surface'],['muted','canvas'],['muted','surface'],['primary','primaryTint'],['success','successTint'],['warning','warningTint'],['error','errorTint'],['accent','forest'],['forestMuted','forest'],['#FFFFFF','forest']];

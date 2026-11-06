@@ -21,9 +21,10 @@ import 'src/components.dart';
 import 'src/theme.dart';
 import 'src/workspace.dart';
 import 'src/speech.dart';
-import 'src/reports.dart';
-import 'src/download.dart';
 import 'src/auth.dart';
+import 'src/assistance.dart';
+import 'src/administration.dart';
+import 'src/programme_reports.dart';
 import 'src/vengeance.dart';
 export 'src/components.dart';
 
@@ -98,7 +99,12 @@ class _PopAppState extends State<PopApp> with WidgetsBindingObserver {
     ),
   );
   Future<void> load([String? next]) async {
-    final chosen = next ?? lang;
+    final stored = c.formDrafts['_preferences']?['language'];
+    final chosen =
+        next ?? (['en', 'hi'].contains(stored) ? stored as String : lang);
+    if (next != null && c.valid) {
+      await c.saveFormDraft('_preferences', {'language': chosen});
+    }
     final content = jsonDecode(
       await rootBundle.loadString('packages/pop_ui/assets/ui_$chosen.arb'),
     ) as Map<String, dynamic>;
@@ -196,6 +202,12 @@ class _DemoShellState extends State<DemoShell> {
   void initState() {
     super.initState();
     if (c.portal) selectedRole = 'arun';
+    if (const String.fromEnvironment('AUTH_MODE') == 'cognito' &&
+        hasAuthCallback()) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) unawaited(signInOrganisation());
+      });
+    }
   }
 
   @override
@@ -391,7 +403,8 @@ class _DemoShellState extends State<DemoShell> {
               padding: EdgeInsets.all(desktop ? 32 : 20),
               children: [
                 if (!desktop) ...[
-                  DemoBanner(t('demoBanner')),
+                  if (const String.fromEnvironment('AUTH_MODE') != 'cognito')
+                    DemoBanner(t('demoBanner')),
                   if (!(widget.page == 'home' && !participant && !manager))
                     syncIndicator(),
                   const SizedBox(height: 16),
@@ -454,7 +467,9 @@ class _DemoShellState extends State<DemoShell> {
                           children: [language],
                         ),
                       ),
-                      DemoBanner(t('demoBanner')),
+                      if (const String.fromEnvironment('AUTH_MODE') !=
+                          'cognito')
+                        DemoBanner(t('demoBanner')),
                       Expanded(child: pageBody),
                     ],
                   ),
@@ -553,7 +568,8 @@ class _DemoShellState extends State<DemoShell> {
             ? pageBody
             : Column(
                 children: [
-                  DemoBanner(t('demoBanner')),
+                  if (const String.fromEnvironment('AUTH_MODE') != 'cognito')
+                    DemoBanner(t('demoBanner')),
                   Expanded(child: pageBody),
                 ],
               ),
@@ -600,6 +616,14 @@ class _DemoShellState extends State<DemoShell> {
     if (mounted) FocusScope.of(context).unfocus();
   }
 
+  Future<void> signInOrganisation() => act(() async {
+    final config = await c.request('GET', '/v1/auth/config');
+    if (config['mode'] != 'cognito') {
+      throw ApiError('TEMPORARILY_UNAVAILABLE', 503, {});
+    }
+    final token = await organisationSignIn(config);
+    if (token != null) await c.login('', '', accessToken: token);
+  });
   Widget organisationLogin() => Center(
     child: ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 460),
@@ -610,17 +634,7 @@ class _DemoShellState extends State<DemoShell> {
           const SizedBox(height: 24),
           Text(t('organisationSignIn')),
           const SizedBox(height: 20),
-          button(
-            t('signIn'),
-            () => act(() async {
-              final config = await c.request('GET', '/v1/auth/config');
-              if (config['mode'] != 'cognito') {
-                throw ApiError('TEMPORARILY_UNAVAILABLE', 503, {});
-              }
-              final token = await organisationSignIn(config);
-              if (token != null) await c.login('', '', accessToken: token);
-            }),
-          ),
+          button(t('signIn'), signInOrganisation),
           if (c.identity != null && !c.valid) Text(t('sessionExpired')),
         ],
       ),
@@ -800,6 +814,10 @@ class _DemoShellState extends State<DemoShell> {
         return monitoring();
       case 'work':
         return support();
+      case 'administration':
+        return [AdministrationPanel(controller: c, t: t)];
+      case 'assistant':
+        return [AssistancePanel(controller: c, language: widget.lang, t: t)];
       case 'help':
         return help();
       case 'activity':
@@ -2824,6 +2842,11 @@ class _DemoShellState extends State<DemoShell> {
     String? replaces,
     Json? memberToEdit,
   }) async {
+    if (c.rows('groups').isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(t('createGroupFirst'))));
+      return;
+    }
     final draftKey = 'profile/${memberToEdit?['id'] ?? replaces ?? 'new'}';
     draft ??= c.formDrafts[draftKey] == null
         ? memberToEdit
@@ -2840,6 +2863,27 @@ class _DemoShellState extends State<DemoShell> {
     String language = draft?['preferredLanguage'] ?? 'hi',
         livelihood = draft?['livelihoodCategory'] ?? 'tailoring';
     bool saving = false;
+    Timer? draftTimer;
+    Future<void> retainDraft() => c.saveFormDraft(draftKey, {
+      'memberId': memberId,
+      'intentId': intentId,
+      'groupId': groupId,
+      'displayName': name.text,
+      'contact': contact.text,
+      'preferredLanguage': language,
+      'livelihoodCategory': livelihood,
+    });
+    void changed() {
+      draftTimer?.cancel();
+      draftTimer = Timer(
+        const Duration(milliseconds: 300),
+        () => unawaited(act(retainDraft)),
+      );
+    }
+
+    name.addListener(changed);
+    contact.addListener(changed);
+
     final route = DialogRoute<void>(
       context: context,
       builder: (ctx) => StatefulBuilder(
@@ -2863,7 +2907,10 @@ class _DemoShellState extends State<DemoShell> {
                       )
                       .toList(),
                   onChanged: memberToEdit == null
-                      ? (v) => set(() => groupId = v!)
+                      ? (v) {
+                          set(() => groupId = v!);
+                          changed();
+                        }
                       : null,
                 ),
                 const SizedBox(height: 16),
@@ -2893,7 +2940,10 @@ class _DemoShellState extends State<DemoShell> {
                         ),
                       )
                       .toList(),
-                  onChanged: (v) => language = v!,
+                  onChanged: (v) {
+                    language = v!;
+                    changed();
+                  },
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
@@ -2915,7 +2965,10 @@ class _DemoShellState extends State<DemoShell> {
                         ),
                       )
                       .toList(),
-                  onChanged: (v) => livelihood = v!,
+                  onChanged: (v) {
+                    livelihood = v!;
+                    changed();
+                  },
                 ),
                 const SizedBox(height: 16),
                 TextField(
@@ -2968,6 +3021,7 @@ class _DemoShellState extends State<DemoShell> {
                           replacesOperationId: replaces,
                         );
                         submitted = true;
+                        draftTimer?.cancel();
                         await c.saveFormDraft(draftKey, null);
                       } catch (e) {
                         if (ctx.mounted) set(() => saving = false);
@@ -2998,6 +3052,7 @@ class _DemoShellState extends State<DemoShell> {
     );
     await Navigator.of(context, rootNavigator: true).push(route);
     await route.completed;
+    draftTimer?.cancel();
     if (!submitted && c.valid) {
       await act(
         () => c.saveFormDraft(draftKey, {
@@ -3240,62 +3295,9 @@ class _DemoShellState extends State<DemoShell> {
     ];
   }
 
-  List<Widget> reports() {
-    if (c.actor['role'] != 'manager') return [Text(t('forbidden'))];
-    final members = c
-        .rows('members')
-        .where((m) => managerGroup == 'all' || m['groupId'] == managerGroup)
-        .toList();
-    final rows = <List<Object?>>[
-      [
-        'member_id',
-        'member',
-        'group',
-        'confirmed_savings_paise',
-        'outstanding_principal_paise',
-        'last_refreshed_utc',
-      ],
-      for (final m in members)
-        [
-          m['id'],
-          m['displayName'],
-          c
-              .rows('groups')
-              .firstWhere((g) => g['id'] == m['groupId'])['displayName'],
-          c.savings(m),
-          c.principal(m),
-          c.lastContact,
-        ],
-    ];
-    return [
-      title(t('reports')),
-      Text(t('reportScope')),
-      groupFilter(),
-      const SizedBox(height: 16),
-      button(
-        t(kIsWeb ? 'downloadCsv' : 'copyCsv'),
-        () => act(() async {
-          await exportReport('pop-confirmed-balances.csv', reportCsv(rows));
-        }),
-        icon: Icons.download_outlined,
-      ),
-      const SizedBox(height: 16),
-      for (final m in members)
-        card(
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                m['displayName'],
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              Text('${t('confirmedSavings')}: ${money(c.savings(m))}'),
-              Text('${t('loanPrincipal')}: ${money(c.principal(m))}'),
-            ],
-          ),
-        ),
-    ];
-  }
+  List<Widget> reports() => [
+    ProgrammeReports(controller: c, t: t, initialGroup: managerGroup),
+  ];
 
   List<Widget> monitoring() {
     if (c.actor['role'] == 'participant') return [Text(t('forbidden'))];
@@ -3561,6 +3563,12 @@ class _DemoShellState extends State<DemoShell> {
 
   List<Widget> help() => [
     title(t('demoHelp')),
+    OutlinedButton.icon(
+      onPressed: () => context.go('/assistant'),
+      icon: const Icon(Icons.mic_none),
+      label: Text(t('assistantTitle')),
+    ),
+    const SizedBox(height: 16),
     TextField(
       decoration: InputDecoration(
         labelText: t('searchHelp'),
@@ -3635,7 +3643,8 @@ class _DemoShellState extends State<DemoShell> {
         );
       },
     ),
-    button(t('requestHelp'), () => requestHelp(currentMember()!)),
+    if (currentMember() != null)
+      button(t('requestHelp'), () => requestHelp(currentMember()!)),
     TextButton(
       onPressed: () => context.go('/enterprise'),
       child: Text(t('enterprise')),
@@ -3646,11 +3655,13 @@ class _DemoShellState extends State<DemoShell> {
     ),
   ];
   String auditSubject(Json event) {
-    final records = c.rows(event['entityType']);
+    final records = c.rows(event['entityType'] as String? ?? '');
     final record = records
         .where((r) => r['id'] == event['entityId'])
         .firstOrNull;
-    if (record == null) return event['entityId'];
+    if (record == null) {
+      return event['entityId'] as String? ?? t('programmeRecord');
+    }
     return record['displayName'] ??
         record['reference'] ??
         c
@@ -3928,7 +3939,15 @@ class _DemoShellState extends State<DemoShell> {
 
   List<Widget> capabilities() => [
     title(t('capabilities')),
+    TextButton(
+      onPressed: () => context.go('/assistant'),
+      child: Text(t('assistantTitle')),
+    ),
     if (c.actor['role'] == 'manager') ...[
+      TextButton(
+        onPressed: () => context.go('/administration'),
+        child: Text(t('administration')),
+      ),
       TextButton(
         onPressed: () => context.go('/reports'),
         child: Text(t('reports')),
