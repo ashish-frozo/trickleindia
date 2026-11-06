@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920,height=1080" />
+    <title>PoP 2.0 — Product Walkthrough</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root { --blue:#2456D6; --navy:#172B4D; --slate:#526582; --mist:#F5F7FC; --line:#D6E0F2; --sky:#EAF0FF; --white:#FFFFFF; --green:#23856D; }
+      * { box-sizing: border-box; }
+      html, body { width:1920px; height:1080px; margin:0; overflow:hidden; }
+      body { background:var(--mist); color:var(--navy); font-family:Montserrat, "Arial", sans-serif; }
+      #root { position:relative; width:1920px; height:1080px; overflow:hidden; background:radial-gradient(ellipse at 83% 16%, rgba(36,86,214,.14), transparent 35%), radial-gradient(ellipse at 10% 89%, rgba(97,143,235,.12), transparent 31%), var(--mist); }
+      #root:before { content:""; position:absolute; inset:0; opacity:.42; background-image:linear-gradient(rgba(36,86,214,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(36,86,214,.045) 1px,transparent 1px); background-size:54px 54px; mask-image:linear-gradient(120deg,#000 0%,transparent 74%); }
+      .clip { position:absolute; inset:0; padding:82px 112px 86px; overflow:hidden; }
+      .topline { position:absolute; left:112px; right:112px; top:42px; height:36px; display:flex; align-items:center; justify-content:space-between; color:var(--slate); font-size:18px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+      .brand { display:flex; align-items:center; gap:14px; color:var(--navy); letter-spacing:.06em; }
+      .brandmark { width:28px;height:28px;border-radius:8px;background:var(--blue);position:relative; box-shadow:0 7px 16px #2456d64d; }
+      .brandmark:after { content:""; position:absolute; width:11px; height:11px; border:2px solid white; border-radius:50%; left:7px; top:7px; }
+      .chapter { color:var(--blue); }
+      .footer { position:absolute; left:112px; right:112px; bottom:39px; display:flex; justify-content:space-between; align-items:center; color:var(--slate); font:600 16px "Space Mono",monospace; letter-spacing:.03em; }
+      .foot-rule { position:absolute; bottom:0; left:0; height:8px; width:100%; background:rgba(36,86,214,.13); }
+      .foot-fill { height:100%; width:100%; background:var(--blue); transform:scaleX(0); transform-origin:left; }
+      .kicker { color:var(--blue); font:700 20px "Space Mono",monospace; letter-spacing:.12em; text-transform:uppercase; }
+      h1,h2,p { margin:0; }
+      h1 { font-size:84px; line-height:1.02; letter-spacing:-.055em; font-weight:900; max-width:900px; }
+      h2 { font-size:60px; line-height:1.04; letter-spacing:-.045em; font-weight:900; }
+      .lede { font-size:29px; line-height:1.45; color:var(--slate); font-weight:500; }
+      .micro { font:600 16px "Space Mono",monospace; letter-spacing:.05em; color:var(--slate); }
+      .lead { position:absolute; left:126px; top:214px; width:785px; display:flex; flex-direction:column; align-items:flex-start; gap:28px; }
+      .lead h1 span { color:var(--blue); }
+      .pill { display:inline-flex; gap:12px; align-items:center; border:2px solid var(--line); border-radius:999px; padding:12px 18px; background:rgba(255,255,255,.78); color:var(--slate); font:700 17px "Space Mono",monospace; }
+      .dot { width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 0 6px #23856d1e; }
+      .hero-visual { position:absolute; left:1000px; top:142px; width:780px; height:730px; }
+      .browser { position:absolute; background:white; border:2px solid #dfe6f2; border-radius:22px; overflow:hidden; box-shadow:0 26px 70px #173b7a20; }
+      .browser-bar { height:48px; display:flex; align-items:center; gap:8px; padding:0 18px; background:#fbfcff; border-bottom:1px solid #e8edf6; }
+      .browser-bar i { width:9px;height:9px;border-radius:50%;background:#c8d3e7; }
+      .browser-bar b { margin-left:14px; height:18px; width:47%; border-radius:8px; background:#eef2f9; }
+      .browser img { display:block; width:100%; height:calc(100% - 48px); object-fit:cover; object-position:top left; }
+      .hero-web { width:650px;height:455px;left:86px;top:42px;transform:rotate(2deg); }
+      .phone { position:absolute; background:#112442; border:8px solid #112442; border-radius:38px; overflow:hidden; box-shadow:0 24px 66px #11244235; }
+      .phone:before { content:"";position:absolute;z-index:2;top:8px;left:50%;transform:translateX(-50%);width:72px;height:18px;border-radius:12px;background:#112442; }
+      .phone img { display:block; width:100%;height:100%;object-fit:cover;object-position:top; border-radius:27px; }
+      .hero-phone { width:266px;height:568px;left:0;top:180px;transform:rotate(-4deg); }
+      .hero-label { position:absolute; left:310px; top:568px; font:700 18px "Space Mono",monospace; color:var(--blue); }
+      .spark { position:absolute; border:2px solid rgba(36,86,214,.28); border-radius:50%; }
+      .spark.one { width:112px;height:112px;right:-8px;top:4px; }
+      .spark.two { width:40px;height:40px;left:-18px;top:126px; }
+      .side-copy { position:absolute; left:112px;top:232px;width:570px;display:flex;flex-direction:column;gap:25px; }
+      .side-copy h2 { max-width:550px; }
+      .feature-line { display:flex;align-items:center;gap:14px;font-size:22px;font-weight:700;color:var(--slate); }
+      .check { display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#e2f3ef;color:var(--green);font-weight:900; }
+      .phone-stage { position:absolute;left:736px;top:128px;width:930px;height:790px;display:flex;justify-content:space-between;align-items:center; }
+      .phone-card { width:204px;height:442px;position:relative; }
+      .phone-card .phone { inset:0;width:204px;height:442px;border-width:7px;border-radius:30px; }
+      .phone-card .phone img { border-radius:22px; }
+      .phone-caption { position:absolute;left:0;right:0;bottom:-54px;text-align:center;color:var(--slate);font:700 15px "Space Mono",monospace;white-space:nowrap; }
+      .phone-index { position:absolute;z-index:3;right:-12px;top:-14px;width:40px;height:40px;border-radius:50%;background:var(--blue);color:white;display:grid;place-items:center;font:800 17px "Space Mono",monospace;box-shadow:0 6px 14px #2456d644; }
+      .step-line { position:absolute;left:8%;right:8%;top:50%;height:2px;background:var(--line); }
+      .portal-shot { position:absolute;left:740px;top:154px;width:980px;height:650px;overflow:hidden;border:3px solid #d8e1ef;border-radius:20px;background:white;box-shadow:0 30px 80px #173b7a25; }
+      .portal-shot .browser-bar { height:44px; }
+      .portal-shot img { display:block;width:100%;height:calc(100% - 44px);object-fit:cover;object-position:top left; }
+      .portal-stats { position:absolute;left:734px;top:835px;display:flex;gap:14px; }
+      .stat { padding:13px 18px;border:2px solid var(--line);border-radius:12px;background:#fff;color:var(--slate);font:700 15px "Space Mono",monospace; }
+      .stat strong { color:var(--blue); }
+      .module-list { position:absolute;left:725px;top:180px;width:925px;display:grid;grid-template-columns:1fr 1fr;gap:18px; }
+      .module { height:156px;display:flex;gap:20px;align-items:center;padding:22px 26px;border:2px solid #d9e3f4;border-radius:18px;background:rgba(255,255,255,.91);box-shadow:0 10px 30px #2345760b; }
+      .module:nth-child(2),.module:nth-child(3){transform:translateY(28px)}
+      .module-num { display:grid;place-items:center;flex:0 0 52px;height:52px;border-radius:14px;background:var(--sky);color:var(--blue);font:800 17px "Space Mono",monospace; }
+      .module b { font-size:24px;line-height:1.16;letter-spacing:-.025em; }
+      .module small { display:block;margin-top:8px;color:var(--slate);font:600 14px "Space Mono",monospace; }
+      .timeline-mark { position:absolute;left:118px;top:826px;width:500px;height:100px;border-top:2px solid var(--line);display:flex;justify-content:space-between; }
+      .timeline-mark:before,.timeline-mark:after { content:"";position:absolute;top:-9px;width:14px;height:14px;border-radius:50%;background:var(--blue); }
+      .timeline-mark:before {left:0}.timeline-mark:after {right:0;background:var(--green)}
+      .timeline-mark span { padding-top:18px;font:700 15px "Space Mono",monospace;color:var(--slate); }
+      .stack { position:absolute;left:720px;top:175px;width:920px;display:flex;gap:16px;align-items:stretch; }
+      .stack-item { flex:1;text-align:center;padding:22px 12px;border-radius:16px;background:white;border:2px solid var(--line);box-shadow:0 10px 28px #123b720d; }
+      .stack-item b { display:block;font-size:25px;color:var(--blue); }
+      .stack-item span { display:block;margin-top:8px;font:700 13px "Space Mono",monospace;color:var(--slate); }
+      .stack-arrow { align-self:center;color:var(--blue);font-size:30px;font-weight:900; }
+      .next-card { position:absolute;left:720px;top:345px;width:920px;padding:30px 36px;border-radius:18px;background:#fff;border:2px solid var(--line); }
+      .next-card h3 { margin:0 0 18px;color:var(--navy);font-size:26px;letter-spacing:-.02em; }
+      .next-grid { display:grid;grid-template-columns:1fr 1fr;column-gap:28px;row-gap:17px; }
+      .next-grid span { display:flex;align-items:center;gap:12px;color:var(--slate);font-size:18px;font-weight:600; }
+      .next-grid i { display:block;width:8px;height:8px;background:var(--blue);border-radius:50%; }
+      .disclaimer { position:absolute;left:720px;top:777px;width:920px;padding:18px 22px;border-radius:12px;background:#e8eefb;color:#34496d;font:700 14px "Space Mono",monospace;letter-spacing:.01em; }
+      .ring-label { position:absolute;right:122px;top:137px;color:#526582;font:900 22px "Space Mono",monospace;letter-spacing:.12em;writing-mode:vertical-rl; }
+    </style>
+  </head>
+  <body>
+    <main id="root" data-composition-id="pop2-demo" data-width="1920" data-height="1080" data-duration="77.736">
+      <audio id="narration" src="media/ainsley-narration.mp3" data-start="0" data-track-index="10" data-volume="1"></audio>
+      <section id="scene-intro" class="clip" data-start="0" data-duration="11.42" data-track-index="1">
+        <div class="topline"><div class="brand"><i class="brandmark"></i> TRICKLE UP <span style="color:#95a4bc">/</span> PoP 2.0</div><div class="chapter">A field-to-programme platform</div></div>
+        <div class="lead"><span class="kicker">Field journeys · programme oversight</span><h1>One clearer view of <span>livelihoods.</span></h1><p class="lede">A proposed digital platform for women’s livelihoods and the teams who support them.</p><span class="pill"><i class="dot"></i> LOCAL PROTOTYPE · FICTIONAL RECORDS</span></div>
+        <div class="hero-visual"><i class="spark one"></i><i class="spark two"></i><div class="browser hero-web"><div class="browser-bar"><i></i><i></i><i></i><b></b></div><img src="media/05-portal-overview.png"></div><div class="phone hero-phone"><img src="media/01-mobile-home.png"></div><span class="hero-label">FIELD APP ↗ PROGRAMME PORTAL</span></div>
+        <span class="ring-label">PROPOSED PHASE ONE</span><div class="footer"><span>PRODUCT WALKTHROUGH · 2026</span><span>01 / 06</span></div><div class="foot-rule"><i class="foot-fill"></i></div>
+      </section>
+      <section id="scene-field-app" class="clip" data-start="11.42" data-duration="10.54" data-track-index="1">
+        <div class="topline"><div class="brand"><i class="brandmark"></i> TRICKLE UP <span style="color:#95a4bc">/</span> PoP 2.0</div><div class="chapter">01 — Sakhi field app</div></div>
+        <div class="side-copy"><span class="kicker">Designed for field work</span><h2>A member’s story, ready at a glance.</h2><p class="lede">Open a passbook, review a contribution, and keep confirmed savings separate from pending activity.</p><div class="feature-line"><span class="check">✓</span>Member passbook</div><div class="feature-line"><span class="check">✓</span>Contribution review</div><div class="feature-line"><span class="check">✓</span>Offline-first workflow</div></div>
+        <div class="phone" style="left:950px;top:125px;width:386px;height:780px;border-width:9px;border-radius:44px"><img src="media/01-mobile-home.png"></div>
+        <div class="browser" style="left:1194px;top:276px;width:584px;height:384px;transform:rotate(2deg)"><div class="browser-bar"><i></i><i></i><i></i><b></b></div><img src="media/05-portal-overview.png"></div><span class="micro" style="position:absolute;left:1380px;top:696px;color:var(--blue)">FIELD APP · HOME</span>
+        <div class="footer"><span>LOCAL PROTOTYPE · FICTIONAL RECORDS</span><span>02 / 06</span></div><div class="foot-rule"><i class="foot-fill"></i></div>
+      </section>
+      <section id="scene-offline-retry" class="clip" data-start="21.96" data-duration="14.93" data-track-index="1">
+        <div class="topline"><div class="brand"><i class="brandmark"></i> TRICKLE UP <span style="color:#95a4bc">/</span> PoP 2.0</div><div class="chapter">02 — Offline, restart, reconcile</div></div>
+        <div class="side-copy" style="top:250px;width:525px"><span class="kicker">A durable transaction path</span><h2>One retry. One receipt. One posting.</h2><p class="lede">A contribution stays pending offline, survives a restart, then confirms once when retried.</p><div class="pill" style="color:var(--blue)">₹1,600 + ₹200 → ₹1,800</div><span class="micro">ILLUSTRATIVE AMOUNTS · FICTIONAL MEMBER</span></div>
+        <div class="phone-stage"><i class="step-line"></i>
+          <div class="phone-card"><span class="phone-index">01</span><div class="phone"><img src="media/02-mobile-pending.png"></div><span class="phone-caption">SAVED OFFLINE</span></div>
+          <div class="phone-card"><span class="phone-index">02</span><div class="phone"><img src="media/03-mobile-after-restart.png"></div><span class="phone-caption">REOPENED</span></div>
+          <div class="phone-card"><span class="phone-index">03</span><div class="phone"><img src="media/04-mobile-confirmed.png"></div><span class="phone-caption">CONFIRMED ONCE</span></div>
+        </div>
+        <div class="footer"><span>LOCAL PROTOTYPE · FICTIONAL RECORDS</span><span>03 / 06</span></div><div class="foot-rule"><i class="foot-fill"></i></div>
+      </section>
+      <section id="scene-portal" class="clip" data-start="36.89" data-duration="9.22" data-track-index="1">
+        <div class="topline"><div class="brand"><i class="brandmark"></i> TRICKLE UP <span style="color:#95a4bc">/</span> PoP 2.0</div><div class="chapter">03 — Programme web portal</div></div>
+        <div class="side-copy" style="top:270px;width:560px"><span class="kicker">Programme oversight</span><h2>From group activity to action.</h2><p class="lede">Teams can review savings, follow group activity, and read reports with snapshot context in view.</p><div class="feature-line"><span class="check">✓</span>Programme overview</div><div class="feature-line"><span class="check">✓</span>Reports and access settings</div></div>
+        <div class="portal-shot"><div class="browser-bar"><i></i><i></i><i></i><b></b></div><img src="media/05-portal-overview.png"></div><div class="portal-stats"><span class="stat"><strong>OVERVIEW</strong> · SAVINGS</span><span class="stat"><strong>REPORTS</strong> · GROUP ACTIVITY</span><span class="stat"><strong>ACCESS</strong> · ROLE BASED</span></div>
+        <div class="footer"><span>LOCAL PORTAL · FICTIONAL RECORDS</span><span>04 / 06</span></div><div class="foot-rule"><i class="foot-fill"></i></div>
+      </section>
+      <section id="scene-phase-one" class="clip" data-start="46.11" data-duration="14.05" data-track-index="1">
+        <div class="topline"><div class="brand"><i class="brandmark"></i> TRICKLE UP <span style="color:#95a4bc">/</span> PoP 2.0</div><div class="chapter">04 — Phase One scope</div></div>
+        <div class="side-copy" style="top:250px;width:540px"><span class="kicker">Proposed delivery scope</span><h2>Core programme work, connected.</h2><p class="lede">Five Phase One modules support field operations and programme monitoring.</p><div class="pill">VOICE + CHATBOT · PLANNED REQUIREMENTS</div><span class="micro">A LIVE AI SERVICE IS NOT SHOWN.</span></div>
+        <div class="module-list">
+          <article class="module"><span class="module-num">01</span><div><b>Registration</b><small>MEMBER RECORDS</small></div></article>
+          <article class="module"><span class="module-num">02</span><div><b>SHG management</b><small>GROUP OPERATIONS</small></div></article>
+          <article class="module"><span class="module-num">03</span><div><b>Group finance</b><small>SAVINGS + LOANS</small></div></article>
+          <article class="module"><span class="module-num">04</span><div><b>Enterprise management</b><small>LIVELIHOOD ACTIVITY</small></div></article>
+          <article class="module" style="grid-column:1/3;width:100%;height:125px;margin-top:16px"><span class="module-num">05</span><div><b>Smart Sakhi monitoring</b><small>FIELD SUPPORT + FOLLOW-UP</small></div></article>
+        </div>
+        <div class="footer"><span>PROPOSED SCOPE · SUBJECT TO TUIF VALIDATION</span><span>05 / 06</span></div><div class="foot-rule"><i class="foot-fill"></i></div>
+      </section>
+      <section id="scene-next-steps" class="clip" data-start="60.16" data-duration="17.576" data-track-index="1">
+        <div class="topline"><div class="brand"><i class="brandmark"></i> TRICKLE UP <span style="color:#95a4bc">/</span> PoP 2.0</div><div class="chapter">05 — Next steps</div></div>
+        <div class="side-copy" style="top:260px;width:500px"><span class="kicker">A clear path to field validation</span><h2>Ready for the next conversation.</h2><p class="lede">Agree rules, provision TUIF’s environment, review languages, and validate with field users.</p><div class="pill"><i class="dot"></i> PROTOTYPE · NOT PRODUCTION</div></div>
+        <div class="stack"><div class="stack-item"><b>Flutter</b><span>MOBILE + WEB</span></div><span class="stack-arrow">→</span><div class="stack-item"><b>Node.js</b><span>PROPOSED SERVICES</span></div><span class="stack-arrow">→</span><div class="stack-item"><b>TUIF AWS</b><span>ENVIRONMENT PENDING</span></div></div>
+        <div class="next-card"><h3>To validate together</h3><div class="next-grid"><span><i></i>Business rules and acceptance</span><span><i></i>Customer-owned repository</span><span><i></i>Language review and voice testing</span><span><i></i>Field user UAT</span></div></div>
+        <div class="disclaimer">ALL RECORDS SHOWN ARE FICTIONAL · LOCAL DEPLOYMENT · NOT PRODUCTION ACCEPTANCE</div>
+        <div class="footer"><span>TRICKLE UP · PoP 2.0</span><span>06 / 06</span></div><div class="foot-rule"><i class="foot-fill"></i></div>
+      </section>
+    </main>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      document.querySelectorAll('.clip').forEach((scene, index) => {
+        const start = Number(scene.dataset.start), duration = Number(scene.dataset.duration);
+        const children = scene.querySelectorAll('.topline,.kicker,h1,h2,.lede,.pill,.feature-line,.hero-visual,.side-copy,.phone,.browser,.hero-label,.phone-stage,.portal-shot,.portal-stats,.module,.stack,.next-card,.disclaimer,.footer');
+        tl.fromTo(children, {opacity:0, y:18}, {opacity:1, y:0, duration:.48, stagger:.055, ease:'power3.out'}, start + .12);
+        const progress = scene.querySelector('.foot-fill');
+        if (progress) tl.fromTo(progress, {scaleX:0}, {scaleX:1, duration:duration, ease:'none'}, start);
+        if (index === 0) tl.fromTo('.hero-phone', {y:32,rotation:-8,scale:.94}, {y:0,rotation:-4,scale:1,duration:.7,ease:'back.out(1.3)'}, start+.32);
+        if (index === 1) tl.fromTo(scene.querySelector('.browser'), {x:70,rotation:6}, {x:0,rotation:2,duration:.7,ease:'power3.out'}, start+.45);
+        if (index === 2) tl.fromTo(scene.querySelectorAll('.phone-card'), {y:32,scale:.96}, {y:0,scale:1,duration:.55,stagger:.18,ease:'back.out(1.25)'}, start+.45);
+        if (index === 3) tl.fromTo(scene.querySelector('.portal-shot'), {x:52,scale:.98}, {x:0,scale:1,duration:.65,ease:'power3.out'}, start+.42);
+        if (index === 4) tl.fromTo(scene.querySelectorAll('.module'), {x:38}, {x:0,duration:.5,stagger:.11,ease:'power3.out'}, start+.45);
+        if (index === 5) tl.fromTo(scene.querySelector('.stack'), {y:-20}, {y:0,duration:.55,ease:'power3.out'}, start+.42);
+      });
+      window.__timelines['pop2-demo'] = tl;
+    </script>
+  </body>
+</html>

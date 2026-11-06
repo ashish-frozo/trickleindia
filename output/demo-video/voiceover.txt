@@ -1,0 +1,11 @@
+Here is PoP 2.0, a proposed digital platform for women’s livelihoods and the teams who support them. This walkthrough shows a local prototype using fictional records.
+
+On the field app, a Sakhi opens a member passbook, reviews a contribution, and saves it offline. Confirmed savings remain separate from pending activity.
+
+This example begins with sixteen hundred rupees confirmed. A two hundred rupee contribution is recorded offline. After a restart and retry, one receipt confirms a single posting, bringing the balance to eighteen hundred rupees.
+
+On the web portal, programme teams review savings, group activity, reports, and access settings. Snapshot times keep the reporting context visible.
+
+The proposed first phase covers registration, self-help group management, group finance, enterprise management, and Smart Sakhi monitoring. Voice and chatbot services are planned requirements; a live AI service is not shown here.
+
+The proposed stack uses Flutter, Node.js, and TUIF hosting on AWS. The deployment shown is local, not production. Next steps are to agree business rules, provision TUIF’s environment, review languages, and validate with field users. All example records are fictional.
