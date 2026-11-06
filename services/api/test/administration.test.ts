@@ -54,3 +54,22 @@ test('administrative audit subjects conform to the shared UI contract',async()=>
  assert.ok(events.some(e=>e.action==='import.rollback'));
  for(const e of events){assert.equal(typeof e.entityId,'string');assert.ok(Array.isArray(e.changedFields));assert.ok(e.changedFields.length>0);assert.equal(e.entityType,e.action==='staff.save'?'actors':'datasets');assert.equal(e.entityId,e.action==='staff.save'?e.detail.actorId:datasetId);}
 });
+test('imported active members join new meetings and cannot be registered again',async()=>{
+ const imported=await importIt(),groupId=imported.payload.groups[0].id,member=imported.payload.members[0],meetingId=randomUUID();
+ const operation=(kind:string,payload:unknown)=>({datasetId,operationId:randomUUID(),kind,clientCreatedAt:new Date().toISOString(),payload});
+ await mutate(manager,operation('meeting.create',{meetingId,groupId,businessDate:'2026-11-06'}));
+ const current=await transaction(c=>snapshot(c,datasetId));
+ assert.equal(current.members[0].status,'active');
+ assert.deepEqual(current.attendance.filter(a=>a.meetingId===meetingId).map(a=>a.memberId),[member.id]);
+ const subject=(await pool.query('SELECT subject FROM external_identities WHERE dataset_id=$1 AND actor_id=$2',[datasetId,sakhiId])).rows[0].subject;
+ const sakhi=await login(subject);
+ await assert.rejects(mutate(sakhi,operation('member.create',{memberId:randomUUID(),groupId,displayName:'  MEMBER ONE  ',preferredLanguage:'en',livelihoodCategory:'Agriculture'})),/POSSIBLE_DUPLICATE/);
+});
+test('migration rejects group codes and enterprise names that normal creation treats as duplicates',async()=>{
+ const payload=migration();payload.groups.push({...payload.groups[0],id:randomUUID(),code:'g01'});
+ payload.enterprises.push({...payload.enterprises[0],id:randomUUID(),name:'  SHOP  '});
+ const report=await dryRunImport(manager,{datasetId,payload});
+ assert.equal(report.valid,false);
+ assert.ok(report.errors.some(e=>e.startsWith('DUPLICATE_GROUP_CODE:')));
+ assert.ok(report.errors.some(e=>e.startsWith('DUPLICATE_ENTERPRISE_NAME:')));
+});
