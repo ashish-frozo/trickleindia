@@ -15,7 +15,7 @@ const words=JSON.parse(fs.readFileSync('packages/ui/assets/ui_en.arb','utf8'));
  assert((await page.getByRole('textbox',{name:'Title',exact:true}).inputValue()).length>0);
  await page.screenshot({path:'output/closure/web-content-editor.png'});
  await page.getByRole('button',{name:'Cancel',exact:true}).click();
- await page.getByRole('button',{name:'Reports & exports',exact:true}).click();
+ await page.getByRole('button',{name:words.reports,exact:true}).click();
  await page.getByRole('button',{name:words.downloadCsv,exact:true}).waitFor();
  const download=page.waitForEvent('download');
  await page.getByRole('button',{name:words.downloadCsv,exact:true}).click();

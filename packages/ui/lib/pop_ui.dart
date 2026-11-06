@@ -371,6 +371,9 @@ class _DemoShellState extends State<DemoShell> {
       var selected = pages.indexOf(widget.page);
       if (widget.page == 'member') selected = 1;
       if (widget.page == 'enterprise' && !participant) selected = 2;
+      if (['administration', 'reports', 'assistant'].contains(widget.page)) {
+        selected = pages.indexOf(manager ? 'capabilities' : 'help');
+      }
       if (selected < 0) selected = 0;
       final expandedTitle =
           authenticated &&
