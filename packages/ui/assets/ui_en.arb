@@ -218,5 +218,11 @@
   "welcomeReview": "Review records with your team",
   "memberDirectoryHint": "Members and their confirmed financial records.",
   "noMatchingMembers": "No members match this search.",
-  "noMatchingRequests": "No requests match these filters."
+  "noMatchingRequests": "No requests match these filters.",
+  "listenInstructions": "Listen to instructions",
+  "stopReading": "Stop reading",
+  "speechDisclosure": "Device-generated speech reads these draft instructions. It is not a reviewed recording. Android requires an installed offline voice; browser availability depends on your device.",
+  "speechUnavailable": "No suitable voice is available. Install a voice for this language in device speech settings, then retry. The written instructions remain available.",
+  "speechFailed": "Speech could not play. Check device speech settings and try again.",
+  "speechLoading": "Preparing voice…"
 }

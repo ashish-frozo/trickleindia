@@ -17,3 +17,8 @@ Current redesigned UI screenshots and native reconciliation proof are in `output
 Acceptance is not fully signed off. The AOSP emulator has no TalkBack/TTS service, so actual English/Hindi spoken-output verification remains A20's blocker. The software-rendered emulator also exceeds the two-second full cached-start target; cache initialization and durable save are within their measured targets. Retain those limits in customer review and rerun speech/startup checks on a representative physical Android phone. See `docs/TEST_RESULTS.md` for exact coverage, timings and exceptions. Container execution was unavailable, while native PostgreSQL startup was reproduced in a clean source tree.
 
 No public deployment or production integration was performed. This package is for local proposal review.
+
+
+## Remaining-gap follow-up (6 November 2026)
+
+See [GAP_CLOSURE.md](GAP_CLOSURE.md) for current status. English/Hindi draft help now supports device-generated speech, with installed offline voices required on Android and explicit missing-voice errors. Reviewed audio recordings and five-language acceptance remain outstanding. Narrow/large-text page titles now wrap in scrollable content. Prior screenshot and finish-review evidence describes the earlier build.

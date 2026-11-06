@@ -25,6 +25,7 @@ import 'src/tokens.dart';
 import 'src/components.dart';
 import 'src/theme.dart';
 import 'src/workspace.dart';
+import 'src/speech.dart';
 export 'src/components.dart';
 
 final appControllerProvider = Provider<AppController>(
@@ -44,13 +45,13 @@ class _PopAppState extends State<PopApp> with WidgetsBindingObserver {
   Map<String, dynamic> words = {};
   bool ready = false;
   late GoRouter router;
-  late SemanticsHandle semanticsHandle;
+  SemanticsHandle? semanticsHandle;
   AppController get c => widget.controller;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    semanticsHandle = SemanticsBinding.instance.ensureSemantics();
+    if (kIsWeb) semanticsHandle = SemanticsBinding.instance.ensureSemantics();
     LicenseRegistry.addLicense(() async* {
       yield LicenseEntryWithLineBreaks([
         'Noto Sans',
@@ -113,7 +114,7 @@ class _PopAppState extends State<PopApp> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     router.dispose();
-    semanticsHandle.dispose();
+    semanticsHandle?.dispose();
     localeChanges.dispose();
     super.dispose();
   }
@@ -168,6 +169,7 @@ class _DemoShellState extends State<DemoShell> {
       supportStatus = 'all',
       supportOwner = 'all',
       managerGroup = 'all';
+  final speech = InstructionSpeech();
   final access = TextEditingController();
   String? lastReference;
   String? simulatedId;
@@ -182,7 +184,16 @@ class _DemoShellState extends State<DemoShell> {
   }
 
   @override
+  void didUpdateWidget(covariant DemoShell oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.lang != widget.lang || oldWidget.page != widget.page) {
+      unawaited(speech.stop());
+    }
+  }
+
+  @override
   void dispose() {
+    speech.dispose();
     access.dispose();
     super.dispose();
   }
@@ -333,6 +344,11 @@ class _DemoShellState extends State<DemoShell> {
       if (widget.page == 'member') selected = 1;
       if (widget.page == 'enterprise' && !participant) selected = 2;
       if (selected < 0) selected = 0;
+      final expandedTitle =
+          authenticated &&
+          widget.page != 'home' &&
+          (MediaQuery.textScalerOf(context).scale(1) > 1.4 ||
+              MediaQuery.sizeOf(context).width < 380);
       Widget pageBody;
       if (c.busy) {
         pageBody = Center(
@@ -358,6 +374,20 @@ class _DemoShellState extends State<DemoShell> {
             child: ListView(
               padding: EdgeInsets.all(desktop ? 32 : 20),
               children: [
+                if (expandedTitle)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Semantics(
+                        header: true,
+                        child: Text(
+                          pageTitle,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                    ),
+                  ),
                 if (c.error != null && c.error != 'TEMPORARILY_UNAVAILABLE')
                   ErrorState(
                     message: errorText(c.error!),
@@ -456,7 +486,9 @@ class _DemoShellState extends State<DemoShell> {
                   icon: const Icon(Icons.arrow_back_rounded),
                 )
               : null,
-          title: widget.page == 'home' || !authenticated
+          title: expandedTitle
+              ? null
+              : widget.page == 'home' || !authenticated
               ? const PopWordmark()
               : Text(pageTitle),
           actions: [
@@ -2815,9 +2847,12 @@ class _DemoShellState extends State<DemoShell> {
                         child: Text(step),
                       ),
                     Text(t('demoInstructions')),
-                    Text(
-                      t('audioUnavailable'),
-                      style: const TextStyle(fontSize: 14, color: muted),
+                    SpeechControl(
+                      speech: speech,
+                      id: cardData['id'],
+                      language: widget.lang,
+                      text: cardData['locales'][widget.lang]['audioScript'],
+                      t: t,
                     ),
                   ],
                 ),
@@ -2968,7 +3003,7 @@ class _DemoShellState extends State<DemoShell> {
           Text(t('extraLabel9')),
           Text('${t('planned')}: Odia · Ho · Santhali'),
           Text(t('draftContent')),
-          Text(t('audioUnavailable')),
+          Text(t('speechDisclosure')),
           Text('${t('simulation')}: WhatsApp'),
           Text('${t('unavailable')}: Live AI'),
           Text(t('extraLabel10')),

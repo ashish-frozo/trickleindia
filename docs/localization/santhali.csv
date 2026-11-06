@@ -1,0 +1,219 @@
+key,source,translation,reviewer,status
+ui.appTitle,PoP 2.0,,,needs-translation
+ui.demoBanner,Proposal demo • Fictional data,,,needs-translation
+ui.language,Language,,,needs-translation
+ui.english,English,,,needs-translation
+ui.hindi,हिन्दी,,,needs-translation
+ui.home,Home,,,needs-translation
+ui.groups,Groups,,,needs-translation
+ui.work,Work,,,needs-translation
+ui.help,Help,,,needs-translation
+ui.passbook,Passbook,,,needs-translation
+ui.enterprise,Enterprise,,,needs-translation
+ui.chooseRole,Choose a demo role,,,needs-translation
+ui.sakhiRole,Smart Sakhi,,,needs-translation
+ui.participantRole,Participant,,,needs-translation
+ui.managerRole,Programme manager,,,needs-translation
+ui.accessCode,Demo access code,,,needs-translation
+ui.signIn,Open demo,,,needs-translation
+ui.downloading,Downloading your records…,,,needs-translation
+ui.firstLoginOnline,Connect to download your records first.,,,needs-translation
+ui.greeting,"Hello, {name}",,,needs-translation
+ui.openMeeting,Open meeting,,,needs-translation
+ui.todaysMeeting,Today’s meeting,,,needs-translation
+ui.pendingRequests,Pending requests,,,needs-translation
+ui.recentActivity,Recent activity,,,needs-translation
+ui.confirmedSavings,Confirmed savings,,,needs-translation
+ui.pendingSavings,Savings waiting to sync,,,needs-translation
+ui.loanPrincipal,Loan principal outstanding,,,needs-translation
+ui.recordEntry,Record entry,,,needs-translation
+ui.savingsContribution,Savings contribution,,,needs-translation
+ui.principalRepayment,Principal repayment,,,needs-translation
+ui.amount,Amount,,,needs-translation
+ui.member,Member,,,needs-translation
+ui.group,Group,,,needs-translation
+ui.date,Date,,,needs-translation
+ui.type,Type,,,needs-translation
+ui.noteOptional,Note (optional),,,needs-translation
+ui.review,Review,,,needs-translation
+ui.saveContribution,Save contribution,,,needs-translation
+ui.saveRepayment,Save repayment,,,needs-translation
+ui.confirmExpense,Confirm expense,,,needs-translation
+ui.cancel,Cancel,,,needs-translation
+ui.back,Back,,,needs-translation
+ui.save,Save,,,needs-translation
+ui.savedOnPhone,Saved on this phone,,,needs-translation
+ui.waitingToSync,Waiting to sync,,,needs-translation
+ui.syncing,Syncing…,,,needs-translation
+ui.confirmed,Confirmed,,,needs-translation
+ui.needsAttention,Needs attention,,,needs-translation
+ui.offline,Offline,,,needs-translation
+ui.online,Connected,,,needs-translation
+ui.syncCentre,Sync centre,,,needs-translation
+ui.retry,Retry,,,needs-translation
+ui.lastContact,Last server contact,,,needs-translation
+ui.pendingCount,"{count, plural, =0{No pending entries} =1{1 pending entry} other{{count} pending entries}}",,,needs-translation
+ui.attendance,Attendance,,,needs-translation
+ui.present,Present,,,needs-translation
+ui.absent,Absent,,,needs-translation
+ui.unmarked,Not marked,,,needs-translation
+ui.submitMeeting,Submit meeting,,,needs-translation
+ui.meetingSubmitted,Meeting submitted,,,needs-translation
+ui.meetingCashReceived,Cash received in this meeting,,,needs-translation
+ui.syncBeforeSubmit,Sync all meeting entries before submitting.,,,needs-translation
+ui.cashSales,Cash sales,,,needs-translation
+ui.cashExpenses,Cash expenses,,,needs-translation
+ui.cashSurplus,Cash surplus,,,needs-translation
+ui.recordSale,Record sale,,,needs-translation
+ui.recordExpense,Record expense,,,needs-translation
+ui.category,Category,,,needs-translation
+ui.seeds,Seeds,,,needs-translation
+ui.addMember,Add member,,,needs-translation
+ui.name,Name,,,needs-translation
+ui.preferredLanguage,Preferred language,,,needs-translation
+ui.livelihood,Livelihood,,,needs-translation
+ui.contactOptional,Contact (optional),,,needs-translation
+ui.possibleDuplicate,A similar member already exists. Review before continuing.,,,needs-translation
+ui.useExisting,Use existing member,,,needs-translation
+ui.editDraft,Edit draft,,,needs-translation
+ui.requestHelp,Request help,,,needs-translation
+ui.requestRecorded,Your request was recorded: {reference},,,needs-translation
+ui.requestDescription,What do you need help with?,,,needs-translation
+ui.assignedTo,Assigned to {name},,,needs-translation
+ui.openStatus,Open,,,needs-translation
+ui.inProgress,In progress,,,needs-translation
+ui.resolved,Resolved,,,needs-translation
+ui.resolutionNote,Resolution note,,,needs-translation
+ui.demoHelp,Demo help,,,needs-translation
+ui.demoInstructions,Demo app instructions,,,needs-translation
+ui.draftContent,Draft content • Review pending,,,needs-translation
+ui.playAudio,Play audio,,,needs-translation
+ui.pauseAudio,Pause audio,,,needs-translation
+ui.replayAudio,Replay audio,,,needs-translation
+ui.audioUnavailable,Audio preview unavailable,,,needs-translation
+ui.whatsappSimulation,WhatsApp simulation • No messages sent,,,needs-translation
+ui.expenseHelp,Help recording an expense,,,needs-translation
+ui.simulation,Simulation,,,needs-translation
+ui.planned,Planned,,,needs-translation
+ui.implemented,Implemented,,,needs-translation
+ui.unavailable,Unavailable,,,needs-translation
+ui.overview,Overview,,,needs-translation
+ui.meetings,Meetings,,,needs-translation
+ui.support,Support,,,needs-translation
+ui.activity,Activity,,,needs-translation
+ui.memberCount,Members,,,needs-translation
+ui.openRequests,Open support requests,,,needs-translation
+ui.lastRefreshed,Last refreshed,,,needs-translation
+ui.refresh,Refresh,,,needs-translation
+ui.staleData,Data may be out of date,,,needs-translation
+ui.lastReportedDevice,Last reported by device,,,needs-translation
+ui.noRecords,No records yet,,,needs-translation
+ui.loading,Loading…,,,needs-translation
+ui.sessionExpired,Your session expired. Sign in again to continue.,,,needs-translation
+ui.invalidAmount,Enter a valid amount greater than zero.,,,needs-translation
+ui.forbidden,You do not have access to this action.,,,needs-translation
+ui.serverUnavailable,Cannot reach the server. Your saved entries are on this phone.,,,needs-translation
+ui.versionConflict,This record changed. Review the latest version.,,,needs-translation
+ui.datasetMismatch,The demo was reset. Review your pending entries before resetting this phone.,,,needs-translation
+ui.meetingClosed,This meeting is already submitted.,,,needs-translation
+ui.loanBalanceExceeded,The repayment exceeds the remaining principal.,,,needs-translation
+ui.reverseEntry,Reverse entry,,,needs-translation
+ui.reversalReason,Reason for reversal,,,needs-translation
+ui.reversed,Reversed,,,needs-translation
+ui.resetDemo,Reset demo,,,needs-translation
+ui.resetWarning,This removes this phone’s pending demo entries after your confirmation.,,,needs-translation
+ui.confirmReset,Type RESET DEMO to continue,,,needs-translation
+ui.capabilities,Demo capabilities,,,needs-translation
+ui.unsupportedHelp,I do not have approved guidance for that. Ask your Smart Sakhi.,,,needs-translation
+ui.extraLabel1,Sign out,,,needs-translation
+ui.extraLabel2,Trickle Up India Foundation · Programme demo,,,needs-translation
+ui.extraLabel3,"05 Nov 2026 · Your community, connected",,,needs-translation
+ui.extraLabel4,Search members,,,needs-translation
+ui.extraLabel5,Reconcile and discard,,,needs-translation
+ui.extraLabel6,Tailoring,,,needs-translation
+ui.extraLabel7,Poultry,,,needs-translation
+ui.extraLabel8,Vegetable sales,,,needs-translation
+ui.extraLabel9,English / Hindi UI,,,needs-translation
+ui.extraLabel10,Proposal demo; production acceptance pending,,,needs-translation
+ui.statusFilter,Request status,,,needs-translation
+ui.allStatuses,All statuses,,,needs-translation
+ui.ownerFilter,Assigned owner,,,needs-translation
+ui.allOwners,All owners,,,needs-translation
+ui.reassign,Assign Smart Sakhi,,,needs-translation
+ui.searchHelp,Search demo help,,,needs-translation
+ui.pendingActorSwitch,Sync or review this identity’s pending work before changing roles.,,,needs-translation
+ui.reconcileFirst,Check the earlier delivery in Sync centre before editing this record again.,,,needs-translation
+ui.invalidFields,"Check the required fields and linked member, meeting or enterprise.",,,needs-translation
+ui.changedRetry,This entry’s identity was reused with different details. Keep it for review.,,,needs-translation
+ui.recordUnavailable,This record is unavailable. Refresh your assigned records.,,,needs-translation
+ui.retryLater,"Too many attempts. Wait briefly, then retry.",,,needs-translation
+ui.discarded,Discarded after review,,,needs-translation
+ui.superseded,Replaced by a newer intent,,,needs-translation
+ui.lastAccepted,Last accepted record,,,needs-translation
+ui.datasetRevision,Dataset revision,,,needs-translation
+ui.serviceAvailability,API service,,,needs-translation
+ui.actorLabel,Recorded by,,,needs-translation
+ui.subjectLabel,Record subject,,,needs-translation
+ui.capturedAt,Device time (unverified),,,needs-translation
+ui.receivedAt,Received by server,,,needs-translation
+ui.secureStorageUnavailable,"Secure storage could not open. Your cached records have not been displayed. Unlock this device, then retry.",,,needs-translation
+ui.nextFault,Next demo upload fault (local only),,,needs-translation
+ui.noFault,No injected fault,,,needs-translation
+ui.dropAfterCommit,"Commit, then drop the response",,,needs-translation
+ui.temporaryFailure,Return a retryable service failure,,,needs-translation
+ui.newMessage,New simulated message,,,needs-translation
+ui.openSourceNotices,Open-source notices,,,needs-translation
+ui.demoPeriod,Demo period • opening cash included,,,needs-translation
+ui.allGroups,All groups,,,needs-translation
+ui.more,More options,,,needs-translation
+ui.fictionalContact,Fictional contact,,,needs-translation
+ui.currentServerValue,Current server value,,,needs-translation
+ui.yourSavedChange,Your saved change,,,needs-translation
+ui.programmePortal,Programme portal,,,needs-translation
+ui.programmeOverview,Programme overview,,,needs-translation
+ui.programmeOverviewHint,"SHG finance, meetings and follow-up",,,needs-translation
+ui.yourGroup,Your group,,,needs-translation
+ui.viewGroup,View group,,,needs-translation
+ui.followupMembers,Follow up with your members,,,needs-translation
+ui.noFollowupNeeded,No requests waiting,,,needs-translation
+ui.groupsAtGlance,Groups at a glance,,,needs-translation
+ui.viewAllGroups,View all groups,,,needs-translation
+ui.recentFinancialActivity,Recent financial activity,,,needs-translation
+ui.activityEmptyHint,Accepted entries will appear here after they sync.,,,needs-translation
+ui.supportPreview,Requests to follow up,,,needs-translation
+ui.viewAllRequests,View requests,,,needs-translation
+ui.welcomeHeadline,"Everyday work.
+Clearer progress.",,,needs-translation
+ui.welcomeDescription,"A shared workspace for group records, enterprise activity and field support.",,,needs-translation
+ui.welcomeOffline,Work offline on the mobile app,,,needs-translation
+ui.welcomeSync,Sync when connected,,,needs-translation
+ui.welcomeReview,Review records with your team,,,needs-translation
+ui.memberDirectoryHint,Members and their confirmed financial records.,,,needs-translation
+ui.noMatchingMembers,No members match this search.,,,needs-translation
+ui.noMatchingRequests,No requests match these filters.,,,needs-translation
+ui.listenInstructions,Listen to instructions,,,needs-translation
+ui.stopReading,Stop reading,,,needs-translation
+ui.speechDisclosure,Device-generated speech reads these draft instructions. It is not a reviewed recording. Android requires an installed offline voice; browser availability depends on your device.,,,needs-translation
+ui.speechUnavailable,"No suitable voice is available. Install a voice for this language in device speech settings, then retry. The written instructions remain available.",,,needs-translation
+ui.speechFailed,Speech could not play. Check device speech settings and try again.,,,needs-translation
+ui.speechLoading,Preparing voice…,,,needs-translation
+help.save-contribution.title,Save a contribution,,,needs-translation
+help.save-contribution.audioScript,"Open the meeting and choose the member. Enter the amount and review the member, date and type. Confirm. If offline, the entry stays on this phone until it syncs.",,,needs-translation
+help.save-contribution.steps.0,Open the meeting and choose the member.,,,needs-translation
+help.save-contribution.steps.1,"Enter the amount and review the member, date and type.",,,needs-translation
+help.save-contribution.steps.2,"Confirm. If offline, the entry stays on this phone until it syncs.",,,needs-translation
+help.understand-sync.title,Understand sync status,,,needs-translation
+help.understand-sync.audioScript,"Saved on this phone means the entry is stored locally. Waiting to sync means it has not yet been confirmed by the server. After confirmation, the passbook shows the updated confirmed balance.",,,needs-translation
+help.understand-sync.steps.0,Saved on this phone means the entry is stored locally.,,,needs-translation
+help.understand-sync.steps.1,Waiting to sync means it has not yet been confirmed by the server.,,,needs-translation
+help.understand-sync.steps.2,"After confirmation, the passbook shows the updated confirmed balance.",,,needs-translation
+help.record-expense.title,Record an expense,,,needs-translation
+help.record-expense.audioScript,"Open Enterprise and choose Record expense. Choose a category, enter the amount and review the details. Confirm the expense. Cash surplus updates after the entry is accepted.",,,needs-translation
+help.record-expense.steps.0,Open Enterprise and choose Record expense.,,,needs-translation
+help.record-expense.steps.1,"Choose a category, enter the amount and review the details.",,,needs-translation
+help.record-expense.steps.2,Confirm the expense. Cash surplus updates after the entry is accepted.,,,needs-translation
+help.ask-sakhi.title,Ask your Smart Sakhi,,,needs-translation
+help.ask-sakhi.audioScript,Choose Request help and describe the issue briefly. Save the request. It becomes visible to staff after it syncs. Use the request reference to follow its status in the app.,,,needs-translation
+help.ask-sakhi.steps.0,Choose Request help and describe the issue briefly.,,,needs-translation
+help.ask-sakhi.steps.1,Save the request. It becomes visible to staff after it syncs.,,,needs-translation
+help.ask-sakhi.steps.2,Use the request reference to follow its status in the app.,,,needs-translation

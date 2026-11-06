@@ -20,7 +20,7 @@
   - button "Confirmed savings ₹5,000"
   - button "Loan principal outstanding ₹5,000"
   - button "Open support requests 1"
-  - text: "Last refreshed: Nov 6, 2026 09:56 IST"
+  - text: "Last refreshed: Nov 6, 2026 10:15 IST"
   - group "Groups at a glance (2)":
     - button "View all groups"
     - table:

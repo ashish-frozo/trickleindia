@@ -1,0 +1,1 @@
+Real browser: help read control, missing-voice recovery, no page errors. Actual audio playback not asserted.

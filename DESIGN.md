@@ -274,3 +274,8 @@ Passbook identity and confirmed balance share a forest panel; pending money has 
 - **Don't** describe this proposal as TUIF approval or completed production accessibility acceptance.
 
 The full RFP additionally requires Odia, Ho, Santhali and voice/audio support. These remain explicit gaps. Actual TalkBack speech and the full cached-start target also remain open acceptance items. The sidecar's HTML/CSS examples are portable visual translations of Flutter components, not replacements for their runtime semantics or accessibility validation.
+
+
+## Remaining-gap follow-up (6 November 2026)
+
+See [GAP_CLOSURE.md](docs/GAP_CLOSURE.md) for current status. English/Hindi draft help now supports device-generated speech, with installed offline voices required on Android and explicit missing-voice errors. Reviewed audio recordings and five-language acceptance remain outstanding. Narrow/large-text page titles now wrap in scrollable content. Prior screenshot and finish-review evidence describes the earlier build.

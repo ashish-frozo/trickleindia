@@ -1,0 +1,31 @@
+{
+  "device": "emulator-5554",
+  "samples": [
+    {
+      "sample": 1,
+      "timingsMs": {
+        "TotalTime": 4099,
+        "WaitTime": 4135
+      },
+      "output": "Starting: Intent { cmp=com.frozo.pop_mobile/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.frozo.pop_mobile/.MainActivity\nTotalTime: 4099\nWaitTime: 4135\nComplete\n"
+    },
+    {
+      "sample": 2,
+      "timingsMs": {
+        "TotalTime": 3163,
+        "WaitTime": 3170
+      },
+      "output": "Starting: Intent { cmp=com.frozo.pop_mobile/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.frozo.pop_mobile/.MainActivity\nTotalTime: 3163\nWaitTime: 3170\nComplete\n"
+    },
+    {
+      "sample": 3,
+      "timingsMs": {
+        "TotalTime": 2640,
+        "WaitTime": 2786
+      },
+      "output": "Starting: Intent { cmp=com.frozo.pop_mobile/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.frozo.pop_mobile/.MainActivity\nTotalTime: 2640\nWaitTime: 2786\nComplete\n"
+    }
+  ],
+  "scope": "Android activity launch timing; verify cached content visibility separately. Emulator results do not establish field-device acceptance.",
+  "targetMs": 2000
+}

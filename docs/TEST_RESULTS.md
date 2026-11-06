@@ -70,3 +70,8 @@ Eight Android cache-initialization observations ranged from 658 to 1914 ms. One 
 Actual TalkBack speech needs an Android installation with TalkBack and a TTS engine, then a listener must verify amount/status pronunciation, focus order, forms and modal return focus in both languages. Native accessibility labels are inspected but are not a substitute for that spoken-output test. This is the remaining A20 customer acceptance blocker. Full cached-start performance is also an unmet P1 quality target on this emulator and requires investigation/verification on representative Android hardware.
 
 Reviewed audio is unavailable, as explicitly permitted by the pack. Live AI/speech/official WhatsApp are optional P2 and disabled. Docker container execution was not possible here; the tested startup uses native PostgreSQL. Hindi terminology/help copy still needs participant/content-owner review before production rollout. No credentials, private local config, credential-bearing test APKs or browser session traces belong in the handoff archive.
+
+
+## Remaining-gap follow-up (6 November 2026)
+
+See [GAP_CLOSURE.md](GAP_CLOSURE.md) for current status. English/Hindi draft help now supports device-generated speech, with installed offline voices required on Android and explicit missing-voice errors. Reviewed audio recordings and five-language acceptance remain outstanding. Narrow/large-text page titles now wrap in scrollable content. Prior screenshot and finish-review evidence describes the earlier build.

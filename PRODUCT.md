@@ -45,3 +45,8 @@ Synthetic fixture assets, functioning API and clients, tests, recordings and scr
 ## Accessibility & Inclusion
 
 Use clear icons with text, large touch targets, high contrast, simple language, sensible focus order and text scaling. Maintain English/Hindi coverage and offline font delivery. Actual TalkBack speech and the full cached-start target remain documented acceptance gaps; visual redesign must not conceal them.
+
+
+## Remaining-gap follow-up (6 November 2026)
+
+See [GAP_CLOSURE.md](docs/GAP_CLOSURE.md) for current status. English/Hindi draft help now supports device-generated speech, with installed offline voices required on Android and explicit missing-voice errors. Reviewed audio recordings and five-language acceptance remain outstanding. Narrow/large-text page titles now wrap in scrollable content. Prior screenshot and finish-review evidence describes the earlier build.

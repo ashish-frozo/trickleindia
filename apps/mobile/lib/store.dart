@@ -11,7 +11,7 @@ import 'package:pop_domain/pop_domain.dart';
 class LocalDatabase extends GeneratedDatabase {
   LocalDatabase(File file, String key)
     : super(
-        NativeDatabase(
+        NativeDatabase.createInBackground(
           file,
           setup: (db) {
             final cipher = db.select('PRAGMA cipher;');
